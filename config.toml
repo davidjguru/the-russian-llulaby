@@ -1,5 +1,5 @@
 ######################## default configuration ####################
-baseURL = "https://therussianlullaby.cm"
+baseURL = "https://therussianlullaby.com"
 languageCode = "en-us"
 title = "The Russian Lullaby"
 theme = "liva-hugo"
