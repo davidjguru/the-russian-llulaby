@@ -120,7 +120,7 @@ icon = "ti-pencil" # themify icon : https://themify.me/themify-icons
 link = "https://davidjguru.github.io/"
 
 [[params.social]]
-title = "github"
+title = "gitlab"
 icon = "ti-github" # themify icon : https://themify.me/themify-icons
 link = "https://gitlab.com/davidjguru"
 
