@@ -5,7 +5,7 @@ title = "The Russian Lullaby"
 theme = "liva-hugo"
 summaryLength = "10"
 paginate = 6
-disqusShortname = ""
+disqusShortname = "therussianlullaby"
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
