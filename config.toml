@@ -81,16 +81,16 @@ disqusShortname = ""
 logo = "images/logo.png"
 home = "Home"
 # Meta data
-description = "This is meta description"
-author = "Themefisher"
+description = "The Russian Lullaby: Drupal tips and articles about web development."
+author = "@davidjguru"
 # Google Analitycs
 googleAnalitycsID = "Your ID"
 # Contact Information
-mobile = "0124857985320"
-email = "demo@email.com"
-location = "Dhaka, Bangladedsh"
+mobile = "(skype) - davidjguru"
+email = "info@therussianlullaby.com"
+location = "Sevilla, Andalusia (Spain)"
 # copyright
-copyright = "| copyright &copy; 2020 [Themefisher](https://themefisher.com) All Rights Reserved |"
+copyright = "| copyleft for contents - CC BY-NC-SA | copyright for Layout [Themefisher](https://themefisher.com) All Rights Reserved |"
 
   # Preloader
   [params.preloader]
@@ -108,27 +108,29 @@ title = "Join Our Newsletter"
 content = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero"
 
 ############################# social site ########################
-[[params.social]]
-title = "facebook"
-icon = "ti-facebook" # themify icon : https://themify.me/themify-icons
-link = "#"
 
 [[params.social]]
 title = "twitter"
 icon = "ti-twitter-alt" # themify icon : https://themify.me/themify-icons
-link = "#"
+link = "https://twitter.com/davidjguru"
 
 [[params.social]]
-title = "instagram"
-icon = "ti-instagram" # themify icon : https://themify.me/themify-icons
-link = "#"
+title = "blog"
+icon = "ti-pencil" # themify icon : https://themify.me/themify-icons
+link = "https://davidjguru.github.io/"
 
 [[params.social]]
 title = "github"
 icon = "ti-github" # themify icon : https://themify.me/themify-icons
-link = "#"
+link = "https://gitlab.com/davidjguru"
 
 [[params.social]]
 title = "linkedin"
 icon = "ti-linkedin" # themify icon : https://themify.me/themify-icons
-link = "#"
+link = "https://www.linkedin.com/in/davidjguru/"
+
+[[params.social]]
+title = "drupal"
+icon = "ti-drupal" # themify icon : https://themify.me/themify-icons
+link = "https://www.drupal.org/u/davidjguru"
+
