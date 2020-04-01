@@ -1,5 +1,5 @@
 ---
-title: "Books/ Local Web development with DDEV explained"
+title: "Books/ Local Web development with DDEV"
 date: 2019-12-30
 draft: false
 
