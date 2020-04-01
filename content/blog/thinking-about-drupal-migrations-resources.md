@@ -13,7 +13,7 @@ description: "Thinking about Drupal migrations (I) - Resources"
 categories: 
   - "Migrations"
 tags:
-  - "Drupal"
+  - "Drupal Migrations"
   - "Migrate API"
   - "Contrib Modules"
   - "Drupal Plugins"
