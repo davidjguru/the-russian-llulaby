@@ -201,7 +201,7 @@ ddev describe projectname
 ddev list
 ```
 
-## :wq!
+## 6- :wq!
 
 What do you think about DDEV and its possibilities? You have to think that many unix commands shown above are totally scrollable to the ddev configuration file like hooks (pre and post formats), but I preferred to make it explicit here as an introduction.
 

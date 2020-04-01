@@ -55,7 +55,7 @@ article will be only a lightweight set of basic resources (I swear).
 [4- Extra Resources - Contrib Modules for Plugins](#4--extra-resources---contrib-modules-for-plugins)  
 [5- Migration Runners - Contrib Modules Drush-Related](#5--migrations-runners---contrib-modules-drush-related)  
 [6- Authors you should know](#6--authors-you-should-know)  
-[7- :wq!](#wq)
+[7- :wq!](#7--wq)
 <!-- /TOC -->
 
 -----------------------------------------------------------------------------------------
@@ -281,4 +281,8 @@ His profile in Drupal.org: [https://www.drupal.org/u/upchuk](https://www.drupal.
 
 --------------------------------------------------------------------------------------
 
-## :wq!
+## 7- :wq!
+
+##### Recommended song
+
+{{< youtube ADwfyxpriAM >}}
