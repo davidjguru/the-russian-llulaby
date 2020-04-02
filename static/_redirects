@@ -1,0 +1,7 @@
+# Redirect default Netlify subdomain to primary domain
+http://therussianlullaby.netlify.com/* http://www.therussianlullaby.com/:splat 301!
+https://therussianlullaby.netlify.com/* https://www.therussianlullaby.com/:splat 301!
+
+# Redirect domain to primary domain
+http://therussianlullaby.com/* http://www.therussianlullaby.com/:splat 301!
+https://therussianlullaby.com/* https://www.therussianlullaby.com/:splat 301!
