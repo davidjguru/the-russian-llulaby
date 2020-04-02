@@ -11,9 +11,9 @@ description: "Thinking about Drupal Migrations (II) - Examples"
 
 # taxonomies
 categories: 
-  - "Migrations"
+  - "Migrations"  
 tags:
-  - "Drupal"
+  - "Drupal Migrations"
   - "Migrate API"
   - "Contrib Modules"
   - "Drupal Plugins"

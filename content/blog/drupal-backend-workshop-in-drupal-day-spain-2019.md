@@ -13,7 +13,7 @@ description: "Drupal Backend Workshop Drupal Day Spain Zaragoza 2019"
 categories: 
   - "Events"
 tags:
-  - "Drupal development"
+  - "Drupal Development"
   - "Workshop"
   - "Activities"
   - "Backend"

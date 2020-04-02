@@ -39,9 +39,9 @@ We know that for some years, working with Docker Engine has become a MUST. From 
 [3- Dockerfile](#3--dockerfile)  
 [4- Containers](#4--containers)  
 [5- Docker-Compose](#5--docker-compose)  
-[6- Others](#6--others) 
-[7- DDEV](#7--ddev) 
-[8- :wq!](#8--wq)  
+[6- Others](#6--others)  
+[7- DDEV](#7--ddev)   
+[8- :wq!](#8--wq)    
 <!-- /TOC -->
 
 -------------------------------------------------------------------------------
