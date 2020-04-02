@@ -1,10 +1,12 @@
 ######################## default configuration ####################
 baseURL = "https://www.therussianlullaby.com"
 languageCode = "en-us"
+defaultContentLanguage = "en"
 title = "The Russian Lullaby"
 theme = "liva-hugo"
 summaryLength = "10"
 paginate = 6
+enableRobotsTXT = true
 disqusShortname = "therussianlullaby"
 
 [outputs]
@@ -90,7 +92,7 @@ mobile = "(skype) - davidjguru"
 email = "info@therussianlullaby.com"
 location = "Sevilla, Andalusia (Spain)"
 # copyright
-copyright = "| copyleft for contents - CC BY-NC-SA | copyright for Layout [Themefisher](https://themefisher.com) All Rights Reserved |"
+copyright = "| copyleft for contents - CC BY-NC-SA | copyright for Layout [Themefisher](https://themefisher.com) |"
 
   # Preloader
   [params.preloader]
