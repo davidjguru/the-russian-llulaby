@@ -86,7 +86,7 @@ home = "Home"
 description = "The Russian Lullaby: Drupal tips and articles about web development."
 author = "@davidjguru"
 # Google Analitycs
-googleAnalitycsID = "Your ID"
+googleAnalitycsID = "UA-162823320-1"
 # Contact Information
 mobile = "(skype) - davidjguru"
 email = "info@therussianlullaby.com"
