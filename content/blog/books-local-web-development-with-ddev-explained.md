@@ -23,7 +23,7 @@ tags:
 type: "post"
 ---
 
-I recently acquired the book "Local web development with DDEV explained" written by Mike Anello  and I'd like to share my thoughts on that here.
+Lately, I'm interested in improving the tools of the project's stack, thanks to the advice of a friend I approached DDEV. I already knew Docker and everything related to its ecosystem (Docker, Docker-Compose, Docker Engine, Docker Swarm...) although it is true that not in a very advanced way in general, only at the level of the daily needs or small test games...so I recently acquired the book "Local web development with DDEV explained" written by Mike Anello  and I'd like to share my thoughts on that here.
 So, Do you develop projects based on Drupal? do you know the DDEV tool for building environments? these may be important motivations, but there are more reasons why Mike Anello's book could be interesting for you...
 
 --------------------------------------------------------------------------------------
