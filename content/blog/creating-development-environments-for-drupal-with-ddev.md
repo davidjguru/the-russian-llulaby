@@ -22,8 +22,7 @@ tags:
 # post type
 type: "post"
 ---
-
-I always (or almost always) had worked on Drupal projects with the same stack of versions, so I only had one environment set up. Then, I started to have different versions (Drupal 6.x, Drupal 7 ... 8) at the same time for diverse projects and then I started playing with Docker. But now I have discovered ddev and a new game has started.
+Well, at this moment we cannot deny that containerization is a basic pillar of our project work: the ability to compartmentalize the technological stack of each project is a fundamental resource (and be wary of those who do not practice it). But the point is that I have a new toy to play with it. Let me explain: I always (or almost always) had worked on Drupal projects with the same stack of versions, so I only had one environment set up. Then, I started to have different versions (Drupal 6.x, Drupal 7 ... 8) at the same time for diverse projects and then I started playing with Docker. But now I have discovered ddev and a new game has started.
 
 --------------------------------------------------------------------------------------
 **This article was originally published  in [https://davidjguru.github.io](https://davidjguru.github.io/blog/creating-development-environments-for-drupal-with-ddev)**    
