@@ -23,7 +23,9 @@ tags:
 type: "post"
 ---
 
+Recently I was preparing some events to intercept requests in Symfony and sharing some approaches with my colleagues I discovered that in my environment the topic of Event Management in Drupal (dispatching events, subscribing events) was not well known, so I prepared some snippets to share and from there I thought to write some introductory article.
 Undoubtedly, in the latest versions of Drupal, certain components of Symfony have not only made their appearance, but also have been gaining importance and surely this will extend further in time, given its elasticity and fully integrated OOP approach. One of these components is the HttpKernel, a very valuable subsystem for building request-response relationships in a technology (Silex, Symfony, Drupal).
+
 
 --------------------------------------------------------------------------------------
  
