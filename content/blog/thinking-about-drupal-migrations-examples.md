@@ -211,7 +211,7 @@ For this second case we are going to deactivate migrate_run (if applicable) and 
 So using Composer + Drush: 
 
 ```
-composer require migrate_plus migrate_tools migrate_source_csv
+composer require drupal/migrate_plus drupal/migrate_tools drupal/migrate_source_csv
 drush pmu migrate_run # If you need 
 drush en migrate migrate_plus migrate_tools migrate_source_csv -y
 drush cr
