@@ -63,9 +63,9 @@ article will be only a lightweight set of basic resources (I swear).
 **This article is part of a series of posts about Drupal Migrations**
 
 <!-- TOC -->
-[1- Thinking about Drupal Migrations (I): Resources](https://davidjguru.github.io/blog/thinking-about-drupal-migrations-resources)
+[1- Thinking about Drupal Migrations (I): Resources](https://therussianlullaby.com/blog/thinking-about-drupal-migrations-resources/)
 
-[2- Thinking about Drupal Migrations (II): Examples](https://davidjguru.github.io/blog/thinking-about-drupal-migrations-examples)
+[2- Thinking about Drupal Migrations (II): Examples](https://therussianlullaby.com/blog/thinking-about-drupal-migrations-examples)
 
 <!-- /TOC -->
 
