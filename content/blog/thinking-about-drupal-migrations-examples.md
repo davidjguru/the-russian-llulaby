@@ -382,7 +382,7 @@ Output from console:
 
 ### Second Case: Migrating from csv files
 
-Well, now in the path ```/admin/config/development/configuration/single/export``` we have to import our new custom migration definition file, Ok?
+Well, now in the path ```/admin/config/development/configuration/single/import``` we have to import our new custom migration definition file, Ok?
 
 #### Loading the migration config data
 
