@@ -11,11 +11,11 @@ description: "Book Review about Web development with DDEV explained"
 
 # taxonomies
 categories: 
-  - "Books"
+  - "Reading"
 tags:
   - "Docker"
   - "DDEV"
-  - "Reading"
+  - "Books"
   - "Containers"
   - "Drupal Development"
 
