@@ -46,65 +46,123 @@ Everything around Test-driven development (TDD) is a very interesting and very m
 -------------------------------------------------------------------------------
 
 # 1- Introduction 
-Well, as I said in the obligatory introductory paragraph everything related to Testing is extensive, very broad and combines an ungraspable conjunction of philosophical-theoretical elements with practical-technical issues...so I guess that's why I was so happy when in the context of the migration to Drupal 8|9 of [the contributed module humans.txt](https://www.drupal.org/project/humanstxt), [Pedro Cambra](https://www.drupal.org/u/pcambra) as its maintainer proposed [in an issue](https://www.drupal.org/project/humanstxt/issues/3123126) to provide the module with a certain type of test.   
-It was a great opportunity to use it as a simple, didactic and intuitive approach. 
+Well, as I said in the obligatory introductory paragraph, everything related to Testing is extensive, very broad and combines an ungraspable conjunction of philosophical-theoretical elements with practical-technical issues...so I guess that's why I was so happy when in the context of the migration to Drupal 8|9 of [the contributed module humans.txt](https://www.drupal.org/project/humanstxt), [Pedro Cambra](https://www.drupal.org/u/pcambra) as its maintainer proposed [in an issue](https://www.drupal.org/project/humanstxt/issues/3123126) to provide the module with a certain type of test.   
+It was a great opportunity to use it as a simple, didactic and intuitive approach.   
 
-[CONVERT]
-PHPUnit can handle different types of tests in Drupal core: unit tests, kernel tests, and functional tests. With these three tests, you can confirm the quality and reaction of code on edge cases in different layers.
+About the testing we are going to see in this article, it is important to situate it and give it context: we will make some types of browser tests, which are part of the test types that come from PHPUnit classes and resources. How are they related? Let's see this introduction made by [James G. Robertson](https://twitter.com/jamesgrobertson) in the [Atlantic BT](https://twitter.com/atlanticbt) website:
 
-Unit tests test functions, methods, and classes without requiring a database connection to run. On the other hand, kernel tests test the integration of module APIs and require a database connection to be configured to run. Functional tests test the entire system and require more setup than the others. Within the functional tests, there are both browser and JavaScript tests. In addition to these PHP-based tests, you may also run core JavaScript tests using the Nightwatch framework.
+> *PHPUnit can handle different types of tests in Drupal core: unit tests, kernel tests, and functional tests. With these three tests, you can confirm the quality and reaction of code on edge cases in different layers. Unit tests test functions, methods, and classes without requiring a database connection to run. On the other hand, kernel tests test the integration of module APIs and require a database connection to be configured to run. Functional tests test the entire system and require more setup than the others. Within the functional tests, there are both Browser and JavaScript tests. In addition to these PHP-based tests, you may also run core JavaScript tests using the Nightwatch framework.*
 
+* Source: [Atlantic BT, A full guide to phpunit in Drupal 8](https://www.atlanticbt.com/insights/a-full-guide-to-phpunit-in-drupal-8/).
 
+Right, so what we're going to do in this case has to do with testing actions to be performed in the web interface of our Drupal installation but running through code using classes that already provide methods for replicating *"manual actions"*. Intuitively... What can we think that we will need? Let's advance a possible outline of our possible actions: 
+ 
+1. Maybe, loading a URL.  
+2. Perhaps, pressing buttons on a form.  
+3. We may need to load values into this former form.  
+4. Or also check users, roles and permissions.
 
-PHPUnit browser functional tests are run against a fresh Drupal installation so each test requires set up like installing modules, creating users, etc. This can be done in the BrowserTestBase::setUp() method (which is run before each test method in the class) or by writing an abstract base class (that extends BrowserTestBase) to be extended by additional test classes. You could also simply run a previous test at the beginning of the test you are writing. The results of the browser tests are saved to a directory, which can be configured in the phpunit.xml file. See PHPUnit Browser test tutorial in the Drupal documentation.
+So we'll need classes and resources that allow us to reproduce these actions through code (so that they can be automated). This is just a sketch of our possible needs, as we must first be clear about which features we want to test. So the first guideline shared in this introduction will be: **You must know well your needs to test**.
 
-It's terribly important to realize that each test runs in a completely new Drupal instance, which is created from scratch for the test. In other words, none of your configuration and none of your users exists! None of your modules are enabled beyond the default Drupal core modules. If your test sequence requires a privileged user, you'll have to create one (just as you would if you were setting up a manual testing environment from scratch). If modules have to be enabled, you will need to specify them. If something has to be configured, you'll have to write code in the test to do it, because none of the configuration on your current site is in the magically created Drupal instance that we're testing. None of the files in your files directory are there, none of the optional modules are installed, none of the users are created.
-
-
-
-Never! Nope, not in assertion messages, not for button labels, not for the text you assert on the page. You always want to test the literal string on the page, you don't want to test the Drupal translation system.
-
-[/CONVERT]
 
 # 2- Arrangements
+Well, in this section I've included the fun little story about how I discovered that I didn't have the necessary resources installed in the test environment I chose. Pay attention.  
 
-First, make sure your DDEV project is up and running. You’ll be executing PHPUnit from within the web container and accessing the database container for Drupal’s Kernel, Functional, and FunctionalJavascript tests.
+It all started when I switched environments and realized that I didn't have phpunit installed...I always use DDEV ([Get more info about DDEV](https://www.therussianlullaby.com/tags/ddev/)) as a tool for creating local development environments and in this case I switched to one that *didn't have* a Drupal installation with the --dev resources. So if this is your case, take advantage and review the following steps.
 
- Thumbnail
+**Environment**
 
-We care about modifying two environment variables
+* First, stop your local apache, if exists: ```sudo /etc/init.d/apache2 stop```  
+* Second, up with your DDEV project: ```ddev start```. Make sure your DDEV project is up, running and functioning normally. You're going to execute PHPUnit from within the DDEV main web container and you'll use the db container too.   
+* Third, go to the web container and install with composer the next resources: 
+   ```toml
+  ddev ssh
+  composer require phpunit/phpunit
+  ```
+**Note:** In my first iteration, I launched one request like this (opening the phpunit's version to the latest available) and it caused me a lot of problems when trying to use PHPUnit:
 
-    SIMPLETEST_BASE_URL, this defaults to http://localhost and is used as the URL for the browser emulators in Functional and FunctionalJavascript tests
-    SIMPLETEST_DB, this is the database connection string and is required to run any of Drupal’s test suites beyond unit
-
-Edit the entry for SIMPLETEST_BASE_URL and set it to http://localhost. For SIMPLETEST_DB we need to pass a connection string formatted as mysql://username:password@localhost/databasename.
-
-
-https://glamanate.com/blog/running-drupals-phpunit-test-suites-ddev
-
-
- ddev describe
- ddev ssh
- composer require phpunit/phpunit
- 
+ ```text
  Could not use "\Drupal\Tests\Listeners\HtmlOutputPrinter" as printer: class does not exist
  PHPUnit 9.1.1 
- 
- https://www.drupal.org/project/drupal/issues/3063887
- 
- composer require phpunit/phpunit:^7
- phpunit 7.5.20
+```
+ **What's the problem?** 
+Drupal 8.x is not compatible with PHPUnit in that version (In fact there'are some issues proposing an update to PHPUnit 8 for Drupal 9, [like this](https://www.drupal.org/project/drupal/issues/3063887)), so it's better to uninstall it and request a slightly more limited version, which is not the last one, something around PHPUnit 7 for example. 
 
- 
- Class "Symfony\Bridge\PhpUnit\SymfonyTestsListener" does not exist
+For the rest of the dependencies, I recognize that I was playing to solve them just following the successive error messages trying to launch several tests again, like ```Class "Symfony\Bridge\PhpUnit\SymfonyTestsListener" does not exist``` and many others. In summary I have installed all the following resources in the approximate versions indicated: 
 
+```toml
+composer remove phpunit/phpunit
+composer require phpunit/phpunit:^7 # In my case, this installed phpunit 7.5.20
 composer require symfony/phpunit-bridge:^3.4.3
 composer require behat/behat:^3.4
 composer require behat/mink:^1.8
 composer require behat/mink-goutte-driver:^1.2
+```
+
+**PHPUnit in Drupal Core**
+
+The next step was adjust the use of PHPUnit from the file provided by Drupal, present in ```/project/web/core/phpunit.xml.dist```. It's necessary to make a copy of the file and rename it as ```phpunit.xml``` simply, leaving this copy in the same location ```/core```. 
+
+Now we need modify two environment variables within the copied file. Beware: 
+
+```text
+    <!-- Example SIMPLETEST_BASE_URL value: http://localhost -->
+    <env name="SIMPLETEST_BASE_URL" value="http://localhost"/>
+    <!-- Example SIMPLETEST_DB value: mysql://username:password@localhost/databasename#table_prefix -->
+    <env name="SIMPLETEST_DB" value="mysql://db:db@db/db"/>
+```
+As you can see, now we need an internal URL and all the connection data to your database. Ok, in my case as I'm using DDEV I can extract the information from my prompt, just launching ```ddev describe```. Remember that we're looking for a string formatted as:  mysql://username:password@localhost/databasename. And in the DDEV context, by default, all these data are the same: ```db```. Let's see:  
+
+![Showing values from a DDEV installation for Drupal](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_db.jpg)
+
+Like an extra, I've configured a folder to save results from tests in a HTML format using the variables: 
+
+```text
+ <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/web/sites/default/simpletest/browser_output/"/>
+ <env name="BROWSERTEST_OUTPUT_BASE_URL" value="http://migrations.ddev.site"/>
+```
+Where ```migrations.ddev.site``` is just the name of the DDEV project that I'm using. This will write all the output from the executed test in the directory using HTML format, and so you can see the pages that the browser visited during the test. Theses pages are saved as files and linked under the URL.  
+
+You can see my whole configuration for PHPUnit using DDEV here in the next gist: 
+
+  {{< gist davidjguru 2d59eed50818f74710ae3b0f87fb947d >}}
+
+So the second guideline shared in this section will be: **tune up your environment well**. 
+
+When you have available all the libraries and dependencies along with the configuration of the phpunit.xml file, you can try to run the tests that bring many modules through a console execution instruction.  
+The format of the instruction we will use will be related to the position for ourselves within the path /project/web/ and launch the call to phpunit in a format like this: 
+
+```text
+../vendor/bin/phpunit -c core modules/contrib/config_inspector 
+``` 
+Where the param ```-c``` points to the localization of the phpunit.xm file and it will run all the test located in the marked direction (in this example will be executed tests from the [Config Inspector Contrib Module](https://www.drupal.org/project/config_inspector)). 
+
+![Executing test from the Config Inspector Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_launch_test.png)
 
 
 # 3- The BrowserTestBase class
+Now we are going to deal with a fundamental PHP class for this test case we are going to make, [the BrowserTestBase.php class](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21BrowserTestBase.php/class/BrowserTestBase/8.8.x) of the Drupal core test context, path: ```core/tests/Drupal/Tests/BrowserTestBase.php``` (Don't confuse it with [an already deprecated version from the context of the simpletest core module called so BrowserTestBase](https://api.drupal.org/api/drupal/core%21modules%21simpletest%21src%21BrowserTestBase.php/class/BrowserTestBase/8.8.x)). 
+
+This abstract class extends the TestCase class from PHPUnit (one of the main reasons why we need the use of PHPUnit here) and uses a lot of PHP traits providing a lot of methods from different origins, finally grouped by this base class that we'll have to extend for our goals. In general terms, we know that abstract classes are classes that are not instantiated and can only be inherited, thus transferring an obligatory functioning to the daughter classes. In this example, using BrowserTestBase we'll have nearly forty methods available within the class (there are dozens of possible assertions) to perform specific checks on actions to be performed through the browser. 
+
+**The info from the class is very explicit:** You must use the class for functional Drupal test (ok), You have to put your new classes extending BrowserTestBase as a base class in path: ```/modules/custom/your_custom_module/test/src/Functional``` and avoid using t() function for translate unless you're testing translation functionality. 
+
+
+´´´text
+/**
+ * Provides a test case for functional Drupal tests.
+ *
+ * Tests extending BrowserTestBase must exist in the
+ * Drupal\Tests\yourmodule\Functional namespace and live in the
+ * modules/yourmodule/tests/src/Functional directory.
+ *
+ * Tests extending this base class should only translate text when testing
+ * translation functionality. For example, avoid wrapping test text with t()
+ * or TranslatableMarkup().
+ *
+ * @ingroup testing
+ */
+´´´
 
 
 
@@ -126,6 +184,7 @@ composer require behat/mink-goutte-driver:^1.2
 * [PHPUnit Browser Test tutorial in Drupal.org](https://www.drupal.org/node/2783189)  
 * [Automated Test using PHPUnit and Nightwatch.js in Drupal.org](https://api.drupal.org/api/drupal/core%21core.api.php/group/testing/8.8.x)  
 * [Running PHPUnit tests in Drupal, from Drupal.org documentation](https://www.drupal.org/node/2116263)  
+* [Running Drupal's PHPUnit test suites on DDEV, by Matt Glaman](https://glamanate.com/blog/running-drupals-phpunit-test-suites-ddev)  
 
 # 8- :wq! 
 
@@ -136,8 +195,6 @@ composer require behat/mink-goutte-driver:^1.2
 {{< youtube bGISz52QGEE >}}
 
 
-
-1- The BrowserTestBase
 
 
 2- Boilerplate code: 
