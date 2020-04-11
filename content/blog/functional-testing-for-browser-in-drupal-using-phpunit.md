@@ -121,9 +121,10 @@ Like an extra, I've configured a folder to save results from tests in a HTML for
  <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/web/sites/default/simpletest/browser_output/"/>
  <env name="BROWSERTEST_OUTPUT_BASE_URL" value="http://migrations.ddev.site"/>
 ```
-Where ```migrations.ddev.site``` is just the name of the DDEV project that I'm using. This will write all the output from the executed test in the directory using HTML format, and so you can see the pages that the browser visited during the test. Theses pages are saved as files and linked under the URL.  
+Where **BROWSERTEST_OUTPUT_DIRECTORY** is used as the directory where the output data will be saved by PHPUnit and needs to be an absolute local path, in my case the result HTML from test goes to ```/var/www/html/web/sites/default/simpletest/browser_output/``` while **BROWSERTEST_OUTPUT_BASE_URL** help to register the future links to the saved output, in my case is: ```migrations.ddev.site``` and is just the name of the DDEV project that I'm using. This will write all the output from the executed test in the directory using HTML format, and so you can see the pages that the emulated browser visited during the test. Theses HTML pages are saved as files and linked under the URL.  
 
-You can see my whole configuration for PHPUnit using DDEV here in the next gist: 
+When you'll launch the test, Drupal 8 will use a simulated browser to execute actions and check assertions, is like an emulator offered by Mink, just a pure headless browser from the installed dependency [behat/mink](https://packagist.org/packages/behat/mink).   
+Now remember that you must ensure the write permissions in the destiny folder for the user that will launch the test. You can see my whole configuration for PHPUnit using DDEV here in the next gist: 
 
   {{< gist davidjguru 2d59eed50818f74710ae3b0f87fb947d >}}
 
@@ -141,14 +142,14 @@ Where the param ```-c``` points to the localization of the phpunit.xm file and i
 
 
 # 3- The BrowserTestBase class
-Now we are going to deal with a fundamental PHP class for this test case we are going to make, [the BrowserTestBase.php class](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21BrowserTestBase.php/class/BrowserTestBase/8.8.x) of the Drupal core test context, path: ```core/tests/Drupal/Tests/BrowserTestBase.php``` (Don't confuse it with [an already deprecated version from the context of the simpletest core module called so BrowserTestBase](https://api.drupal.org/api/drupal/core%21modules%21simpletest%21src%21BrowserTestBase.php/class/BrowserTestBase/8.8.x)). 
+Now we are going to deal with a fundamental PHP class for this test case we are going to make, [the BrowserTestBase.php class](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21BrowserTestBase.php/class/BrowserTestBase/8.8.x) of the Drupal core test context, path: ```/core/tests/Drupal/Tests/BrowserTestBase.php``` (Don't confuse it with [an already deprecated version from the context of the simpletest core module called so BrowserTestBase](https://api.drupal.org/api/drupal/core%21modules%21simpletest%21src%21BrowserTestBase.php/class/BrowserTestBase/8.8.x)). 
 
 This abstract class extends the TestCase class from PHPUnit (one of the main reasons why we need the use of PHPUnit here) and uses a lot of PHP traits providing a lot of methods from different origins, finally grouped by this base class that we'll have to extend for our goals. In general terms, we know that abstract classes are classes that are not instantiated and can only be inherited, thus transferring an obligatory functioning to the daughter classes. In this example, using BrowserTestBase we'll have nearly forty methods available within the class (there are dozens of possible assertions) to perform specific checks on actions to be performed through the browser. 
 
 **The info from the class is very explicit:** You must use the class for functional Drupal test (ok), You have to put your new classes extending BrowserTestBase as a base class in path: ```/modules/custom/your_custom_module/test/src/Functional``` and avoid using t() function for translate unless you're testing translation functionality. 
 
 
-´´´text
+```text  
 /**
  * Provides a test case for functional Drupal tests.
  *
@@ -161,17 +162,91 @@ This abstract class extends the TestCase class from PHPUnit (one of the main rea
  * or TranslatableMarkup().
  *
  * @ingroup testing
- */
-´´´
+ */  
+```
 
+Remember what we said before about knowing well what kind of actions you want to test? Think that this class will provide us with functions that will align possible actions with concrete methods to reproduce mechanics through code.  
+For example:  
+
+* Your test needs to create new users? use the [drupalCreateUser() method](https://api.drupal.org/api/drupal/core%21modules%21user%21tests%21src%21Traits%21UserCreationTrait.php/function/UserCreationTrait%3A%3AcreateUser/8.8.x).
+* Your test needs to login to the Drupal installation? use the [drupalLogin() method](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21UiHelperTrait.php/function/UiHelperTrait%3A%3AdrupalLogin/8.8.x).
+* Your test needs to check if a form field is being rendered? you can use: [assertSession()->fieldExists('field_machine_name')](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21WebAssert.php/function/WebAssert%3A%3AfieldExists/8.8.x). 
+
+As you see, the possibilities are many and only require that we have some knowledge of the capabilities that the BrowserTestBase class offers to automate our tests.
 
 
 # 4- Basic scaffolding 
 
 
+```text
+ddev ssh
+composer require drupal/humanstxt
+drupal moi humanstxt
+cd modules/contrib/humanstxt
+git checkout 8.x-1.x
+```
+
 
 
 # 5- Your tests
+In our current context, using a new class HumansTxtBasicText which extends BrowserTestBase, every method inside our class will be a unique test by itself, but there will a lot of assertions more to check, cause of in one of our used functions, we're calling some internal assertions. For example, if we're using the function ```drupalCreateUser(['permission name'])``` from the [UserCreationTrait](https://api.drupal.org/api/drupal/core%21modules%21user%21tests%21src%21Traits%21UserCreationTrait.php/trait/UserCreationTrait/8.8.x) and originally named as ```createUser``` , with our direct assertions, we're going to check other internals just like:  
+
+```toml
+$valid_user = $account->id() !== NULL;
+    $this->assertTrue($valid_user, new FormattableMarkup('User created with name %name and pass %pass', ['%name' => $edit['name'], '%pass' => $edit['pass']]), 'User login');
+```
+
+Due to this, you'll see more assertions than yours (or the explicit yours), like this feedback when I'm only using four explicit assertions:
+```text
+Testing modules/contrib/humanstxt
+..                                                                  2 / 2 (100%)
+
+Time: 1.12 minutes, Memory: 4.00 MB
+
+OK (2 tests, 16 assertions)
+```
+Ok, don't fear. Let's move on.
+
+The next important point to know is that **all your methods should start with the word 'test' in lowercase**. So any method using this as prefix with public visibility will be automatically detected by PHPUnit and will be launched too. 
+
+And there's one more important thing: **any stuff you make within a method/test, won't live outside it**. So, for example if in a test you're creating a new user, then in the next test you'll have to create it again. Ok? That's because every time you run a method/test, each test function will have a full new Drupal instance to execute tests.
+
+```namespace Drupal\Tests\humansstxt\Functional```
+
+## Phase one: Checking access control
+We're going to test if a pair of new users, one with admin permissions and other as a basic user without specific permissions can reach the configuration page for the Humans.txt module. Theoretically, the admin user can access and the basic user cannot reach the config page. Let's see.
+
+
+```toml
+  /**
+   * Checks if an admin user can access to the configuration page.
+   */
+  public function testHumansTxtAdminAccess() {
+    // Create an user with humanstxt permissions.
+    $this->adminUser = $this->drupalCreateUser(['administer humans.txt']);
+    // Login for the former admin user.
+    $this->drupalLogin($this->adminUser);
+    // Access to the path of humanstxt config page.
+    $this->drupalGet('admin/config/development/humanstxt');
+    // Check the response returned by Drupal.
+    $this->assertResponse(200);
+  }
+
+  /**
+   * Checks if a non-administrative user cannot access to the config page.
+   */
+  public function testHumansTxtUserNoAccess() {
+    // Create a basic user without specific permissions.
+    $this->normalUser = $this->drupalCreateUser(['access content']);
+    // Login for the former basic user.
+    $this->drupalLogin($this->normalUser);
+    // Try access to the path of humanstxt config page.
+    $this->drupalGet('admin/config/development/humanstxt');
+    // Check the response returned by Drupal.
+    $this->assertResponse(403);
+  }
+```
+
 
 
 
@@ -181,10 +256,11 @@ This abstract class extends the TestCase class from PHPUnit (one of the main rea
 
 # 7- Read More
 
-* [PHPUnit Browser Test tutorial in Drupal.org](https://www.drupal.org/node/2783189)  
-* [Automated Test using PHPUnit and Nightwatch.js in Drupal.org](https://api.drupal.org/api/drupal/core%21core.api.php/group/testing/8.8.x)  
-* [Running PHPUnit tests in Drupal, from Drupal.org documentation](https://www.drupal.org/node/2116263)  
-* [Running Drupal's PHPUnit test suites on DDEV, by Matt Glaman](https://glamanate.com/blog/running-drupals-phpunit-test-suites-ddev)  
+* [PHPUnit Browser Test tutorial in Drupal.org](https://www.drupal.org/node/2783189).  
+* [Automated Test using PHPUnit and Nightwatch.js in Drupal.org](https://api.drupal.org/api/drupal/core%21core.api.php/group/testing/8.8.x).  
+* [Running PHPUnit tests in Drupal, from Drupal.org documentation](https://www.drupal.org/node/2116263).  
+* [Running Drupal's PHPUnit test suites on DDEV, by Matt Glaman](https://glamanate.com/blog/running-drupals-phpunit-test-suites-ddev).  
+* [Mink at a glance, from Mink documentation](http://mink.behat.org/en/latest/at-a-glance.html).  
 
 # 8- :wq! 
 
@@ -220,34 +296,13 @@ class UiPageTest extends BrowserTestBase {
   protected static $modules = ['node', 'rules'];
 
 
-4- setUp()
-Note, that if you implement setUp()-method, start with executing the parent::setUp()-method like in the example.
-
-
-5- Create specific test
-
-Now we need to create specific tests to exercise the module. We just create methods of our test class, each of which exercises a particular test. All methods should start with 'test' in lower-case. Any method, with public visibility, that starts this way will automatically be recognized by PHPUnit and run when requested.
-
-Important:
-
-Each test function will have a completely new Drupal instance to execute tests. This means that whatever you have created in a previous test function will not be available anymore in the next.
 
 
 
-6- Secuence
-
-Most tests will follow this pattern:
-Do a $this->drupalGet('some/path') to go to a page
-Use $this->clickLink(..) to navigate by links on the page
-Use $this->getSession()->getPage()->fillField(...); to fill out form fields
-Submit forms with $this->getSession()->getPage()->pressButton(...); or use $this->submitForm(...); (or use the deprecated drupalPostForm() method)
-Do one or more assertions to check that what we see on the page is what we should see.
 
 
-7 - Assertions
 
-There are dozens of possible assertions.
 
-8- Running the test
+
 
 
