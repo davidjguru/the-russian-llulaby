@@ -114,10 +114,10 @@ The next step was adjust the use of PHPUnit from the file provided by Drupal, pr
 Now we need modify two environment variables within the copied file. Beware: 
 
 ```
-    <!-- Example SIMPLETEST_BASE_URL value: http://localhost -->
-    <env name="SIMPLETEST_BASE_URL" value="http://localhost"/>
-    <!-- Example SIMPLETEST_DB value: mysql://username:password@localhost/databasename#table_prefix -->
-    <env name="SIMPLETEST_DB" value="mysql://db:db@db/db"/>
+<!-- Example SIMPLETEST_BASE_URL value: http://localhost -->
+<env name="SIMPLETEST_BASE_URL" value="http://localhost"/>
+<!-- Example SIMPLETEST_DB value: mysql://username:password@localhost/databasename#table_prefix -->
+<env name="SIMPLETEST_DB" value="mysql://db:db@db/db"/>
 ```
 As you can see, now we need an internal URL and all the connection data to your database. Ok, in my case as I'm using DDEV I can extract the information from my prompt, just launching ```ddev describe```. Remember that we're looking for a string formatted as:  mysql://username:password@localhost/databasename. And in the DDEV context, by default, all these data are the same: ```db```. Let's see:  
 
@@ -126,11 +126,10 @@ As you can see, now we need an internal URL and all the connection data to your 
 Like an extra, I've configured a folder to save results from tests in a HTML format using the variables: 
 
 ```
- <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/web/sites/default/simpletest/browser_output/"/>
- <env name="BROWSERTEST_OUTPUT_BASE_URL" value="http://migrations.ddev.site"/>
+<env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/web/sites/default/simpletest/browser_output/"/>
+<env name="BROWSERTEST_OUTPUT_BASE_URL" value="http://migrations.ddev.site"/>
 ```
-Where **BROWSERTEST_OUTPUT_DIRECTORY** is used as the directory where the output data will be saved by PHPUnit and needs to be an absolute local path, in my case the result HTML from test goes to  
-```/var/www/html/web/sites/default/simpletest/browser_output/``` and while **BROWSERTEST_OUTPUT_BASE_URL** help to register the future links to the saved output, in my case is: ```migrations.ddev.site``` and is just the name of the DDEV project that I'm using. This will write all the output from the executed test in the directory using HTML format, and so you can see the pages that the emulated browser visited during the test. Theses HTML pages are saved as files and linked under the URL.  
+Where **BROWSERTEST_OUTPUT_DIRECTORY** is used as the directory where the output data will be saved by PHPUnit and needs to be an absolute local path, in my case the result HTML from test goes to ```/var/www/html/web/sites/default/simpletest/browser_output/``` and while **BROWSERTEST_OUTPUT_BASE_URL** help to register the future links to the saved output, in my case is: ```migrations.ddev.site``` and is just the name of the DDEV project that I'm using. This will write all the output from the executed test in the directory using HTML format, and so you can see the pages that the emulated browser visited during the test. Theses HTML pages are saved as files and linked under the URL.  
 
 When you launch the test, Drupal 8 will use a simulated browser to execute actions and check assertions, is like an emulator offered by Mink, just a pure headless browser from the installed dependency [behat/mink](https://packagist.org/packages/behat/mink).   
 Now remember that you must ensure the write permissions in the destiny folder for the user that will launch the test. You can see my whole configuration for PHPUnit using DDEV here in the next gist: 
@@ -204,7 +203,7 @@ Now I'm in the initial point for my job. Another aspect that I must evaluate is 
 # 5- Your tests
 In our current context, using a new class HumansTxtBasicText which extends BrowserTestBase, every method inside our class will be a unique test by itself, but there will a lot of assertions more to check, cause of in one of our used functions, we're calling some internal assertions. For example, if we're using the function ```drupalCreateUser(['permission name'])``` from the [UserCreationTrait](https://api.drupal.org/api/drupal/core%21modules%21user%21tests%21src%21Traits%21UserCreationTrait.php/trait/UserCreationTrait/8.8.x) and originally named as ```createUser``` , with our direct assertions, we're going to check other internals just like:  
 
-```toml
+```
 $valid_user = $account->id() !== NULL;
 $this->assertTrue($valid_user, new FormattableMarkup('User created with name %name and pass %pass', ['%name' => $edit['name'], '%pass' => $edit['pass']]), 'User login');
 ```
