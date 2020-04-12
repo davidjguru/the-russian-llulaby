@@ -22,7 +22,7 @@ tags:
 # post type
 type: "post"
 ---
-As I mentioned in a previous month's article, I'm still using / playing / practicing with DDEV to build development environments in an agile way and the truth is that the experience couldn't be more rewarding. 
+As I mentioned in a previous month's article, I'm still using / playing / practicing with DDEV to build development environments in an agile way. And the truth is that the experience couldn't be more nicer. 
 We know that for some years, working with Docker Engine has become a MUST. From our ability to define specifications(Dockerfiles), configure autobuilds in the cloud to generate images from our repositories(Dockerhub), run images and containers(Docker), connect containers and relate them(Docker-Composer) or deploy container networks( Docker Swarm) ... on this depends the agility that we can give to our daily work. So I've gathered the most frequent commands in a cheatsheet.
 
 --------------------------------------------------------------------------------------
