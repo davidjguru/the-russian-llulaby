@@ -66,8 +66,8 @@ So we'll need classes and resources that allow us to reproduce these actions thr
 
 Ok, and what is the features we'll have to test? the Humans.txt contrib module was created years ago to offers a way for building the humans.txt file from within Drupal. For several months we have been working on its portability to Drupal 8 and its features are summarized in two main tasks:   
 
-1. They generate an object as a humans.txt file with values loaded from a configuration form.
-1. They offer to create a link to the object/file from ```<head>```. 
+1. Generating an object as a humans.txt file with values loaded from a configuration form.
+1. Offering to create a link to the object/file in the ```<head>``` section of pages. 
 
 Mainly, these will be the features that we will have to test. 
 
@@ -75,20 +75,21 @@ Mainly, these will be the features that we will have to test.
 # 2- Arrangements
 Well, in this section I've included the fun little story about how I discovered that I didn't have the necessary resources installed in the test environment I chose. Pay attention.  
 
-It all started when I switched environments and realized that I didn't have phpunit installed...I always use DDEV ([Get more info about DDEV](https://www.therussianlullaby.com/tags/ddev/)) as a tool for creating local development environments and in this case I switched to one that *didn't have* a Drupal installation with the --dev resources. So if this is your case, take advantage and review the following steps.
+It all started when I switched environments and realized that I didn't have phpunit installed...I always use DDEV ([- Get more info about DDEV - ](https://www.therussianlullaby.com/tags/ddev/)) as a tool for creating local development environments and in this case I switched to one that *didn't have* a Drupal installation with the --dev resources. So if this is your case, take advantage and review the following steps.
 
 **Environment**
 
 * First, stop your local apache, if exists: ```sudo /etc/init.d/apache2 stop```  
 * Second, up with your DDEV project: ```ddev start```. Make sure your DDEV project is up, running and functioning normally. You're going to execute PHPUnit from within the DDEV main web container and you'll use the db container too.   
-* Third, go to the web container and install with composer the next resources: 
+* Third, go to the web container and install with composer the next resources:   
+
    ```toml
   ddev ssh
   composer require phpunit/phpunit
   ```
-**Note:** In my first iteration, I launched one request like this (opening the phpunit's version to the latest available) and it caused me a lot of problems when trying to use PHPUnit:
+**Note:** In my first iteration, I launched one request like this (opening the phpunit's version to the latest available) and it caused me a lot of problems when trying to use PHPUnit:  
 
- ```text
+ ```toml
  Could not use "\Drupal\Tests\Listeners\HtmlOutputPrinter" as printer: class does not exist
  PHPUnit 9.1.1 
 ```
@@ -112,7 +113,7 @@ The next step was adjust the use of PHPUnit from the file provided by Drupal, pr
 
 Now we need modify two environment variables within the copied file. Beware: 
 
-```text
+```
     <!-- Example SIMPLETEST_BASE_URL value: http://localhost -->
     <env name="SIMPLETEST_BASE_URL" value="http://localhost"/>
     <!-- Example SIMPLETEST_DB value: mysql://username:password@localhost/databasename#table_prefix -->
@@ -124,13 +125,14 @@ As you can see, now we need an internal URL and all the connection data to your 
 
 Like an extra, I've configured a folder to save results from tests in a HTML format using the variables: 
 
-```text
+```
  <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/web/sites/default/simpletest/browser_output/"/>
  <env name="BROWSERTEST_OUTPUT_BASE_URL" value="http://migrations.ddev.site"/>
 ```
-Where **BROWSERTEST_OUTPUT_DIRECTORY** is used as the directory where the output data will be saved by PHPUnit and needs to be an absolute local path, in my case the result HTML from test goes to ```/var/www/html/web/sites/default/simpletest/browser_output/``` while **BROWSERTEST_OUTPUT_BASE_URL** help to register the future links to the saved output, in my case is: ```migrations.ddev.site``` and is just the name of the DDEV project that I'm using. This will write all the output from the executed test in the directory using HTML format, and so you can see the pages that the emulated browser visited during the test. Theses HTML pages are saved as files and linked under the URL.  
+Where **BROWSERTEST_OUTPUT_DIRECTORY** is used as the directory where the output data will be saved by PHPUnit and needs to be an absolute local path, in my case the result HTML from test goes to  
+```/var/www/html/web/sites/default/simpletest/browser_output/``` and while **BROWSERTEST_OUTPUT_BASE_URL** help to register the future links to the saved output, in my case is: ```migrations.ddev.site``` and is just the name of the DDEV project that I'm using. This will write all the output from the executed test in the directory using HTML format, and so you can see the pages that the emulated browser visited during the test. Theses HTML pages are saved as files and linked under the URL.  
 
-When you'll launch the test, Drupal 8 will use a simulated browser to execute actions and check assertions, is like an emulator offered by Mink, just a pure headless browser from the installed dependency [behat/mink](https://packagist.org/packages/behat/mink).   
+When you launch the test, Drupal 8 will use a simulated browser to execute actions and check assertions, is like an emulator offered by Mink, just a pure headless browser from the installed dependency [behat/mink](https://packagist.org/packages/behat/mink).   
 Now remember that you must ensure the write permissions in the destiny folder for the user that will launch the test. You can see my whole configuration for PHPUnit using DDEV here in the next gist: 
 
   {{< gist davidjguru 2d59eed50818f74710ae3b0f87fb947d >}}
@@ -138,11 +140,12 @@ Now remember that you must ensure the write permissions in the destiny folder fo
 So the second guideline shared in this section will be: **tune up your environment well**. 
 
 When you have available all the libraries and dependencies along with the configuration of the phpunit.xml file, you can try to run the tests that bring many modules through a console execution instruction.  
-The format of the instruction we will use will be related to the position for ourselves within the path /project/web/ and launch the call to phpunit in a format like this: 
+The format of the instruction we will use will be related to the position for ourselves within the path /project/web/ and launch the call to phpunit in a format like this:  
 
-```text
+```
 ../vendor/bin/phpunit -c core modules/contrib/config_inspector 
 ``` 
+
 Where the param ```-c``` points to the localization of the phpunit.xm file and it will run all the test located in the marked direction (in this example will be executed tests from the [Config Inspector Contrib Module](https://www.drupal.org/project/config_inspector)). 
 
 ![Executing test from the Config Inspector Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_launch_test.png)
@@ -151,12 +154,12 @@ Where the param ```-c``` points to the localization of the phpunit.xm file and i
 # 3- The BrowserTestBase class
 Now we are going to deal with a fundamental PHP class for this test case we are going to make, [the BrowserTestBase.php class](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21BrowserTestBase.php/class/BrowserTestBase/8.8.x) of the Drupal core test context, path: ```/core/tests/Drupal/Tests/BrowserTestBase.php``` (Don't confuse it with [an already deprecated version from the context of the simpletest core module called so BrowserTestBase](https://api.drupal.org/api/drupal/core%21modules%21simpletest%21src%21BrowserTestBase.php/class/BrowserTestBase/8.8.x)). 
 
-This abstract class extends the TestCase class from PHPUnit (one of the main reasons why we need the use of PHPUnit here) and uses a lot of PHP traits providing a lot of methods from different origins, finally grouped by this base class that we'll have to extend for our goals. In general terms, we know that abstract classes are classes that are not instantiated and can only be inherited, thus transferring an obligatory functioning to the daughter classes. In this example, using BrowserTestBase we'll have nearly forty methods available within the class (there are dozens of possible assertions) to perform specific checks on actions to be performed through the browser. 
+This abstract class extends the TestCase class from PHPUnit (one of the main reasons why we need the use of PHPUnit here) and uses a lot of PHP traits providing many methods from different origins, finally grouped by this base class that we'll have to extend for our goals. In general terms, we know that abstract classes are classes that are not instantiated and can only be inherited, thus transferring an obligatory functioning to the daughter classes. In this example, using BrowserTestBase we'll have nearly forty methods available within the class (there are dozens of possible assertions) to perform specific checks on actions to be performed through the browser. 
 
 **The info from the class is very explicit:** You must use the class for functional Drupal test (ok), You have to put your new classes extending BrowserTestBase as a base class in path: ```/modules/custom/your_custom_module/test/src/Functional``` and avoid using t() function for translate unless you're testing translation functionality. 
 
 
-```text  
+```
 /**
  * Provides a test case for functional Drupal tests.
  *
@@ -179,21 +182,22 @@ For example:
 * Your test needs to login to the Drupal installation? use the [drupalLogin() method](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21UiHelperTrait.php/function/UiHelperTrait%3A%3AdrupalLogin/8.8.x).
 * Your test needs to check if a form field is being rendered? you can use: [assertSession()->fieldExists('field_machine_name')](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21WebAssert.php/function/WebAssert%3A%3AfieldExists/8.8.x). 
 
-As you see, the possibilities are many and only require that we have some knowledge of the capabilities that the BrowserTestBase class offers to automate our tests.
+As you see, **the possibilities are many and only require that we have some knowledge of the capabilities that the BrowserTestBase class offers to automate our tests**.
 
 
 # 4- Basic scaffolding 
 I will now share some actions that I need to do before I can start testing functions. As my goal is to prepare test for the contrib module "Humans.txt" the first thing I will do is download the module, install it and make sure I'm in the last commit of the branch I'm interested in testing (the one in version 8.x).  
 
-As I'm in a DDEV based context the first thing I'll do is to access my web container and from there perform the rest of initial commands:
+As I'm in a DDEV based context the first thing I'll do is to access my web container and from there perform the rest of initial commands:  
 
-```text
+```toml
 ddev ssh
 composer require drupal/humanstxt
 drupal moi humanstxt
 cd modules/contrib/humanstxt
 git checkout 8.x-1.x
 ```
+
 Now I'm in the initial point for my job. Another aspect that I must evaluate is if it is convenient (or not) to create a submodule inside Humanstxt as a "test", with its own installation and testing paths that respond to the same controllers as the main module, or if on the contrary it's excessive (for now) for the testing of this module. At this moment I think I will create the tests directly, testing against the resources of the main module. 
 
 
@@ -207,9 +211,9 @@ $this->assertTrue($valid_user, new FormattableMarkup('User created with name %na
 
 Due to this, you'll see more assertions than yours (or the explicit yours), like this feedback when I'm only using four explicit assertions:
 
-```text
+```
 Testing modules/contrib/humanstxt
-..                                                                  2 / 2 (100%)
+..                                     2 / 2 (100%)
 
 Time: 1.12 minutes, Memory: 4.00 MB
 
@@ -236,7 +240,7 @@ We're going to test if three different users, one with admin permissions, other 
 
 First I'm gonna test the access for admins:
 
-```toml
+```
   /**
    * Checks if an admin user can access to the configuration page.
    */
@@ -262,7 +266,7 @@ I'm using the [Url class](https://api.drupal.org/api/drupal/core%21lib%21Drupal%
 
 And then, I'll check the access for the pair of users no-admin, using the same test: 
 
-```toml
+```
   /**
    * Checks if a non-administrative user cannot access to the config page.
    */
@@ -291,7 +295,7 @@ And then, I'll check the access for the pair of users no-admin, using the same t
 
 Now It's time to check the access to the fields of the configuration form.
 
-```toml
+```
   /**
    * Checks if an administrator can see the fields.
    */
@@ -342,7 +346,7 @@ Now It's time to check the access to the fields of the configuration form.
 ## Phase Two: Checking Complementary Items
 In this block I would like to check stuff like the headers of the returned object/file or the cache tags.
 
-```toml
+```
   /**
    * Checks if the header is right.
    */
@@ -382,7 +386,7 @@ In this block I would like to check stuff like the headers of the returned objec
 Ok, in order to check the content file or the link write in the <head> section, I thought to make a central and unified test that would group everything for the different user profiles to be tested. What kind of things am I interested in checking? Well I would like to test if the access to the configuration form is possible for administrators (although this was already tested in a previous test) and then creating a new configuration of the Humans.txt in order to test if the saved content corresponds with the one visible inside the object/file (testing also the access to the file).   
 Finally I would like to test if the link associated to the meta tag in the <head> section of the pages is being loaded, choosing one at random. 
 
-```toml
+```
   /**
    * Checks if humans.txt file is delivered for Different Users as was configured.
    */
@@ -455,25 +459,28 @@ Finally I would like to test if the link associated to the meta tag in the <head
 ```
 To check the insertion of the <link> tag in <head> I've used a double version of the former codeblock, playing with the values of the element from the Configuration Form: ```'humanstxt_display_link' => FALSE``` and changing it for the next codeblock. This checkbox when false doesn't insert the link to the humans.txt object/file in <head>, and set to TRUE it will put the tag. The occurrence of the mentioned tag in <head> is managed using a special kind of assertion method from PHPUnit called [assertStringContainsString](https://phpunit.readthedocs.io/en/7.5/assertions.html#assertstringcontainsstring), available in my installed version of the testing framework (7.5) and its inverse for negative versions: assertStringNotContainsString().  
 
-So my idea is using the [getSession() method from BrowserTestBase](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21BrowserTestBase.php/function/BrowserTestBase%3A%3AgetSession/8.8.x) class which returns a [Mink Session Object](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Session.php/class/Session/8.8.x). This session object from Mink offers a method called [getPage()](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Session.php/function/Session%3A%3AgetPage/8.8.x) that can return an object [DocumentElement](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Element%21DocumentElement.php/class/DocumentElement/8.8.x) and use its method [getHtml()](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Element%21Element.php/function/Element%3A%3AgetHtml/8.8.x) that returns al the HTML code formatted as string. All of this is in the line: ```$tags = $this->getSession()->getPage()->getHtml();``` and in the variable $tags I'll save all the HTML response ready to search the link, using the variable as haystack. 
+So my idea is using the [getSession() method from BrowserTestBase](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21BrowserTestBase.php/function/BrowserTestBase%3A%3AgetSession/8.8.x) class which returns a [Mink Session Object](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Session.php/class/Session/8.8.x). This session object from Mink offers a method called [getPage()](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Session.php/function/Session%3A%3AgetPage/8.8.x) that can return an object [DocumentElement](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Element%21DocumentElement.php/class/DocumentElement/8.8.x) and use its method [getHtml()](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Element%21Element.php/function/Element%3A%3AgetHtml/8.8.x) that returns al the HTML code formatted as string. All of this is in the line:  
+```$tags = $this->getSession()->getPage()->getHtml();``` and in the variable $tags I'll save all the HTML response ready to search the link, using the variable as haystack. 
 In any case, all the HTML code from a page is too much for processing, and we don't need to get all the HTML code, so we'll get a substring cutting the output from the getHtml() method, extracting up to two thousand characters, enough to evaluate the whole <head> section.
 
-```toml
+```
 // All the HTML code is too much we just need to inspect the <head> section.
 $tags = substr($this->getSession()->getPage()->getHtml(), 0, 2020);
 $this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link: [%s] is NOT shown in the head section from [%s] and this shouldn\'t happen.', $humanstxt_link, $tags));
 ```
 
-Finally you can see this first version of the TestClass as Gist in Github. After uploading the patch to the issue there will surely be revisions and changes to the patch, so I promise to link the final version of the Test class that will be committed to the 8.x-1.x branch. 
+**Finally you can see this first version of the TestClass as Gist in Github**. After uploading the patch to the issue there will surely be revisions and changes to the patch, so I promise to link the final version of the Test class that will be committed to the 8.x-1.x branch. 
 
   {{< gist davidjguru 589ab794e974a15699ed6fea683783f1 >}}
 
 # 6- Running the test
 
-Well, and now with our test stored and the phpunit configuration initially resolved, it's time to run our test and observe the results. To do this, in my case I'm located in ```/project/web/``` and with phpunit.xml placed in ```/project/web/core/```, I launch the instruction: 
-```text
+Well, and now with our test stored and the phpunit configuration initially resolved, it's time to run our test and observe the results. To do this, in my case I'm located in ```/project/web/``` and with phpunit.xml placed in ```/project/web/core/```, I launch the instruction:  
+
+```
 ../vendor/bin/phpunit -c core modules/contrib/humanstxt
 ```
+
 Which throws all the test located inside the humanstxt contrib module...
 
 ![Executing test from the Humans.txt Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_results.png)
