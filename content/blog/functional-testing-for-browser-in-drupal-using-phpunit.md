@@ -38,7 +38,7 @@ Everything around Test-driven development (TDD) is a very interesting and very m
 [3- The BrowserTestBase class](#3--the-browsertestbase-class)  
 [4- Basic Scaffolding](#4--basic-scaffolding)  
 [5- Your tests](#5--your-tests)  
-[6- Running the test](#6--running-the-test)
+[6- Running the test](#6--running-the-test)  
 [7- Read More](#7--read-more)  
 [8- :wq!](#8--wq)    
 <!-- /TOC -->
