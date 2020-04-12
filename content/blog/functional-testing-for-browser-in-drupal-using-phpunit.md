@@ -1,7 +1,7 @@
 ---
 title: "Functional testing for Browser in Drupal 8|9 using PHPUnit"
 date: 2020-04-10
-draft: true
+draft: false
 
 # post thumb
 image: "images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit.jpg"
@@ -183,7 +183,9 @@ As you see, the possibilities are many and only require that we have some knowle
 
 
 # 4- Basic scaffolding 
+I will now share some actions that I need to do before I can start testing functions. As my goal is to prepare test for the contrib module "Humans.txt" the first thing I will do is download the module, install it and make sure I'm in the last commit of the branch I'm interested in testing (the one in version 8.x).  
 
+As I'm in a DDEV based context the first thing I'll do is to access my web container and from there perform the rest of initial commands:
 
 ```text
 ddev ssh
@@ -192,7 +194,7 @@ drupal moi humanstxt
 cd modules/contrib/humanstxt
 git checkout 8.x-1.x
 ```
-
+Now I'm in the initial point for my job. Another aspect that I must evaluate is if it is convenient (or not) to create a submodule inside Humanstxt as a "test", with its own installation and testing paths that respond to the same controllers as the main module, or if on the contrary it's excessive (for now) for the testing of this module. At this moment I think I will create the tests directly, testing against the resources of the main module. 
 
 
 # 5- Your tests
@@ -200,10 +202,11 @@ In our current context, using a new class HumansTxtBasicText which extends Brows
 
 ```toml
 $valid_user = $account->id() !== NULL;
-    $this->assertTrue($valid_user, new FormattableMarkup('User created with name %name and pass %pass', ['%name' => $edit['name'], '%pass' => $edit['pass']]), 'User login');
+$this->assertTrue($valid_user, new FormattableMarkup('User created with name %name and pass %pass', ['%name' => $edit['name'], '%pass' => $edit['pass']]), 'User login');
 ```
 
 Due to this, you'll see more assertions than yours (or the explicit yours), like this feedback when I'm only using four explicit assertions:
+
 ```text
 Testing modules/contrib/humanstxt
 ..                                                                  2 / 2 (100%)
@@ -450,9 +453,20 @@ Finally I would like to test if the link associated to the meta tag in the <head
     $this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link [%s] is shown in the HTML -head- section from [%s].', $humanstxt_link, $tags));
   }
 ```
-To check the insertion of the <link> tag in <head> I've used a double version of the former codeblock, playing with the values of the element from the Configuration Form: ```'humanstxt_display_link' => FALSE``` and changing it for the next codeblock. This checkbox when false doesn't insert the link to the humans.txt object/file in <head>, and set to TRUE it will put the tag. The occurrence of the mentioned tag in <head> is managed using a special kind of assertion method from PHPUnit called [assertStringContainsString](https://phpunit.readthedocs.io/en/7.5/assertions.html#assertstringcontainsstring), available in my installed version of the testing framework (7.5) and its inverse for negative versions: assertStringNotContainsString().
+To check the insertion of the <link> tag in <head> I've used a double version of the former codeblock, playing with the values of the element from the Configuration Form: ```'humanstxt_display_link' => FALSE``` and changing it for the next codeblock. This checkbox when false doesn't insert the link to the humans.txt object/file in <head>, and set to TRUE it will put the tag. The occurrence of the mentioned tag in <head> is managed using a special kind of assertion method from PHPUnit called [assertStringContainsString](https://phpunit.readthedocs.io/en/7.5/assertions.html#assertstringcontainsstring), available in my installed version of the testing framework (7.5) and its inverse for negative versions: assertStringNotContainsString().  
 
 So my idea is using the [getSession() method from BrowserTestBase](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21BrowserTestBase.php/function/BrowserTestBase%3A%3AgetSession/8.8.x) class which returns a [Mink Session Object](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Session.php/class/Session/8.8.x). This session object from Mink offers a method called [getPage()](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Session.php/function/Session%3A%3AgetPage/8.8.x) that can return an object [DocumentElement](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Element%21DocumentElement.php/class/DocumentElement/8.8.x) and use its method [getHtml()](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Element%21Element.php/function/Element%3A%3AgetHtml/8.8.x) that returns al the HTML code formatted as string. All of this is in the line: ```$tags = $this->getSession()->getPage()->getHtml();``` and in the variable $tags I'll save all the HTML response ready to search the link, using the variable as haystack. 
+In any case, all the HTML code from a page is too much for processing, and we don't need to get all the HTML code, so we'll get a substring cutting the output from the getHtml() method, extracting up to two thousand characters, enough to evaluate the whole <head> section.
+
+```toml
+// All the HTML code is too much we just need to inspect the <head> section.
+$tags = substr($this->getSession()->getPage()->getHtml(), 0, 2020);
+$this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link: [%s] is NOT shown in the head section from [%s] and this shouldn\'t happen.', $humanstxt_link, $tags));
+```
+
+Finally you can see this first version of the TestClass as Gist in Github. After uploading the patch to the issue there will surely be revisions and changes to the patch, so I promise to link the final version of the Test class that will be committed to the 8.x-1.x branch. 
+
+  {{< gist davidjguru 589ab794e974a15699ed6fea683783f1 >}}
 
 # 6- Running the test
 
@@ -462,6 +476,18 @@ Well, and now with our test stored and the phpunit configuration initially resol
 ```
 Which throws all the test located inside the humanstxt contrib module...
 
+![Executing test from the Humans.txt Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_results.png)
+
+As we can see, we're executing eight tests with hundred and six assertions. Due to our phpunit.xml configuration, these test are writing over sixty four HTML files based in results using the browser emulator from Mink, thanks to which you will be able to reproduce certain actions by opening the files in your web browser.
+
+In the next caption we can see the HTML output nº64 generated from one of last assertions in the code, just when an anonymous user try to get the Humanstxt configuration form and receive and error message with code HTTP 403 'Forbidden':
+
+![Executing test from the Humans.txt Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_html_view.png)
+
+As you can see, you can move through the files using the Previous | Next Links in header, connecting all the secuence of HTML results from tests.
+
+
+
 # 7- Read More
 
 * [PHPUnit Browser Test tutorial in Drupal.org](https://www.drupal.org/node/2783189).  
@@ -469,48 +495,11 @@ Which throws all the test located inside the humanstxt contrib module...
 * [Running PHPUnit tests in Drupal, from Drupal.org documentation](https://www.drupal.org/node/2116263).  
 * [Running Drupal's PHPUnit test suites on DDEV, by Matt Glaman](https://glamanate.com/blog/running-drupals-phpunit-test-suites-ddev).  
 * [Mink at a glance, from Mink documentation](http://mink.behat.org/en/latest/at-a-glance.html).  
+* [Developing Web Applications with Behat and Mink](https://docs.behat.org/en/v2.5/cookbook/behat_and_mink.html)  
+
 
 # 8- :wq! 
-
-
 
 ##### Recommended song
 
 {{< youtube bGISz52QGEE >}}
-
-
-
-
-2- Boilerplate code: 
-namespace Drupal\Tests\rules\Functional;
-
-use Drupal\Tests\BrowserTestBase;
-
-/**
- * Tests that the Rules UI pages are reachable.
- *
- * @group rules_ui
- */
-class UiPageTest extends BrowserTestBase {
-
-}
-
-3- List of modules required for the test
-/**
-   * Modules to enable.
-   *
-   * @var array
-   */
-  protected static $modules = ['node', 'rules'];
-
-
-
-
-
-
-
-
-
-
-
-
