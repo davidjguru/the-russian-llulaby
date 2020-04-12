@@ -62,7 +62,14 @@ Right, so what we're going to do in this case has to do with testing actions to 
 3. We may need to load values into this former form.  
 4. Or also check users, roles and permissions.
 
-So we'll need classes and resources that allow us to reproduce these actions through code (so that they can be automated). This is just a sketch of our possible needs, as we must first be clear about which features we want to test. So the first guideline shared in this introduction will be: **You must know well your needs to test**.
+So we'll need classes and resources that allow us to reproduce these actions through code (so that they can be automated). This is just a sketch of our possible needs, as we must first be clear about which features we want to test. So the first guideline shared in this introduction will be: **You must know well your needs to test**.  
+
+Ok, and what is the features we'll have to test? the Humans.txt contrib module was created years ago to offers a way for building the humans.txt file from within Drupal. For several months we have been working on its portability to Drupal 8 and its features are summarized in two main tasks:   
+
+1. They generate an object as a humans.txt file with values loaded from a configuration form.
+1. They offer to create a link to the object/file from ```<head>```. 
+
+Mainly, these will be the features that we will have to test. 
 
 
 # 2- Arrangements
@@ -211,48 +218,249 @@ The next important point to know is that **all your methods should start with th
 
 And there's one more important thing: **any stuff you make within a method/test, won't live outside it**. So, for example if in a test you're creating a new user, then in the next test you'll have to create it again. Ok? That's because every time you run a method/test, each test function will have a full new Drupal instance to execute tests.
 
-```namespace Drupal\Tests\humansstxt\Functional```
+Thinking about how to do it in an organized way, I thought about doing it in three functional blocks: 
+
+1. First, check the access control to the configuration form and its fields, that is, check the behavior for different roles (administrators, users with basic and anonymous permissions).
+
+2. Then, check complementary questions with the information collected in the headers of the answers to requests or the cache tags stored. 
+
+3. Finally, test if the file is created, kept accessible and its link is located in the right way. Everything for different user profiles: administrators, basic and anonymous permissions. 
+
+So, I'll create an new folder within the module with path: ```humanstxt/test/src/Functional/```, using a new class called ```HumansTxtBasicTest.php``` with namespace: ```Drupal\Tests\humanstxt\Functional```.
 
 ## Phase one: Checking access control
-We're going to test if a pair of new users, one with admin permissions and other as a basic user without specific permissions can reach the configuration page for the Humans.txt module. Theoretically, the admin user can access and the basic user cannot reach the config page. Let's see.
+We're going to test if three different users, one with admin permissions, other as a basic user without specific permissions and a last anonymous user can reach the configuration page for the Humans.txt module. Theoretically, only the admin user can access and the basic user or the anonymous cannot reach the config page. Let's see.
 
+First I'm gonna test the access for admins:
 
 ```toml
   /**
    * Checks if an admin user can access to the configuration page.
    */
   public function testHumansTxtAdminAccess() {
-    // Create an user with humanstxt permissions.
+    // Build initial paths.
+    $humanstxt_config = Url::fromRoute('humanstxt.admin_settings_form', [], ['absolute' => FALSE])->toString();
+
+    // Create user for testing.
     $this->adminUser = $this->drupalCreateUser(['administer humans.txt']);
+
     // Login for the former admin user.
     $this->drupalLogin($this->adminUser);
+
     // Access to the path of humanstxt config page.
-    $this->drupalGet('admin/config/development/humanstxt');
+    $this->drupalGet($humanstxt_config);
+
     // Check the response returned by Drupal.
     $this->assertResponse(200);
   }
+```
 
+I'm using the [Url class](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Url.php/class/Url/8.8.x) cause I don't like work with explicit paths in testing. So, if a path changes in a routing.yml file, the test continues being valid and it will be run normally.
+
+And then, I'll check the access for the pair of users no-admin, using the same test: 
+
+```toml
   /**
    * Checks if a non-administrative user cannot access to the config page.
    */
   public function testHumansTxtUserNoAccess() {
-    // Create a basic user without specific permissions.
+    // Build initial path.
+    $humanstxt_config = Url::fromRoute('humanstxt.admin_settings_form', [], ['absolute' => FALSE])->toString();
+
+    // Create user for testing.
     $this->normalUser = $this->drupalCreateUser(['access content']);
+
     // Login for the former basic user.
     $this->drupalLogin($this->normalUser);
+
     // Try access to the path of humanstxt config page.
-    $this->drupalGet('admin/config/development/humanstxt');
+    $this->drupalGet($humanstxt_config);
+
     // Check the response returned by Drupal.
+    $this->assertResponse(403);
+
+    // Logout as normal user and repeat the former cycle as anonymous user.
+    $this->drupalLogout();
+    $this->drupalGet($humanstxt_config);
     $this->assertResponse(403);
   }
 ```
 
+Now It's time to check the access to the fields of the configuration form.
 
+```toml
+  /**
+   * Checks if an administrator can see the fields.
+   */
+  public function testHumansTxtAdminFields() {
+    // Build initial path.
+    $humanstxt_config = Url::fromRoute('humanstxt.admin_settings_form', [], ['absolute' => FALSE])->toString();
 
+    // Create user for testing.
+    $this->adminUser = $this->drupalCreateUser(['administer humans.txt']);
+
+    // Login for the the former admin user.
+    $this->drupalLogin($this->adminUser);
+
+    // Access to the path of humanstxt config page.
+    $this->drupalGet($humanstxt_config);
+
+    // The textarea for configuring humans.txt is shown.
+    $this->assertSession()->fieldExists('humanstxt_content');
+
+    // The checkbox for configuring the creation of the humanstxt link is shown.
+    $this->assertSession()->fieldExists('humanstxt_display_link');
+  }
+
+  /**
+   * Checks if a non-administrative user cannot use the configuration page.
+   */
+  public function testHumansTxtUserFields() {
+    // Build initial path.
+    $humanstxt_config = Url::fromRoute('humanstxt.admin_settings_form', [], ['absolute' => FALSE])->toString();
+
+    // Create user for testing.
+    $this->normalUser = $this->drupalCreateUser(['access content']);
+
+    // Login for the former basic user.
+    $this->drupalLogin($this->normalUser);
+
+    // Access to the path of humanstxt config page.
+    $this->drupalGet($humanstxt_config);
+
+    // The textarea is not shown for basic users.
+    $this->assertNoFieldById('edit-humanstxt-content', NULL);
+
+    // The checkbox is not shown for basic users.
+    $this->assertNoFieldById('edit-humanstxt-display-link', NULL);
+  }
+```
+
+## Phase Two: Checking Complementary Items
+In this block I would like to check stuff like the headers of the returned object/file or the cache tags.
+
+```toml
+  /**
+   * Checks if the header is right.
+   */
+  public function testHumansTxtHeader() {
+    // Build initial path.
+    $humanstxt_path = Url::fromRoute('humanstxt.content', [], ['absolute' => FALSE])->toString();
+
+    // Access to the path of humans.txt object/file.
+    $this->drupalGet($humanstxt_path);
+
+    // Check the returned response.
+    $this->assertResponse(200);
+
+    // Check if the file was served as text/plain with charset=UTF-8.
+    $this->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
+  }
+
+  /**
+   * Checks if cache tags exists.
+   */
+  public function testHumansTxtCacheTags() {
+    // Build initial path.
+    $humanstxt_path = Url::fromRoute('humanstxt.content', [], ['absolute' => FALSE])->toString();
+
+    // Access to the path of humans.txt object/file.
+    $this->drupalGet($humanstxt_path);
+
+    // Check the returned response.
+    $this->assertResponse(200);
+
+    // Check the related cache tag.
+    $this->assertCacheTag('humanstxt');
+  }
+```
+## Phase Three: Checking the delivered content
+
+Ok, in order to check the content file or the link write in the <head> section, I thought to make a central and unified test that would group everything for the different user profiles to be tested. What kind of things am I interested in checking? Well I would like to test if the access to the configuration form is possible for administrators (although this was already tested in a previous test) and then creating a new configuration of the Humans.txt in order to test if the saved content corresponds with the one visible inside the object/file (testing also the access to the file).   
+Finally I would like to test if the link associated to the meta tag in the <head> section of the pages is being loaded, choosing one at random. 
+
+```toml
+  /**
+   * Checks if humans.txt file is delivered for Different Users as was configured.
+   */
+  public function testHumansTxtConfigureHumansTxtDifferentUsers() {
+    // Build initial paths.
+    $humanstxt_config = Url::fromRoute('humanstxt.admin_settings_form', [], ['absolute' => FALSE])->toString();
+    $humanstxt_path = Url::fromRoute('humanstxt.content', [], ['absolute' => TRUE])->toString();
+    $humanstxt_link = '<link rel="author" type="text/plain" hreflang="x-default" href="' . $humanstxt_path . '">';
+
+    // Create users for testing.
+    $this->adminUser = $this->drupalCreateUser(['administer humans.txt']);
+    $this->normalUser = $this->drupalCreateUser(['access content']);
+
+    // Login as admin and get the config form page.
+    $this->drupalLogin($this->adminUser);
+    $this->drupalGet($humanstxt_config);
+
+    // Load a new configuration for Humans.txt file and submit config Form.
+    $test_string = "# Testing Humans.txt {$this->randomMachineName()}";
+    $this->submitForm(['humanstxt_content' => $test_string, 'humanstxt_display_link' => TRUE], t('Save configuration'));
+
+    // Check the object/file created.
+    $this->drupalGet($humanstxt_path);
+    $this->assertResponse(200);
+
+    // Test header.
+    $this->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
+
+    // Get page content.
+    $content = $this->getSession()->getPage()->getContent();
+
+    // Test the assert- if exists the test_string in the content.
+    $this->assertTrue($content == $test_string, sprintf('Test string [%s] is shown in the configured humans.txt file [%s].', $test_string, $content));
+
+    // Test if the link to the object/file is in HTML <head> section for Admins.
+    $this->drupalGet($humanstxt_config);
+    $this->assertResponse(200);
+    $tags = $this->getSession()->getPage()->getHtml();
+    $this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link [%s] is shown in the HTML -head- section from [%s].', $humanstxt_link, $tags));
+
+    // Logout as admin and login as normal user.
+    $this->drupalLogout();
+    $this->drupalLogin($this->normalUser);
+
+    // Repeat the previous cycle now as normal user.
+    $this->drupalGet($humanstxt_path);
+    $this->assertResponse(200);
+    $this->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
+    $content = $this->getSession()->getPage()->getContent();
+    $this->assertTrue($content == $test_string, sprintf('Test string [%s] is shown in the configured humans.txt file [%s].', $test_string, $content));
+    $this->drupalGet($humanstxt_config);
+    $this->assertResponse(403);
+    $tags = $this->getSession()->getPage()->getHtml();
+    $this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link [%s] is shown in the HTML -head- section from [%s].', $humanstxt_link, $tags));
+
+    // Logout as normal user.
+    $this->drupalLogout();
+
+    // Now a third iteration as anonymous user.
+    $this->drupalGet($humanstxt_path);
+    $this->assertResponse(200);
+    $this->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
+    $content = $this->getSession()->getPage()->getContent();
+    $this->assertTrue($content == $test_string, sprintf('Test string [%s] is shown in the configured humans.txt file [%s].', $test_string, $content));
+    $this->drupalGet($humanstxt_config);
+    $this->assertResponse(403);
+    $tags = $this->getSession()->getPage()->getHtml();
+    $this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link [%s] is shown in the HTML -head- section from [%s].', $humanstxt_link, $tags));
+  }
+```
+To check the insertion of the <link> tag in <head> I've used a double version of the former codeblock, playing with the values of the element from the Configuration Form: ```'humanstxt_display_link' => FALSE``` and changing it for the next codeblock. This checkbox when false doesn't insert the link to the humans.txt object/file in <head>, and set to TRUE it will put the tag. The occurrence of the mentioned tag in <head> is managed using a special kind of assertion method from PHPUnit called [assertStringContainsString](https://phpunit.readthedocs.io/en/7.5/assertions.html#assertstringcontainsstring), available in my installed version of the testing framework (7.5) and its inverse for negative versions: assertStringNotContainsString().
+
+So my idea is using the [getSession() method from BrowserTestBase](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21BrowserTestBase.php/function/BrowserTestBase%3A%3AgetSession/8.8.x) class which returns a [Mink Session Object](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Session.php/class/Session/8.8.x). This session object from Mink offers a method called [getPage()](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Session.php/function/Session%3A%3AgetPage/8.8.x) that can return an object [DocumentElement](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Element%21DocumentElement.php/class/DocumentElement/8.8.x) and use its method [getHtml()](https://api.drupal.org/api/drupal/vendor%21behat%21mink%21src%21Element%21Element.php/function/Element%3A%3AgetHtml/8.8.x) that returns al the HTML code formatted as string. All of this is in the line: ```$tags = $this->getSession()->getPage()->getHtml();``` and in the variable $tags I'll save all the HTML response ready to search the link, using the variable as haystack. 
 
 # 6- Running the test
 
-
+Well, and now with our test stored and the phpunit configuration initially resolved, it's time to run our test and observe the results. To do this, in my case I'm located in ```/project/web/``` and with phpunit.xml placed in ```/project/web/core/```, I launch the instruction: 
+```text
+../vendor/bin/phpunit -c core modules/contrib/humanstxt
+```
+Which throws all the test located inside the humanstxt contrib module...
 
 # 7- Read More
 
