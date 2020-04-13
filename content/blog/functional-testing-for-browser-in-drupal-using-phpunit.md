@@ -45,7 +45,7 @@ Everything around Test-driven development (TDD) is a very interesting and very m
 
 -------------------------------------------------------------------------------
 
-# 1- Introduction 
+## 1- Introduction 
 Well, as I said in the obligatory introductory paragraph, everything related to Testing is extensive, very broad and combines an ungraspable conjunction of philosophical-theoretical elements with practical-technical issues...so I guess that's why I was so happy when in the context of the migration to Drupal 8|9 of [the contributed module humans.txt](https://www.drupal.org/project/humanstxt), [Pedro Cambra](https://www.drupal.org/u/pcambra) as its maintainer proposed [in an issue](https://www.drupal.org/project/humanstxt/issues/3123126) to provide the module with a certain type of test.   
 It was a great opportunity to use it as a simple, didactic and intuitive approach.   
 
@@ -72,7 +72,7 @@ Ok, and what is the features we'll have to test? the Humans.txt contrib module w
 Mainly, these will be the features that we will have to test. 
 
 
-# 2- Arrangements
+## 2- Arrangements
 Well, in this section I've included the fun little story about how I discovered that I didn't have the necessary resources installed in the test environment I chose. Pay attention.  
 
 It all started when I switched environments and realized that I didn't have phpunit installed...I always use DDEV ([- Get more info about DDEV - ](https://www.therussianlullaby.com/tags/ddev/)) as a tool for creating local development environments and in this case I switched to one that *didn't have* a Drupal installation with the --dev resources. So if this is your case, take advantage and review the following steps.
@@ -150,7 +150,7 @@ Where the param ```-c``` points to the localization of the phpunit.xm file and i
 ![Executing test from the Config Inspector Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_launch_test.png)
 
 
-# 3- The BrowserTestBase class
+## 3- The BrowserTestBase class
 Now we are going to deal with a fundamental PHP class for this test case we are going to make, [the BrowserTestBase.php class](https://api.drupal.org/api/drupal/core%21tests%21Drupal%21Tests%21BrowserTestBase.php/class/BrowserTestBase/8.8.x) of the Drupal core test context, path: ```/core/tests/Drupal/Tests/BrowserTestBase.php``` (Don't confuse it with [an already deprecated version from the context of the simpletest core module called so BrowserTestBase](https://api.drupal.org/api/drupal/core%21modules%21simpletest%21src%21BrowserTestBase.php/class/BrowserTestBase/8.8.x)). 
 
 This abstract class extends the TestCase class from PHPUnit (one of the main reasons why we need the use of PHPUnit here) and uses a lot of PHP traits providing many methods from different origins, finally grouped by this base class that we'll have to extend for our goals. In general terms, we know that abstract classes are classes that are not instantiated and can only be inherited, thus transferring an obligatory functioning to the daughter classes. In this example, using BrowserTestBase we'll have nearly forty methods available within the class (there are dozens of possible assertions) to perform specific checks on actions to be performed through the browser. 
@@ -184,7 +184,7 @@ For example:
 As you see, **the possibilities are many and only require that we have some knowledge of the capabilities that the BrowserTestBase class offers to automate our tests**.
 
 
-# 4- Basic scaffolding 
+## 4- Basic scaffolding 
 I will now share some actions that I need to do before I can start testing functions. As my goal is to prepare test for the contrib module "Humans.txt" the first thing I will do is download the module, install it and make sure I'm in the last commit of the branch I'm interested in testing (the one in version 8.x).  
 
 As I'm in a DDEV based context the first thing I'll do is to access my web container and from there perform the rest of initial commands:  
@@ -200,7 +200,7 @@ git checkout 8.x-1.x
 Now I'm in the initial point for my job. Another aspect that I must evaluate is if it is convenient (or not) to create a submodule inside Humanstxt as a "test", with its own installation and testing paths that respond to the same controllers as the main module, or if on the contrary it's excessive (for now) for the testing of this module. At this moment I think I will create the tests directly, testing against the resources of the main module. 
 
 
-# 5- Your tests
+## 5- Your tests
 In our current context, using a new class HumansTxtBasicText which extends BrowserTestBase, every method inside our class will be a unique test by itself, but there will a lot of assertions more to check, cause of in one of our used functions, we're calling some internal assertions. For example, if we're using the function ```drupalCreateUser(['permission name'])``` from the [UserCreationTrait](https://api.drupal.org/api/drupal/core%21modules%21user%21tests%21src%21Traits%21UserCreationTrait.php/trait/UserCreationTrait/8.8.x) and originally named as ```createUser``` , with our direct assertions, we're going to check other internals just like:  
 
 ```
@@ -234,7 +234,7 @@ Thinking about how to do it in an organized way, I thought about doing it in thr
 
 So, I'll create an new folder within the module with path: ```humanstxt/test/src/Functional/```, using a new class called ```HumansTxtBasicTest.php``` with namespace: ```Drupal\Tests\humanstxt\Functional```.
 
-## Phase one: Checking access control
+### Phase one: Checking access control
 We're going to test if three different users, one with admin permissions, other as a basic user without specific permissions and a last anonymous user can reach the configuration page for the Humans.txt module. Theoretically, only the admin user can access and the basic user or the anonymous cannot reach the config page. Let's see.
 
 First I'm gonna test the access for admins:
@@ -342,7 +342,7 @@ Now It's time to check the access to the fields of the configuration form.
   }
 ```
 
-## Phase Two: Checking Complementary Items
+### Phase Two: Checking Complementary Items
 In this block I would like to check stuff like the headers of the returned object/file or the cache tags.
 
 ```
@@ -380,7 +380,7 @@ In this block I would like to check stuff like the headers of the returned objec
     $this->assertCacheTag('humanstxt');
   }
 ```
-## Phase Three: Checking the delivered content
+### Phase Three: Checking the delivered content
 
 Ok, in order to check the content file or the link write in the <head> section, I thought to make a central and unified test that would group everything for the different user profiles to be tested. What kind of things am I interested in checking? Well I would like to test if the access to the configuration form is possible for administrators (although this was already tested in a previous test) and then creating a new configuration of the Humans.txt in order to test if the saved content corresponds with the one visible inside the object/file (testing also the access to the file).   
 Finally I would like to test if the link associated to the meta tag in the <head> section of the pages is being loaded, choosing one at random. 
@@ -463,7 +463,7 @@ So my idea is using the [getSession() method from BrowserTestBase](https://api.d
 In any case, all the HTML code from a page is too much for processing, and we don't need to get all the HTML code, so we'll get a substring cutting the output from the getHtml() method, extracting up to two thousand characters, enough to evaluate the whole <head> section.
 
 ```
-// All the HTML code is too much we just need to inspect the <head> section.
+// All the HTML code is too much, we just need to inspect the <head> section.
 $tags = substr($this->getSession()->getPage()->getHtml(), 0, 2020);
 $this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link: [%s] is NOT shown in the head section from [%s] and this shouldn\'t happen.', $humanstxt_link, $tags));
 ```
@@ -471,6 +471,22 @@ $this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link: [%
 **Finally you can see this first version of the TestClass as Gist in Github**. After uploading the patch to the issue there will surely be revisions and changes to the patch, so I promise to link the final version of the Test class that will be committed to the 8.x-1.x branch. 
 
   {{< gist davidjguru 589ab794e974a15699ed6fea683783f1 >}}
+  
+**UPDATE (14/04/2020)**
+After the first feedback from the maintainer, I have taken all his indications and prepared a new refactored version of the Test class. I've reduced, adapted and simplified several things following the feedback from the maintainer. Now the class is using the setUp() method, the numbers of methods was reduced from eight to five, the assertions from hundred-six to sixty-four and the codelines from almost three hundred lines to hundred and forty lines of code.  
+
+ I'm also using simple paths, except in the path to the humans.txt file to be inserted in the <head> section as link, since originally the absolute path to the file is being saved: see [this Issue](https://www.drupal.org/project/humanstxt/issues/3104647) and the [last uploaded patch](https://www.drupal.org/files/issues/2020-03-29/create_link_to_humanstxt_file_3104647_16.patch). 
+ 
+ This second reduced version of the class seems to pass the tests well and gives positive results in all tests and assertions. 
+ 
+ <img src="../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_refactoring.png" alt="Executing the second version of the test for Humans.txt module" title="Refactoring the Test class" class="img-fluid w-100 mb-4"/>
+ 
+ Many thanks to [Pedro Cambra](https://www.drupal.org/u/pcambra) from [Cambrico](https://www.drupal.org/cambrico) for the feedback and revisions, I am very grateful.
+ 
+ Here is the second version of the test class after refactoring:
+
+ {{< gist davidjguru 58f64fc0e1335e734ce4d1b387d913a0 >}}
+ 
 
 # 6- Running the test
 
@@ -488,7 +504,7 @@ As we can see, we're executing eight tests with hundred and six assertions. Due 
 
 In the next caption we can see the HTML output nº64 generated from one of last assertions in the code, just when an anonymous user try to get the Humanstxt configuration form and receive and error message with code HTTP 403 'Forbidden':
 
-![Executing test from the Humans.txt Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_html_view.png)
+![Executing test from the Humans.txt Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_refactoring.png)
 
 As you can see, you can move through the files using the Previous | Next Links in header, connecting all the secuence of HTML results from tests.
 
