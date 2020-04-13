@@ -479,7 +479,7 @@ After the first feedback from the maintainer, I have taken all his indications a
  
  This second reduced version of the class seems to pass the tests well and gives positive results in all tests and assertions. 
  
- <img src="https://www.therussianlullaby.com/images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_refactoring.png" alt="Executing the second version of the test for Humans.txt module" title="Refactoring the Test class" class="img-fluid w-100 mb-4"/>
+ {{< figure src="../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_refactoring.png" alt="Executing the second version of the test for Humans.txt module"  class="img-fluid w-100 mb-4">}}
  
  Many thanks to [Pedro Cambra](https://www.drupal.org/u/pcambra) from [Cambrico](https://www.drupal.org/cambrico) for the feedback and revisions, I am very grateful.
  
