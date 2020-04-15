@@ -71,6 +71,8 @@ Ok, and what is the features we'll have to test? the Humans.txt contrib module w
 
 Mainly, these will be the features that we will have to test. 
 
+This article is intended as a theoretical - practical guide to browser-based functional testing for Drupal, based on a certain testing issue history of the Humans.txt module. It includes bugs, more bugs, errors, misses, mismatched versions...uploads and more uploads, testing bots...and above all... a conversational sample of pair between a maintainer and a contributor when working in parallel. It may not be very agile, but it is very real. And I think that here is the most interesting part of the article: exposing the work cycle combined with all the successes and failures. 
+
 
 ## 2- Arrangements
 Well, in this section I've included the fun little story about how I discovered that I didn't have the necessary resources installed in the test environment I chose. Pay attention.  
@@ -148,6 +150,25 @@ The format of the instruction we will use will be related to the position for ou
 Where the param ```-c``` points to the localization of the phpunit.xm file and it will run all the test located in the marked direction (in this example will be executed tests from the [Config Inspector Contrib Module](https://www.drupal.org/project/config_inspector)). 
 
 ![Executing test from the Config Inspector Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_launch_test.png)
+
+**UPDATE (15/04/2020)**
+Well, After a change in the renaming of the ```/test``` folder to ```/tests```, the Drupal.org Testing bot has started working and [has detected...that two methods I used in the Test Class were not available](https://www.drupal.org/pift-ci-job/1651008), they didn't exist. At that moment I thought about the version of phpunit I was using (and that I chose and installed myself) and as recommended for Drupal 8 [it should be PHPUnit 6.5](https://www.drupal.org/docs/8/testing/phpunit-in-drupal-8) and not 7.5 as I am using. So downgrading and adapt the methods to others available...Which are?
+
+These methods: 
+```
+$this->assertStringNotContainsString($this->fileLink, $tags, sprintf('Humans.txt link: [%s] is not shown in the -head- section.', $this->fileLink));
+$this->assertStringContainsString($this->fileLink, $tags, sprintf('Humans.txt link: [%s] is shown in the -head- section.', $this->fileLink));
+```
+Should be replaced by these others, compatible with PHPUnit 6.5: 
+```
+$this->assertNotContains($this->fileLink, $tags, sprintf('Humans.txt link: [%s] is not shown in the -head- section.', $this->fileLink));
+
+$this->assertContains($this->fileLink, $tags, sprintf('Humans.txt link: [%s] is shown in the -head- section.', $this->fileLink));
+```
+
+From the [Assert.php Class](https://api.drupal.org/api/drupal/vendor%21phpunit%21phpunit%21src%21Framework%21Assert.php/8.8.x) available in ```vendor/phpunit/phpunit/src/Franework/Assert.php```  
+
+**So note to my future me:** Drupal 8 + PHPUnit 6.5, man.   
 
 
 ## 3- The BrowserTestBase class
@@ -512,6 +533,7 @@ As you can see, you can move through the files using the Previous | Next Links i
 
 # 7- Read More
 
+* [PHPUnit in Drupal 8](https://www.drupal.org/docs/8/testing/phpunit-in-drupal-8)
 * [PHPUnit Browser Test tutorial in Drupal.org](https://www.drupal.org/node/2783189).  
 * [Automated Test using PHPUnit and Nightwatch.js in Drupal.org](https://api.drupal.org/api/drupal/core%21core.api.php/group/testing/8.8.x).  
 * [Running PHPUnit tests in Drupal, from Drupal.org documentation](https://www.drupal.org/node/2116263).  
