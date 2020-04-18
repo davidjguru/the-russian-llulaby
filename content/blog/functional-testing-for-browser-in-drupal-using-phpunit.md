@@ -491,7 +491,7 @@ $this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link: [%
 
 **Finally you can see this first version of the TestClass as Gist in Github**. After uploading the patch to the issue there will surely be revisions and changes to the patch, so I promise to link the final version of the Test class that will be committed to the 8.x-1.x branch. 
 
-  {{< gist davidjguru 589ab794e974a15699ed6fea683783f1 >}}
+ [https://gist.github.com/davidjguru/589ab794e974a15699ed6fea683783f1](https://gist.github.com/davidjguru/589ab794e974a15699ed6fea683783f1)
   
 **UPDATE (14/04/2020)**
 After the first feedback from the maintainer, I have taken all his indications and prepared a new refactored version of the Test class. I've reduced, adapted and simplified several things following the feedback from the maintainer. Now the class is using the setUp() method, the numbers of methods was reduced from eight to five, the assertions from hundred-six to sixty-four and the codelines from almost three hundred lines to hundred and forty lines of code.  
@@ -506,7 +506,13 @@ After the first feedback from the maintainer, I have taken all his indications a
  
  Here is the second version of the test class after refactoring:
 
- {{< gist davidjguru 58f64fc0e1335e734ce4d1b387d913a0 >}}
+[https://gist.github.com/davidjguru/58f64fc0e1335e734ce4d1b387d913a0](https://gist.github.com/davidjguru/58f64fc0e1335e734ce4d1b387d913a0)  
+
+**UPDATE (15/04/2020)**
+After starting the Drupal.org testing bot and checking that my version of PHPUnit was not the one needed for the Drupal core, and has been necessary to make changes in two methods. The semantics of the messages in those methods were set for testing by me and were confusing, were also wrong. They have been changed and now the tests are going well.  
+
+This will be the final version of the class of Tests that will be committed to the repository:   
+ {{< gist davidjguru 25b5e9af4c69741062e2eb277f00c9b7 >}}  
  
 
 # 6- Running the test
