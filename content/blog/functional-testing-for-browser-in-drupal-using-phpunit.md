@@ -489,31 +489,34 @@ $tags = substr($this->getSession()->getPage()->getHtml(), 0, 2020);
 $this->assertStringContainsString($humanstxt_link, $tags, sprintf('Test link: [%s] is NOT shown in the head section from [%s] and this shouldn\'t happen.', $humanstxt_link, $tags));
 ```
 
-**Finally you can see this first version of the TestClass as Gist in Github**. After uploading the patch to the issue there will surely be revisions and changes to the patch, so I promise to link the final version of the Test class that will be committed to the 8.x-1.x branch. 
+**Finally you can see this first version of the TestClass as Gist in Github**. After uploading the patch to the issue there will surely be revisions and changes to the patch, so I promise to link the final version of the Test class that will be committed to the 8.x-1.x branch.  
 
- [https://gist.github.com/davidjguru/589ab794e974a15699ed6fea683783f1](https://gist.github.com/davidjguru/589ab794e974a15699ed6fea683783f1)
+ [First version of the Testing Class in Gist.](https://gist.github.com/davidjguru/589ab794e974a15699ed6fea683783f1)  
   
 **UPDATE (14/04/2020)**
 After the first feedback from the maintainer, I have taken all his indications and prepared a new refactored version of the Test class. I've reduced, adapted and simplified several things following the feedback from the maintainer. Now the class is using the setUp() method, the numbers of methods was reduced from eight to five, the assertions from hundred-six to sixty-four and the codelines from almost three hundred lines to hundred and forty lines of code.  
 
- I'm also using simple paths, except in the path to the humans.txt file to be inserted in the <head> section as link, since originally the absolute path to the file is being saved: see [this Issue](https://www.drupal.org/project/humanstxt/issues/3104647) and the [last uploaded patch](https://www.drupal.org/files/issues/2020-03-29/create_link_to_humanstxt_file_3104647_16.patch). 
+ I'm also using simple paths, except in the path to the humans.txt file to be inserted in the <head> section as link, since originally the absolute path to the file is being saved: see [this Issue](https://www.drupal.org/project/humanstxt/issues/3104647) and the [last uploaded patch](https://www.drupal.org/files/issues/2020-03-29/create_link_to_humanstxt_file_3104647_16.patch).  
  
- This second reduced version of the class seems to pass the tests well and gives positive results in all tests and assertions. 
+ This second reduced version of the class seems to pass the tests well and gives positive results in all tests and assertions.  
  
  {{< figure src="../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_refactoring.png" alt="Executing the second version of the test for Humans.txt module"  class="img-fluid w-100 mb-4">}}
  
- Many thanks to [Pedro Cambra](https://www.drupal.org/u/pcambra) from [Cambrico](https://www.drupal.org/cambrico) for the feedback and revisions, I am very grateful.
+ Many thanks to [Pedro Cambra](https://www.drupal.org/u/pcambra) from [Cambrico](https://www.drupal.org/cambrico) for the feedback and revisions, I am very grateful.  
  
- Here is the second version of the test class after refactoring:
+ Here is the second version of the test class after refactoring:  
 
-[https://gist.github.com/davidjguru/58f64fc0e1335e734ce4d1b387d913a0](https://gist.github.com/davidjguru/58f64fc0e1335e734ce4d1b387d913a0)  
+[Second version of the Testing Class in Gist](https://gist.github.com/davidjguru/58f64fc0e1335e734ce4d1b387d913a0).  
 
 **UPDATE (15/04/2020)**
 After starting the Drupal.org testing bot and checking that my version of PHPUnit was not the one needed for the Drupal core, and has been necessary to make changes in two methods. The semantics of the messages in those methods were set for testing by me and were confusing, were also wrong. They have been changed and now the tests are going well.  
 
-This will be the final version of the class of Tests that will be committed to the repository:   
+This will be the final version of the class of Tests that will be committed to the repository:  
  {{< gist davidjguru 25b5e9af4c69741062e2eb277f00c9b7 >}}  
  
+ By the way, with this last commit, the migration to Drupal 8 of the contributed module Humans.txt has been completed. The module has been finally ported to Drupal 8 | Drupal 9. [Humans.txt Releases](https://www.drupal.org/project/humanstxt/releases). Mission accomplished.  
+ 
+
 
 # 6- Running the test
 
