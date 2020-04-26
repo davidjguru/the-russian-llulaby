@@ -508,7 +508,7 @@ As you could see, we have treated each migration process differently. The first 
  In both cases you write the migration definition in a YAML format and then you put the migration file in a place or another. But there are more differences...Let's make a little summary of these keys: 
  
  * Migration "as code" is provided out of the box, but the module "Migrate Plus" 
- allows you treating the file as a configuration entity.
+ allows you treating the file as a configuration object.
  
  * Depending on which approach you use, the location of the files and the 
  workflow will differ: 
@@ -521,7 +521,7 @@ As you could see, we have treated each migration process differently. The first 
   using the config sync interface in Drupal, path: ```/admin/config/development/configuration```, in addition to being able to use configuration export/import 
   tools: ```drush cex```, ```drush cim```, cause now you sync the migration (the migration file will be saved in database). This means that you can write, modify, and execute migrations using the user interface. Big surprise.   
   
-   * As a configuration entity, now your migration file will be create a new 
+   * As a configuration object, now your migration file will be create a new 
   configuration registry in your Drupal Config System, and keep it alive also 
   when your migrate module will be disabled. To avoid this and delete the config, 
   put your own custom module as a new dependency of the migration in your migration  description file.yml, so the migration will be deleted from Drupal's Active Config just in this moment:
