@@ -1,7 +1,7 @@
 ---
 title: "Thinking about Drupal migrations (III)"
 date: 2020-05-04
-draft: false
+draft: true
 
 # post thumb
 image: "images/post/davidjguru_drupal_migrations_debugging_main.jpg"
