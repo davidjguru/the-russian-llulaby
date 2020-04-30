@@ -22,8 +22,8 @@ tags:
 # post type
 type: "post"
 ---
-Everything around Test-driven development (TDD) is a very interesting and very motivating world and besides, these are topics with a certain antiquity. So it is very easy to find related contents. But the relationship between this area and Drupal is even more interesting: there are multiple options to implement testing of different types and different orientation (Unit Test, Kernel, JavaScript, functional ...) so it can be complex to introduce in this world. Today I want to take advantage of the experience of porting to Drupal 8 a small contributed module to share examples about browser-focused Functional Testing in Drupal 8 (or Drupal 9).  We will learn together with simple use cases. It may be a small slice (Functional Testing of a very small features) of a big cake (Testing in Drupal), but it will be a nice entry point. Follow me. 
-
+The systems and subsystems related to Drupal's migration API are certainly exciting. In the previous articles in this series, I wanted to draw as complete a map as possible (part one) of the vast amount of resources, possibilities and experts. In the second part I wanted to expose some basic mechanics of the migration processes in Drupal and knowing that this opens the door to thousands of options, possibilities and techniques....I didn't want to let a third article go by without sharing some experiences diagnosing, debugging and solving problems in migrations. It is very easy (more than desired) for something to go wrong during a migration, so I prefer - before we go any further - that we share experiences in repairing migration processes. 
+ 
 --------------------------------------------------------------------------------------
 
 **Picture from Unsplash, user [Pan Xiaozhen, @zhenhappy](https://unsplash.com/@zhenhappy)**
