@@ -518,7 +518,7 @@ This will be the final version of the class of Tests that will be committed to t
  
 
 
-# 6- Running the test
+## 6- Running the test
 
 Well, and now with our test stored and the phpunit configuration initially resolved, it's time to run our test and observe the results. To do this, in my case I'm located in ```/project/web/``` and with phpunit.xml placed in ```/project/web/core/```, I launch the instruction:  
 
@@ -540,7 +540,7 @@ As you can see, you can move through the files using the Previous | Next Links i
 
 
 
-# 7- Read More
+## 7- Read More
 
 * [PHPUnit in Drupal 8](https://www.drupal.org/docs/8/testing/phpunit-in-drupal-8)
 * [PHPUnit Browser Test tutorial in Drupal.org](https://www.drupal.org/node/2783189).  
@@ -551,7 +551,7 @@ As you can see, you can move through the files using the Previous | Next Links i
 * [Developing Web Applications with Behat and Mink](https://docs.behat.org/en/v2.5/cookbook/behat_and_mink.html)  
 
 
-# 8- :wq! 
+## 8- :wq! 
 
 ##### Recommended song
 
