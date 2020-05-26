@@ -1,5 +1,5 @@
 ---
-title: "Thinking about Drupal migrations (I)"
+title: "Drupal Migrations (I): Basic Resources"
 date: 2020-02-25
 draft: false
 
@@ -7,7 +7,7 @@ draft: false
 image: "images/featured-post/davidjguru_drupal_8_thinking_about_drupal_migrations_main.jpg"
 
 # meta description
-description: "Thinking about Drupal migrations (I) - Resources"
+description: "Drupal Migrations (I): Basic Resources"
 
 # taxonomies
 categories: 
@@ -63,7 +63,7 @@ article will be only a lightweight set of basic resources (I swear).
 **This article is part of a series of posts about Drupal Migrations**
 
 <!-- TOC -->
-[1- Thinking about Drupal Migrations (I): Resources](https://therussianlullaby.com/blog/thinking-about-drupal-migrations-resources/)
+[1- Drupal Migrations (I): Basic Resources](https://therussianlullaby.com/blog/thinking-about-drupal-migrations-resources/)
 
 [2- Thinking about Drupal Migrations (II): Examples](https://therussianlullaby.com/blog/thinking-about-drupal-migrations-examples)
 
