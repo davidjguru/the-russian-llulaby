@@ -1,5 +1,5 @@
 ---
-title: "Thinking about Drupal migrations (II)"
+title: "Drupal Migrations (II): Examples"
 date: 2020-03-17
 draft: false
 
@@ -7,7 +7,7 @@ draft: false
 image: "images/post/davidjguru_drupal_thinking_about_drupal_migrations_examples_main.jpg"
 
 # meta description
-description: "Thinking about Drupal Migrations (II) - Examples"
+description: "Drupal Migrations (II): Examples"
 
 # taxonomies
 categories: 
