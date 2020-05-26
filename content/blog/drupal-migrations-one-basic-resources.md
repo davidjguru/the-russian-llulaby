@@ -60,12 +60,12 @@ article will be only a lightweight set of basic resources (I swear).
 
 -----------------------------------------------------------------------------------------
 
-**This article is part of a series of posts about Drupal Migrations**
+**This article is part of a series of posts about Drupal Migrations:**
 
 <!-- TOC -->
-[1- Drupal Migrations (I): Basic Resources](https://therussianlullaby.com/blog/thinking-about-drupal-migrations-resources/)
+[1- Drupal Migrations (I): Basic Resources](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/)
 
-[2- Thinking about Drupal Migrations (II): Examples](https://therussianlullaby.com/blog/thinking-about-drupal-migrations-examples)
+[2- Drupal Migrations (II): Examples](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/)
 
 <!-- /TOC -->
 

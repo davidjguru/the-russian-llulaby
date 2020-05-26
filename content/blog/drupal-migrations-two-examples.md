@@ -49,10 +49,11 @@ In the former post, I was writing about migrations in Drupal from a point of vie
 
 ---------------------------------------------------------------------------------------
 <!-- /TOC -->  
-**This article is part of a series of posts about Drupal Migrations**  
+**This article is part of a series of posts about Drupal Migrations:**  
 <!-- TOC -->
-[1- Thinking about Drupal Migrations (I): Resources](https://therussianlullaby.com/blog/thinking-about-drupal-migrations-resources/)  
-[2- Thinking about Drupal Migrations (II): Examples](https://therussianlullaby.com/blog/thinking-about-drupal-migrations-examples)  
+[1- Drupal Migrations (I): Basic Resources](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/)
+
+[2- Drupal Migrations (II): Examples](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/)
 <!-- /TOC -->
 
 ------------------------------------------------------------------------------------------------
