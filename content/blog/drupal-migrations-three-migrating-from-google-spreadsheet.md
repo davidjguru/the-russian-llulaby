@@ -1,6 +1,6 @@
 ---
 title: "Drupal Migrations (III): Migrating from Google Spreadsheet"
-date: 2020-05-04
+date: 2020-05-27
 draft: false
 
 # post thumb
