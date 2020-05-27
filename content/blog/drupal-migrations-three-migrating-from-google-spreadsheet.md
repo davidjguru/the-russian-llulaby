@@ -1,7 +1,7 @@
 ---
 title: "Drupal Migrations (III): Migrating from Google Spreadsheet"
 date: 2020-05-04
-draft: true
+draft: false
 
 # post thumb
 image: "images/post/davidjguru_drupal_migrations_debugging_main.jpg"
@@ -33,13 +33,12 @@ The systems and subsystems related to Drupal's migration API are certainly excit
 **Table of Contents**
 
 <!-- TOC -->
-[1- Introduction](#1--introduction)  
-[2- Basic Resources - Core Modules](#2--basic-resources---core-modules)  
-[3- Other Basic Resources - Contrib Modules](#3--other-basic-resources---contrib-modules)  
-[4- Extra Resources - Contrib Modules for Plugins](#4--extra-resources---contrib-modules-for-plugins)  
-[5- Migration Runners - Contrib Modules Drush-Related](#5--migrations-runners---contrib-modules-drush-related)  
-[6- Authors you should know](#6--authors-you-should-know)  
-[7- :wq!](#7--wq)
+[1- Introduction and remember ETL processes](#1--introduction-and-remember-etl-processes)  
+[2- Exposing data through Google Spreadsheet](#2--exposing-data-through-google-spreadsheet)  
+[3- Special Properties from the JSON transformation](#3--special-properties-from-the-json-transformation)  
+[4- Characteristics of the Migration](#4--characteristics-of-the-migration)  
+[5- Custom Module for Migration](#5--custom-module-for-migration)  
+[6- :wq!](#6--wq)  
 <!-- /TOC -->
 
 -----------------------------------------------------------------------------------------
@@ -63,20 +62,27 @@ To practice with other Plugins and other migration models, I thought we can take
 
 ![ETL Scheme and Drupal Migrate API overview](../../images/post/davidjguru_drupal_migrations_ETL_scheme.png)  
 
+Today our goal will be to fill the fields of a taxonomy term using the data contained in a external Google Spreadsheet. So we have to complete these fields: 
+
+![Taxonomy term basic fields](../../images/post/davidjguru_drupal_migration_taxonomy_term_fields.png)  
+
+And we're going to do this describing a Migrate Process and executing it as Configuration. Do you know the differences between migrations as code and as configuration? You can learn some keys about this topic [here, in the previous article about Migrations](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/#migration-as-code-or-as-configuration).
+
 ## 2- Exposing data through Google Spreadsheet
 
 So now, to perform source data extraction, we'll need a spreadsheet with exposed values. I've created a Google spreadsheet [here at this address](https://docs.google.com/spreadsheets/d/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/edit?usp=sharing). This Google Spreadsheet contains some columns with values related with fields of a taxonomy term, ready for migration.  
 
 In order to processing the data source we'll use the [Migrate Google Sheets contrib module from Drupal.org](https://www.drupal.org/project/migrate_google_sheets), so you can run your Composer to download the resource. Just launch:  
 ```
+composer require drupal/migrate_plus #If applicable
 composer require drupal/migrate_google_sheets
-drush en migrate_google_sheet
+drush en migrate_plus migrate_google_sheet -y
 ```
 This contrib module will treat the resource as a JSON file, though for that we have to do some tasks previously. For example, we have to expose the Google Spreadsheet like a JSON datasource, using the tools provided by Google.  
 
 * First, we need extracting the **workbook-id** of our Spreadsheet: docs.google.com/spreadsheets/d/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/ -> workbook-id: 1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM.  
 
-* Second, we need the worksheet-index too. This is only the index of the tab with data from the Spreadsheet. In this case -> worksheet-index: 1.  
+* Second, we need the **worksheet-index** too. This is only the index of the tab with data from the Spreadsheet. In this case -> worksheet-index: 1.  
 
 * Third, Building the JSON exposed URL using the pattern: spreadsheets.google.com/feeds/list/[workbook-id]/[worksheet-index]/public/values?alt=json, for us: [http://spreadsheets.google.com/feeds/list/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/1/public/values?alt=json](http://spreadsheets.google.com/feeds/list/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/1/public/values?alt=json ).  
 
@@ -101,6 +107,9 @@ Now we're seeing our Json datasource from our browser (maybe better you use some
         },
         "gsx$url": {
           "$t": "/t1"
+        }
+        "gsx$published": {
+          "$t": "1"
         }
       }
 ```
@@ -163,11 +172,159 @@ class GoogleSheets extends Json implements ContainerFactoryPluginInterface {
 }
 ```
 
+Also we can see that the GoogleSheet Plugins is marked as a Data Parser in its block annotations, sowe'll need some more resources: a base source Plugin and a Data Fetcher (then the Google Spreadsheet Plugin will be the third part in the process).
 
+Ok, What Source Plugins are available in my Drupal installation? Let's see. Launching:
+
+```
+drupal debug:plugin migrate.source
+```
+
+We'll get by prompt:
+```
+drupal@migrations-web:/var/www/html$ drupal debug:plugin migrate.source  
+ --------------- --------------------------------------------------------- 
+  Plugin ID       Plugin class                                             
+ --------------- --------------------------------------------------------- 
+  embedded_data   Drupal\migrate\Plugin\migrate\source\EmbeddedDataSource  
+  empty           Drupal\migrate\Plugin\migrate\source\EmptySource         
+  url             Drupal\migrate_plus\Plugin\migrate\source\Url            
+ --------------- --------------------------------------------------------- 
+
+drupal@migrations-web:/var/www/html$ 
+```
+
+´´´
+Ok, as a Source Plugin we can use the class Url.php (our file is exposed by URL). In the Url.php class, we see that we need some king of data parser (The Google Spread Sheet class).
+```
+  /**
+   * The data parser plugin.
+   *
+   * @var \Drupal\migrate_plus\DataParserPluginInterface
+   */
+  protected $dataParserPlugin;
+```
+
+And looking for a fetcher / handler, we can find out a data fetcher for http processing, the class Http.php ready to work with a Url Plugin as source: 
+```
+/**
+ * Retrieve data over an HTTP connection for migration.
+ *
+ * Example:
+ *
+ * @code
+ * source:
+ *   plugin: url
+ *   data_fetcher_plugin: http
+ *   headers:
+ *     Accept: application/json
+ *     User-Agent: Internet Explorer 6
+ *     Authorization-Key: secret
+ *     Arbitrary-Header: foobarbaz
+ * @endcode
+ *
+ * @DataFetcher(
+ *   id = "http",
+ *   title = @Translation("HTTP")
+ * )
+ */
+class Http extends DataFetcherPluginBase implements ContainerFactoryPluginInterface {
+```
+From another side, seems that the Url.php class requires url directions from its constructor method. We can use single URL directions or a set:  
+
+```
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration) {
+    if (!is_array($configuration['urls'])) {
+      $configuration['urls'] = [$configuration['urls']];
+    }
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
+
+    $this->sourceUrls = $configuration['urls'];
+  }
+```
+So by putting together the different parts we're looking at, it looks like we'll have to give a structured form to the elements, according to their order and position. In short, our first section for the Source would look like this: 
+
+```
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: google_sheets
+  urls: 'http://spreadsheets.google.com/feeds/list/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/1/public/values?alt=json'
+```
 
 ## 5- Custom Module for Migration 
+We'll create a new custom module called ```migration_google_sheet``` and with structure:
 
+```
+/project/web/modules/custom/  
+                     \__migration_google_sheet/  
+                         \__migration_google_sheet.info.yml
+                           \__config/
+                                \__install/
+                                     \__migrate_plus.migration.migration.taxonomy_google_sheet.yml
+```
 
+Migration Description File: ```migrate_plus.migration.taxonomy_google_sheet.yml```
+
+```
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - migration_google_sheet
+id: taxonomy_google_sheet
+label: 'Migrating Taxonomy'
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: google_sheets
+  urls: 'http://spreadsheets.google.com/feeds/list/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/1/public/values?alt=json'
+  fields:
+    - name: id
+      label: 'Id'
+      selector: id
+    - name: name
+      label: 'Name'
+      selector: name
+    - name: description
+      label: 'Description'
+      selector: description
+    - name: url
+      label: 'Url'
+      selector: url
+    - name: published
+      label: 'Published'
+      selector: published
+  ids:
+    id:
+      type: integer
+process:
+  name: name
+  description: description
+  path: url
+  status: published
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: tags
+ ```
+
+So now, executing the migration from prompt: 
+
+```
+drush en migration_google_sheet -y 
+drush migrate:import taxonomy_google_sheet
+
+[notice] Processed 30 items (30 created, 0 updated, 0 failed, 0 ignored) - done with 'taxonomy_google_sheet'
+```
+Well done! We just migrated thirty taxonomy terms from a Google spreadsheet:
+
+![Taxonomy Terms Just migrated](../../images/post/davidjguru_drupal_migration_migrating_taxonomy_terms.png)  
+
+You can download or clone the custom Migration module [from my gitlab repository](https://gitlab.com/davidjguru/drupal-custom-modules-examples/-/tree/master/Migrations). 
 
 # 6- :wq! 
 
