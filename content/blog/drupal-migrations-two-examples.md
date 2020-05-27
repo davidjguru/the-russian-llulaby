@@ -51,9 +51,11 @@ In the former post, I was writing about migrations in Drupal from a point of vie
 <!-- /TOC -->  
 **This article is part of a series of posts about Drupal Migrations:**  
 <!-- TOC -->
-[1- Drupal Migrations (I): Basic Resources](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/)
+[1- Drupal Migrations (I): Basic Resources](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/)  
 
-[2- Drupal Migrations (II): Examples](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/)
+[2- Drupal Migrations (II): Examples](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/)  
+
+[3- Drupal Migrations (III): Migrating from Google Spreadsheet](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/)  
 <!-- /TOC -->
 
 ------------------------------------------------------------------------------------------------

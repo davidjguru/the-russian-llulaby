@@ -46,9 +46,11 @@ The systems and subsystems related to Drupal's migration API are certainly excit
 **This article is part of a series of posts about Drupal Migrations**
 
 <!-- TOC -->
-[1- Drupal Migrations (I): Basic Resources](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/)
+[1- Drupal Migrations (I): Basic Resources](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/)  
 
-[2- Drupal Migrations (II): Examples](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/)
+[2- Drupal Migrations (II): Examples](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/)  
+
+[3- Drupal Migrations (III): Migrating from Google Spreadsheet](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/)  
 
 <!-- /TOC -->
 
@@ -80,11 +82,11 @@ drush en migrate_plus migrate_google_sheet -y
 ```
 This contrib module will treat the resource as a JSON file, though for that we have to do some tasks previously. For example, we have to expose the Google Spreadsheet like a JSON datasource, using the tools provided by Google.  
 
-* First, we need extracting the **workbook-id** of our Spreadsheet: docs.google.com/spreadsheets/d/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/ -> workbook-id: 1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM.  
+* First, we need extracting the **workbook-id** of our Spreadsheet: docs.google.com/spreadsheets/d/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/ **-> workbook-id: 1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM**.  
 
-* Second, we need the **worksheet-index** too. This is only the index of the tab with data from the Spreadsheet. In this case -> worksheet-index: 1.  
+* Second, we need the **worksheet-index** too. This is only the index of the tab with data from the Spreadsheet. In this case **-> worksheet-index: 1**.  
 
-* Third, Building the JSON exposed URL using the pattern: spreadsheets.google.com/feeds/list/[workbook-id]/[worksheet-index]/public/values?alt=json, for us: [http://spreadsheets.google.com/feeds/list/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/1/public/values?alt=json](http://spreadsheets.google.com/feeds/list/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/1/public/values?alt=json ).  
+* Third, Building the JSON exposed URL using the pattern: **spreadsheets.google.com/feeds/list/[workbook-id]/[worksheet-index]/public/values?alt=json**, for us: [http://spreadsheets.google.com/feeds/list/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/1/public/values?alt=json](http://spreadsheets.google.com/feeds/list/1bKGbPbgeuXaBfcKetaDqoDimmYcerQY_hT1rqzw4TbM/1/public/values?alt=json ).  
 
 **That's all!** now we got an exposed Google Spreadsheet as a JSON file and now we can get the values from the selected Source Plugins of the Drupal Migrate API.  
 
@@ -194,8 +196,7 @@ drupal@migrations-web:/var/www/html$ drupal debug:plugin migrate.source
 drupal@migrations-web:/var/www/html$ 
 ```
 
-´´´
-Ok, as a Source Plugin we can use the class Url.php (our file is exposed by URL). In the Url.php class, we see that we need some king of data parser (The Google Spread Sheet class).
+Ok, as a Source Plugin we can use the class Url.php (our file is exposed by URL). In the [Url.php class](https://git.drupalcode.org/project/migrate_plus/-/blob/8.x-5.x/src/Plugin/migrate/source/Url.php), we see that we need some king of data parser (The Google Spread Sheet class).
 ```
   /**
    * The data parser plugin.
@@ -205,7 +206,7 @@ Ok, as a Source Plugin we can use the class Url.php (our file is exposed by URL)
   protected $dataParserPlugin;
 ```
 
-And looking for a fetcher / handler, we can find out a data fetcher for http processing, the class Http.php ready to work with a Url Plugin as source: 
+And looking for a fetcher / handler, we can find out a data fetcher for http processing, [the class Http.php](https://git.drupalcode.org/project/migrate_plus/-/blob/8.x-5.x/src/Plugin/migrate_plus/data_fetcher/Http.php) ready to work with a Url Plugin as source: 
 ```
 /**
  * Retrieve data over an HTTP connection for migration.
