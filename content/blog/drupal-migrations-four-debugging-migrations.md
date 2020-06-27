@@ -23,7 +23,7 @@ tags:
 type: "post"
 ---
 
-The systems and subsystems related to Drupal's migration API are certainly exciting. In the previous articles in this series, I wanted to draw as complete a map as possible (part one) of the vast amount of resources, possibilities and referenced experts. In the second part I wanted to expose some basic mechanics of the migration processes in Drupal and knowing that this opens the door to thousands of options, possibilities and techniques....I didn't want to let a third article go by without sharing some experiences migrating data from a common format as a Google Spreadsheet, just an usual way in wich sometimes the data are sent. 
+The Drupal migrations, despite their linearity in terms of definitions, contain a lot of inherited complexity. The reason is very intuitive: although the Migrate API is a supersystem that offers a very simple "interface" of interactions for the user-developer who wants to build migration processes, in reality several subsystems work by interacting with each other throughout a migration process: Entities, Database, Plugins...
  
 --------------------------------------------------------------------------------------
 
@@ -56,3 +56,4 @@ The systems and subsystems related to Drupal's migration API are certainly excit
 ---------------------------------------------------------------------------------
 
 ## 1- Introduction
+In the wake of the latest articles, I wanted to continue expanding information on migration in Drupal
