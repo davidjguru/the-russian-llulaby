@@ -23,7 +23,7 @@ tags:
 type: "post"
 ---
 
-The Drupal migrations, despite their linearity in terms of definitions, contain a lot of inherited complexity. The reason is very intuitive: although the Migrate API is a supersystem that offers a very simple "interface" of interactions for the user-developer who wants to build migration processes, in reality several subsystems work by interacting with each other throughout a migration process: Entities, Database, Plugins...
+The Drupal migrations, despite their linearity in terms of definitions, contain a lot of inherited complexity. The reason is very intuitive: although the Migrate API is a supersystem that offers a very simple "interface" of interactions for the user-developer who wants to build migration processes, in reality several subsystems work by interacting with each other throughout a migration process: Entities, Database, Plugins...There are a lot of classes involved in even the simplest migration process. If we add the irrefutable fact that a migration will tend to generate errors in many cases until it has been refined, it's clear then that one of our first needs will be to learn...how to debug migrations.
  
 --------------------------------------------------------------------------------------
 
@@ -56,4 +56,4 @@ The Drupal migrations, despite their linearity in terms of definitions, contain 
 ---------------------------------------------------------------------------------
 
 ## 1- Introduction
-In the wake of the latest articles, I wanted to continue expanding information on migration in Drupal
+In the wake of the latest articles, I wanted to continue expanding information about migration in Drupal. 
