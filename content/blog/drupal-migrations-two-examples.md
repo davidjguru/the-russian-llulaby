@@ -56,6 +56,8 @@ In the former post, I was writing about migrations in Drupal from a point of vie
 [2- Drupal Migrations (II): Examples](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/)  
 
 [3- Drupal Migrations (III): Migrating from Google Spreadsheet](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/)  
+
+[4- Drupal Migrations (IV): Debugging Migrations First Part](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/)  
 <!-- /TOC -->
 
 ------------------------------------------------------------------------------------------------

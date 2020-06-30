@@ -52,6 +52,8 @@ The systems and subsystems related to Drupal's migration API are certainly excit
 
 [3- Drupal Migrations (III): Migrating from Google Spreadsheet](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/)  
 
+[4- Drupal Migrations (IV): Debugging Migrations First Part](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/)  
+
 <!-- /TOC -->
 
 ---------------------------------------------------------------------------------

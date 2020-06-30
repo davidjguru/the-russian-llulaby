@@ -1,5 +1,5 @@
 ---
-title: "Drupal Migrations (IV): Debugging Migrations -I"
+title: "Drupal Migrations (IV): Debugging Migrations-I"
 date: 2020-06-29
 draft: false
 
@@ -7,7 +7,7 @@ draft: false
 image: "images/post/davidjguru_drupal_migrations_debugging_migrations_main.jpg"
 
 # meta description
-description: "Drupal Migrations (IV): Debugging Migrations - I"
+description: "Drupal Migrations (IV): Debugging Migrations-I"
 
 # taxonomies
 categories: 
@@ -50,13 +50,14 @@ The Drupal migrations, despite their linearity in terms of definitions, contain 
 
 [3- Drupal Migrations (III): Migrating from Google Spreadsheet](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/)  
 
-[4- Drupal Migrations (IV): Debugging Migrations First Part]()  
+[4- Drupal Migrations (IV): Debugging Migrations First Part](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/)  
 <!-- /TOC -->
 
 ---------------------------------------------------------------------------------
 
 ## 1- Introduction
-In the wake of the latest articles, I wanted to continue expanding information about migration in Drupal. I was thinking about writing a sub-series of debugging migrations (inside the main series about Drupal Migrations), and I want to publish now the first part, just a set of basic steps in order to get all the available information from a migration process. All the examples in this post were taken of the [migration_google_sheet example, from my Gitlab account](https://gitlab.com/davidjguru/drupal-custom-modules-examples/-/tree/master/Migrations/migration_google_sheet).
+In the wake of the latest articles, I wanted to continue expanding information about migration in Drupal. I was thinking about writing a sub-series of debugging migrations (inside the main series about Drupal Migrations), and I want to publish now the first part, just a set of basic steps in order to get all the available information from a migration process. All the examples in this post were taken of the [migration_google_sheet example, from my Gitlab account](https://gitlab.com/davidjguru/drupal-custom-modules-examples/-/tree/master/Migrations/migration_google_sheet). 
+
 
 ## 2- Basic Debugging (Keep an eye on your files)
 
@@ -88,10 +89,10 @@ This table contains the information related to the movements of a row of data (m
  The lookup processes for migrations are supported by this data: for example, to load a taxonomy term you must first lookup its "parent" term to maintain the hierarchy of terms. 
 If we go to our database and we do not see recorded results after launching a migration, no data was stored and the migration requires debugging.  
 
-* **migrate_message_taxonomy_google_sheet**
+* **migrate_message_taxonomy_google_sheet**  
 In this table, messages associated to the executed migration will be stored, structured in the same way as the previous table (based on the processing of a 'row' of the migration), each message with its own identifier and an association to the id_hash of the 'row' of origin of the data:  
 
-![Drupal Migration columns from table Messages](../../images/post/davidjguru_drupal_migrations_debugging_two.jpg)  
+![Drupal Migration columns from table Messages](../../images/post/davidjguru_drupal_migrations_debugging_two.png)  
 
 This information can be obtained through Drush, since the content of this table is what is shown on the screen when we execute the instruction:  
 
@@ -136,7 +137,7 @@ drupal config:delete active "migrate_plus.migration.taxonomy_google_sheet"
 ```
 If we prefer to use the Drupal user interface, there are options such as the contributed Config Delete module [drupal.org/config_delete](https://www.drupal.org/project/config_delete) , which activates extra options to the internal configuration synchronization menu to allow the deletion of configuration items from our Drupal installation. It's enough to download it through Composer and enable it through Drush or Drupal Console:  
 
-```toml
+```
 composer require drupal/config_delete
 drush en config_delete -y
 ```
@@ -161,13 +162,13 @@ The particularity is that it's optimized for a previous version of Drush (8) and
 
 There is a necessary patch in its Issues section to be able to use it in versions of Drush > 9 and if we make use of this module this patch [https://www.drupal.org/node/2938677 ](https://www.drupal.org/node/2938677) will be almost mandatory. The patch does not seem to be in its final version either, but at least it allows a controlled and efficient execution of some features of the module. Here will see some of its contributions. To install and enable the module, we proceed to download it through composer and activate it with drush: 
 
-```toml
+```
 composer require drupal/migrate_devel
 drush on migrate_devel -y
 ```
 And to apply the patch we can download it with wget and apply it with git apply:  
 
-```bash
+```
 cd /web/modules/contrib/migrate_devel/
 wget https://www.drupal.org/files/issues/2018-10-08/migrate_devel-drush9-2938677-6.patch 
 git apply migrate_devel-drush9-2938677-6.patch
@@ -175,14 +176,14 @@ git apply migrate_devel-drush9-2938677-6.patch
 Or place it directly in the patch area of our composer.json file if we have the patch management extension enabled: [https://github.com/cweagans/composer-patches](https://github.com/cweagans/composer-patches).  
 
 Using: 
-```bash
+```
 composer require cweagans/composer-patches 
 ```
 And place the new patch inside the "extra" section of our composer.json file:  
 
 ![Drupal Debugging adding the patch](../../images/post/davidjguru_drupal_migrations_debugging_three.png)  
 
-The launch of a migration process with the parameters provided by Migrate Devel will generate an output of values per console that we can easily check, for example using --migrate-debug:  
+The launch of a migration process with the parameters provided by Migrate Devel will generate an output of values per console that we can easily check, for example using **--migrate-debug**:  
 
 ![Drupal Devel Output first part](../../images/post/davidjguru_drupal_migrations_debugging_four.png)  
 ![Drupal Devel Output second part](../../images/post/davidjguru_drupal_migrations_debugging_five.png)
@@ -195,13 +196,14 @@ Now we can see in the record that for the value 1 in origin (first array of valu
 
 **How does it work?**, Migrate Devel creates an event subscriber, a class that implements EventSubscriberInterface and keeps listening to events generated from the event system of the Drupal's Migrate API, present in the migrate module of Drupal's core: 
 
-```text
+```
 Called from +56 /var/www/html/web/modules/contrib/migrate_devel/src/EventSubscriber/MigrationEventSubscriber.php
 ```
+
 The call is made from the class where events are heard and actions from the module's Event classes are read. Many events are defined there [modules/migrate/src/Event](https://git.drupalcode.org/project/drupal/-/tree/9.0.x/core/modules/migrate/src/Event ), but in particular, two that are listened to by Migrate Devel:  
 
-1. MigratePostRowSaveEvent.php 
-2. MigratePreRowSaveEvent.php
+1. [MigratePostRowSaveEvent.php](https://api.drupal.org/api/drupal/core%21modules%21migrate%21src%21Event%21MigratePostRowSaveEvent.php/class/MigratePostRowSaveEvent/8.2.x) 
+2. [MigratePreRowSaveEvent.php](https://api.drupal.org/api/drupal/core%21modules%21migrate%21src%21Event%21MigratePreRowSaveEvent.php/8.6.x)
 
 What are the two Drush options offered by Migrate Devel, and in both cases results in a call to the Kint library dump() function provided by the Devel module to print messages.  
 
@@ -287,7 +289,7 @@ process:
 ```
 After this change we reload the migration configuration object by uninstalling and installing our module (as it is marked as a dependency, when uninstalled the migration configuration will be removed):  
 
-```text
+```
 drush pmu migration_google_sheet && drush en migration_google_sheet -y 
 ```
 So when we run the migration now we will get on screen information about the values:  
@@ -297,7 +299,7 @@ So when we run the migration now we will get on screen information about the val
 
 This way we get more elaborated feedback on the information to be migrated. If we want to complete this information and thinking about more advanced scenarios, we can combine various arguments and options to gather as much information as possible. Let's think about reviewing the information related to only one element of the migration. We can run something like: 
 
-```text
+```
  drush migrate-import --migrate-debug taxonomy_google_sheet --limit="1 items"
 ```
 Which will combine the output after storage (unlike its --migrate-debug-pre option), showing in a combined way the output of the Plugin, the values via Kint and the final storage ID of the only processed entity.  
