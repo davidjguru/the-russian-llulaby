@@ -327,7 +327,7 @@ Well done! We just migrated thirty taxonomy terms from a Google spreadsheet:
 
 You can download or clone the custom Migration module [from my gitlab repository](https://gitlab.com/davidjguru/drupal-custom-modules-examples/-/tree/master/Migrations). 
 
-# 6- :wq! 
+## 6- :wq! 
 
 ##### Recommended song
 
