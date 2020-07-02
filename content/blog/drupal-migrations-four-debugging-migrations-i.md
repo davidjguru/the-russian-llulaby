@@ -158,14 +158,19 @@ We have to resort to intermediate techniques in order to obtain more information
 
 Migrate Devel [https://www.drupal.org/project/migrate_devel](https://www.drupal.org/project/migrate_devel) is a contributed module that brings some extra functionality to the migration processes from new options for drush. This module works with *migrate_tools* and *migrate_run*.  
 
+#####  **UPDATE (03/07/2020):**  
+Just as I published this article, Andre Macpherson (new maintainer of the Migrate Devel module), left a comment that you can see at the bottom of this post. Well, since I started the first draft of this article, a new version had been published that was already compatible with Drush 9 and I didn't know...So there's a new version available to download compatible with Drush 9 and which avoids having to install the patch exposed below.
+
 The particularity is that it's optimized for a previous version of Drush (8) and it does not seem to have closed its portability to Drush 9 and higher.  
 
-There is a necessary patch in its Issues section to be able to use it in versions of Drush > 9 and if we make use of this module this patch [https://www.drupal.org/node/2938677 ](https://www.drupal.org/node/2938677) will be almost mandatory. The patch does not seem to be in its final version either, but at least it allows a controlled and efficient execution of some features of the module. Here will see some of its contributions. To install and enable the module, we proceed to download it through composer and activate it with drush: 
+There is a necessary patch in its Issues section to be able to use it in versions of Drush > 9 and if we make use of this module this patch [https://www.drupal.org/node/2938677 ](https://www.drupal.org/node/2938677) will be almost mandatory. The patch does not seem to be in its final version either, but at least it allows a controlled and efficient execution of some features of the module. Here will see some of its contributions. To install and enable the module, we proceed to download it through composer and activate it with drush: [Migrate Devel 8.x-2.0-alpha2](https://www.drupal.org/project/migrate_devel/releases/8.x-2.0-alpha2). 
 
 ```
 composer require drupal/migrate_devel
-drush on migrate_devel -y
+drush en migrate_devel -y
 ```
+
+##### **Follow for Drush 8:**
 And to apply the patch we can download it with wget and apply it with git apply:  
 
 ```
