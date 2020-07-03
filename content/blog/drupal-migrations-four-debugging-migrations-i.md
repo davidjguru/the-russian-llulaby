@@ -159,7 +159,7 @@ We have to resort to intermediate techniques in order to obtain more information
 Migrate Devel [https://www.drupal.org/project/migrate_devel](https://www.drupal.org/project/migrate_devel) is a contributed module that brings some extra functionality to the migration processes from new options for drush. This module works with *migrate_tools* and *migrate_run*.  
 
 #####  **UPDATE (03/07/2020):**  
-Just as I published this article, Andre Macpherson (new maintainer of the Migrate Devel module), left a comment that you can see at the bottom of this post. Well, since I started the first draft of this article, a new version had been published that was already compatible with Drush 9 and I didn't know... So there's a new version available to download compatible with Drush 9 and which avoids having to install the patch exposed below.
+Just as I published this article, [Andrew Macpherson](https://twitter.com/MartianWebDev) (new maintainer of the Migrate Devel module and one of the accessibility maintainers for Drupal Core), left a comment that you can see at the bottom of this post with some important news. Well, since I started the first draft of this article, a new version had been published, released on June 28th and it's already compatible with Drush 9 (and I didn't know...) So now you know there's a new version available to download compatible with Drush 9 and which avoids having to install the patch exposed below.
 
 To install and enable the module, we proceed to download it through composer and activate it with drush: [Migrate Devel 8.x-2.0-alpha2](https://www.drupal.org/project/migrate_devel/releases/8.x-2.0-alpha2).  
 
