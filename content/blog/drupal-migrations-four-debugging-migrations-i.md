@@ -158,7 +158,7 @@ We have to resort to intermediate techniques in order to obtain more information
 
 Migrate Devel [https://www.drupal.org/project/migrate_devel](https://www.drupal.org/project/migrate_devel) is a contributed module that brings some extra functionality to the migration processes from new options for drush. This module works with *migrate_tools* and *migrate_run*.  
 
-#####  **UPDATE (03/07/2020):**  
+#####  **UPDATE (03/07/2020): Version 8.x-2.0-alpha2**  
 Just as I published this article, [Andrew Macpherson](https://twitter.com/MartianWebDev) (new maintainer of the Migrate Devel module and one of the accessibility maintainers for Drupal Core), left a comment that you can see at the bottom of this post with some important news. Well, since I started the first draft of this article, a new version had been published, released on June 28th and it's already compatible with Drush 9 (and I didn't know...) So now you know there's a new version available to download compatible with Drush 9 and which avoids having to install the patch exposed below.
 
 To install and enable the module, we proceed to download it through composer and activate it with drush: [Migrate Devel 8.x-2.0-alpha2](https://www.drupal.org/project/migrate_devel/releases/8.x-2.0-alpha2).  
@@ -169,8 +169,8 @@ drush en migrate_devel -y
 ```
 
 
-##### **Follow for Drush 8:**
-The particularity is that it's optimized for a previous version of Drush (8) and it does not seem to have closed its portability to Drush 9 and higher.  
+##### **Follow for versions prior to 8.x-2.0-alpha2:**
+If you're working with versions prior to 8.x-2.0-alpha2, then you have to know some particularities: The first point is that it's was optimized for a previous version of Drush (8) and it does not seem to have closed its portability to Drush 9 and higher.  
 
 There is a necessary patch in its Issues section to be able to use it in versions of Drush > 9 and if we make use of this module this patch [https://www.drupal.org/node/2938677 ](https://www.drupal.org/node/2938677) will be almost mandatory. The patch does not seem to be in its final version either, but at least it allows a controlled and efficient execution of some features of the module. Here will see some of its contributions. 
 
@@ -191,6 +191,9 @@ And place the new patch inside the "extra" section of our composer.json file:
 
 ![Drupal Debugging adding the patch](../../images/post/davidjguru_drupal_migrations_debugging_three.png)  
 
+
+##### **How it works:**
+
 The launch of a migration process with the parameters provided by Migrate Devel will generate an output of values per console that we can easily check, for example using **--migrate-debug**:  
 
 ![Drupal Devel Output first part](../../images/post/davidjguru_drupal_migrations_debugging_four.png)  
@@ -202,10 +205,11 @@ This is a partial view of the processing of a single row of migrated data, showi
 
 Now we can see in the record that for the value 1 in origin (first array of values), the identifier 117 was assigned for the load in destination. This identifier will also be the internal id of the new entity (in this case taxonomy term) created within Drupal as a result of the migration. This way you can relate the id of the migration with the new entity created and stored. 
 
-**How does it work?**, Migrate Devel creates an event subscriber, a class that implements EventSubscriberInterface and keeps listening to events generated from the event system of the Drupal's Migrate API, present in the migrate module of Drupal's core: 
+**What about event subscribers?**, Migrate Devel creates an event subscriber, a class that implements EventSubscriberInterface and keeps listening to events generated from the event system of the Drupal's Migrate API, present in the migrate module of Drupal's core: 
 
 ```
-Called from +56 /var/www/html/web/modules/contrib/migrate_devel/src/EventSubscriber/MigrationEventSubscriber.php
+Called from +56 
+/var/www/html/web/modules/contrib/migrate_devel/src/EventSubscriber/MigrationEventSubscriber.php
 ```
 
 The call is made from the class where events are heard and actions from the module's Event classes are read. Many events are defined there [modules/migrate/src/Event](https://git.drupalcode.org/project/drupal/-/tree/9.0.x/core/modules/migrate/src/Event ), but in particular, two that are listened to by Migrate Devel:  
@@ -213,9 +217,71 @@ The call is made from the class where events are heard and actions from the modu
 1. [MigratePostRowSaveEvent.php](https://api.drupal.org/api/drupal/core%21modules%21migrate%21src%21Event%21MigratePostRowSaveEvent.php/class/MigratePostRowSaveEvent/8.2.x) 
 2. [MigratePreRowSaveEvent.php](https://api.drupal.org/api/drupal/core%21modules%21migrate%21src%21Event%21MigratePreRowSaveEvent.php/8.6.x)
 
-What are the two Drush options offered by Migrate Devel, and in both cases results in a call to the Kint library dump() function provided by the Devel module to print messages.  
+What are the two Drush options offered by Migrate Devel, and in both cases results in a call to the Kint library dump() function provided by the Devel module to print messages. In fact the call to Kint has changed in the last version 8.x-2.0-alpha2, where Kint is replaced by a series of calls to the Dump method of ths Symfony VarDumper. Where we used to do:  
 
-You can get more information about creating events and event subscribers in Drupal here in The Russian Lullaby: [Building Symfony events for Drupal](https://www.therussianlullaby.com/blog/building-symfony-events-for-drupal/).  
+```
+/**
+   * Pre Row Save Function for --migrate-debug-pre.
+   *
+   * @param \Drupal\migrate\Event\MigratePreRowSaveEvent $event
+   *    Pre-Row-Save Migrate Event.
+   */
+  public function debugRowPreSave(MigratePreRowSaveEvent $event) {
+    $row = $event->getRow();
+
+    $using_drush = function_exists('drush_get_option');
+    if ($using_drush && drush_get_option('migrate-debug-pre')) {
+      // Start with capital letter for variables since this is actually a label.
+      $Source = $row->getSource();
+      $Destination = $row->getDestination();
+
+      // We use kint directly here since we want to support variable naming.
+      kint_require();
+      \Kint::dump($Source, $Destination);
+    }
+  }
+```
+Now we're doing: 
+
+```
+/**
+   * Pre Row Save Function for --migrate-debug-pre.
+   *
+   * @param \Drupal\migrate\Event\MigratePreRowSaveEvent $event
+   *    Pre-Row-Save Migrate Event.
+   */
+  public function debugRowPreSave(MigratePreRowSaveEvent $event) {
+    if (PHP_SAPI !== 'cli') {
+      return;
+    }
+
+    $row = $event->getRow();
+
+    if (in_array('migrate-debug-pre', \Drush\Drush::config()->get('runtime.options'))) {
+      // Start with capital letter for variables since this is actually a label.
+      $Source = $row->getSource();
+      $Destination = $row->getDestination();
+
+      // Uses Symfony VarDumper.
+      // @todo Explore advanced usage of CLI dumper class for nicer output.
+      // https://www.drupal.org/project/migrate_devel/issues/3151276
+      dump(
+        '---------------------------------------------------------------------',
+        '|                             $Source                               |',
+        '---------------------------------------------------------------------',
+        $Source,
+        '---------------------------------------------------------------------',
+        '|                           $Destination                            |',
+        '---------------------------------------------------------------------',
+        $Destination
+      );
+    }
+  }
+```
+
+You can see the update and changes in [migrate_devel/8.x-2.0-alpha2/src/EventSubscriber/MigrationEventSubscriber.php](https://git.drupalcode.org/project/migrate_devel/-/blob/8.x-2.0-alpha2/src/EventSubscriber/MigrationEventSubscriber.php).  
+
+And you can get more information about creating events and event subscribers in Drupal here in The Russian Lullaby: [Building Symfony events for Drupal](https://www.therussianlullaby.com/blog/building-symfony-events-for-drupal/).  
 
 
 
