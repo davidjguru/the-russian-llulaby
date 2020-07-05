@@ -220,7 +220,7 @@ The call is made from the class where events are heard and actions from the modu
 What are the two Drush options offered by Migrate Devel, and in both cases results in a call to the Kint library dump() function provided by the Devel module to print messages. In fact the call to Kint has changed in the last version 8.x-2.0-alpha2, where Kint is replaced by a series of calls to the Dump method of ths Symfony VarDumper. Where we used to do:  
 
 ```
-/**
+  /**
    * Pre Row Save Function for --migrate-debug-pre.
    *
    * @param \Drupal\migrate\Event\MigratePreRowSaveEvent $event
@@ -244,7 +244,7 @@ What are the two Drush options offered by Migrate Devel, and in both cases resul
 Now we're doing: 
 
 ```
-/**
+  /**
    * Pre Row Save Function for --migrate-debug-pre.
    *
    * @param \Drupal\migrate\Event\MigratePreRowSaveEvent $event
