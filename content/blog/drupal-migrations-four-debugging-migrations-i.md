@@ -165,12 +165,16 @@ To install and enable the module, we proceed to download it through composer and
 
 ```
 composer require drupal/migrate_devel
+# To install the 2.0 branch of the module:
+composer require drupal/migrate_devel:^2.0
 drush en migrate_devel -y
 ```
 
 
 ##### **Follow for versions prior to 8.x-2.0-alpha2:**
 If you're working with versions prior to 8.x-2.0-alpha2, then you have to know some particularities: The first point is that it's was optimized for a previous version of Drush (8) and it does not seem to have closed its portability to Drush 9 and higher.  
+
+There's a tag 8.x.1.4 from two weeks ago in the 8.x-1.x branch:  [migrate_devel/tree/8.x-1.4](https://git.drupalcode.org/project/migrate_devel/-/tree/8.x-1.4)
 
 There is a necessary patch in its Issues section to be able to use it in versions of Drush > 9 and if we make use of this module this patch [https://www.drupal.org/node/2938677 ](https://www.drupal.org/node/2938677) will be almost mandatory. The patch does not seem to be in its final version either, but at least it allows a controlled and efficient execution of some features of the module. Here will see some of its contributions. 
 
