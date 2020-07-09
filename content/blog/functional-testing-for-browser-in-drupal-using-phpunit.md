@@ -1,5 +1,5 @@
 ---
-title: "Functional testing for Browser in Drupal 8|9 using PHPUnit"
+title: "Functional testing for Browser in Drupal 8-9 using PHPUnit"
 date: 2020-04-10
 draft: false
 
