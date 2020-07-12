@@ -1,0 +1,118 @@
+{{ $baseurl := .Site.BaseURL  }}
+{{ $pageurl := .Permalink }}
+{{ $pagetitle := .Title }}
+{{ $pageauthor := "@davidjguru" }}
+{{ $pageinfo := print $pagetitle ", by " $pageauthor }}
+{{ $pagehashtags := "therussianlullaby,drupal,drupal8,drupal9" }}
+{{ $imagepost := .Params.Image }}
+{{ $imageposturl := print $baseurl "/" $imagepost }}
+
+<style>
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(https://weloveiconfonts.com/api/?family=entypo);
+
+    [class^="entypo-"]:before {
+        font-family: 'entypo', sans-serif;
+    }
+    #social-sidebar {
+        left: 0;
+        position: fixed;
+        top: 30%;
+    }
+    #social-sidebar li:first-child a { border-top-right-radius: 5px; }
+    #social-sidebar li:last-child a { border-bottom-right-radius: 5px; }
+
+    #social-sidebar a {
+        background: rgba(0, 0, 0, 0.32);
+        color: #ffffff;
+        text-decoration: none;
+        display: block;
+        height: 50px;
+        width: 50px;
+        font-size: 24px;
+        line-height: 50px;
+        position: relative;
+        text-align: center;
+        cursor: pointer;
+    }
+    #social-sidebar a:hover span {
+        left: 120%;
+        opacity: 1;
+    }
+    #social-sidebar a span {
+        font: 12px "Open Sans", sans-serif;
+        text-transform: uppercase;
+        border-radius: 3px;
+        line-height: 24px;
+        left: -100%;
+        margin-top: -16px;
+        opacity: 0;
+        padding: 4px 8px;
+        position: absolute;
+        transition: opacity .3s, left .4s;
+        top: 50%;
+        z-index: -1;
+    }
+
+    #social-sidebar a span:before {
+        content: "";
+        display: block;
+        height: 8px;
+        width: 8px;
+        left: -4px;
+        margin-top: -4px;
+        position: absolute;
+        top: 50%;
+        transform: rotate(45deg);
+    }
+
+    #social-sidebar a[class*="twitter"]:hover,
+    #social-sidebar a[class*="twitter"] span,
+    #social-sidebar a[class*="twitter"] span:before {background: #00AAA1;}
+
+    #social-sidebar a[class*="facebook"]:hover,
+    #social-sidebar a[class*="facebook"] span,
+    #social-sidebar a[class*="facebook"] span:before {background: #00AAA1;}
+
+    #social-sidebar a[class*="linkedin"]:hover,
+    #social-sidebar a[class*="linkedin"] span,
+    #social-sidebar a[class*="linkedin"] span:before {background: #00AAA1;}
+
+    #social-sidebar a[class*="pinterest"]:hover,
+    #social-sidebar a[class*="pinterest"] span,
+    #social-sidebar a[class*="pinterest"] span:before {background: #00AAA1;}
+
+    #social-sidebar a[class*="mail"]:hover,
+    #social-sidebar a[class*="mail"] span,
+    #social-sidebar a[class*="mail"] span:before {background: #00AAA1;}
+
+    #social-sidebar a[class*="paper-plane"]:hover,
+    #social-sidebar a[class*="paper-plane"] span,
+    #social-sidebar a[class*="paper-plane"] span:before {background: #00AAA1;}
+
+    #social-sidebar a[class*="dropbox"]:hover,
+    #social-sidebar a[class*="dropbox"] span,
+    #social-sidebar a[class*="dropbox"] span:before {background: #00AAA1;}
+</style>
+
+<ul id="social-sidebar">  
+    <li>
+    <a class="entypo-facebook" onclick='window.open("https://www.facebook.com/sharer.php?u={{ $pageurl }}", "width=200,height=100");'><span>Facebook</span></a>
+    </li>
+    <li>
+        <a class="entypo-twitter" onclick="window.open('https://twitter.com/intent/tweet?text={{ $pageinfo }}&hashtags={{ $pagehashtags }}&url={{ $pageurl }}');"><span>Twitter</span></a>
+    </li>
+  
+    <li>
+        <a class="entypo-linkedin" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url={{ $pageurl }}');"><span>Linkedin</span></a>
+    </li>
+    <li>
+        <a class="entypo-pinterest" onclick="window.open('https://pinterest.com/pin/create/button/?url={{ $pageurl }}&media={{ $imageposturl}}&description={{ .Params.Description }}');"><span>Pinterest</span></a>
+    </li>
+    <li>
+        <a class="entypo-mail" onclick="window.open('mailto:?&body={{ $pageurl }}');"><span>Mail</span></a>
+    </li>
+    <li>
+        <a class="entypo-paper-plane" onclick="window.open('https://t.me/share/url?url={{ $pageurl }}&text={{ $pageinfo }}');"><span>Telegram</span></a>
+    </li>
+</ul>
