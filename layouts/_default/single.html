@@ -22,6 +22,7 @@
         <div class="content mb-5">
           {{ .Content }}
         </div>
+          {{ partial "sidebar-links.html" . }}
           {{ partial "share-buttons.html" . }}
         <!-- comments -->
         {{ template "_internal/disqus.html" . }}
