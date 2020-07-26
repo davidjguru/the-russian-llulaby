@@ -64,12 +64,31 @@ article will be only a lightweight set of basic resources (I swear).
 
 <!-- TOC -->
 [1- Drupal Migrations (I): Basic Resources](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/)  
+* [Core Modules for Migrations in Drupal](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/#2--basic-resources---core-modules).  
+* [Contributed  Modules for Migrations in Drupal](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/#3--other-basic-resources---contrib-modules).  
+* [Contributed Modules for Plugins in Migrations](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/#4--extra-resources---contrib-modules-for-plugins).  
+* [Contributed Modules Drush - Related](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/#5--migrations-runners---contrib-modules-drush-related).
+* [Authors you should now](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/#6--authors-you-should-know).  
 
 [2- Drupal Migrations (II): Examples](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/)  
+* [Introduction: Migration as code or as configuration](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/#1--introduction).
+* [Arrangements: Migrating embedded data and CSV file](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/#2--arrangements).
+* [Approaches for the Migrations](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/#3--approaches).  
+* [Executing Migrations](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/#4--migrations).  
+* [Key Concepts for the Migrations](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/#5--key-concepts).  
+* [Resources for the Migrations](https://www.therussianlullaby.com/blog/drupal-migrations-two-examples/#6--resources).  
 
 [3- Drupal Migrations (III): Migrating from Google Spreadsheet](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/)  
+* [Remember ETL processes](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#1--introduction-and-remember-etl-processes).  
+* [Exposing Data Through Google Spreadsheet](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#2--exposing-data-through-google-spreadsheet).  
+* [Special Properties from the JSON transformation](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#3--special-properties-from-the-json-transformation).
+* [Chararcteristics of the Migration](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#4--characteristics-of-the-migration).  
+* [Custom Module for Migration](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#5--custom-module-for-migration).
 
 [4- Drupal Migrations (IV): Debugging Migrations First Part](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/)  
+* [Basic Debugging of a Drupal Migration: files, database tables and configuration objects](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/#2--basic-debugging-keep-an-eye-on-your-files).  
+* [Average Debugging with Migrate Devel Module](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/#3--average-debugging-with-migrate-devel).  
+
 <!-- /TOC -->
 
 ---------------------------------------------------------------------------------
