@@ -41,7 +41,7 @@ In the former post, I was writing about migrations in Drupal from a point of vie
 <!-- TOC -->
 [1- Introduction](#1--introduction)  
 [2- Arrangements](#2--arrangements)  
-[3- Approach](#3--approach)  
+[3- Approach](#3--approaches)  
 [4- Migrations](#4--migrations)  
 [5- Key Concepts](#5--key-concepts)  
 [6- Resources](#6--resources)  
