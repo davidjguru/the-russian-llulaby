@@ -154,7 +154,7 @@ For this we have two options. We can either load it for each debugging session, 
 
 You can also permanently load the environment variable by creating a companion file in the ```.ddev/``` folder of the project, a ```docker-compose.env.yaml``` file that is located next to the other docker-compose related files from the DDEV configuration, with the content: 
 
-```toml
+```
 version: '3.6'
 services:
  web:
