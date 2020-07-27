@@ -38,7 +38,7 @@ Following the previous post, in this article I wanted to share again some guidel
 [1- Introduction to Xdebug](#1--introduction-to-xdebug)  
 [2- Xdebug for DDEV](#2--xdebug-for-ddev)  
 [3- Steps for seeting up the IDE](#3--steps-for-setting-up-the-ide)  
-[4- Errors launching Drush in containers](#4--errors-launching-drush-in-containers)
+[4- Errors launching Drush in containers](#4--errors-launching-drush-in-containers)  
 [5- :wq!](#5--wq)
 <!-- /TOC -->
 -----------------------------------------------------------------------------------------
@@ -74,11 +74,11 @@ Following the previous post, in this article I wanted to share again some guidel
 * [Basic Debugging of a Drupal Migration: files, database tables and configuration objects](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/#2--basic-debugging-keep-an-eye-on-your-files).  
 * [Average Debugging with Migrate Devel Module](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/#3--average-debugging-with-migrate-devel).  
 
-[5- Drupal Migrations (V): Debugging Migrations-II]()  
-* [Introduction to Xdebug]().
-* [Xdebug for DDEV]().
-* [Steps for setting up the IDE](). 
-* [Errors launching Drush in containers]().
+[5- Drupal Migrations (V): Debugging Migrations-II](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/)  
+* [Introduction to Xdebug](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/#1--introduction-to-xdebug).
+* [Xdebug for DDEV](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/#2--xdebug-for-ddev).
+* [Steps for setting up the IDE](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/#3--steps-for-setting-up-the-ide). 
+* [Errors launching Drush in containers](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/#4--errors-launching-drush-in-containers).
 
 <!-- /TOC -->
 

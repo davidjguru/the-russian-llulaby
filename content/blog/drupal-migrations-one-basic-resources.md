@@ -89,6 +89,12 @@ article will be only a lightweight set of basic resources (I swear).
 * [Basic Debugging of a Drupal Migration: files, database tables and configuration objects](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/#2--basic-debugging-keep-an-eye-on-your-files).  
 * [Average Debugging with Migrate Devel Module](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/#3--average-debugging-with-migrate-devel).  
 
+[5- Drupal Migrations (V): Debugging Migrations-II](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/)  
+* [Introduction to Xdebug](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/#1--introduction-to-xdebug).
+* [Xdebug for DDEV](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/#2--xdebug-for-ddev).
+* [Steps for setting up the IDE](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/#3--steps-for-setting-up-the-ide). 
+* [Errors launching Drush in containers](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/#4--errors-launching-drush-in-containers).
+
 <!-- /TOC -->
 
 ---------------------------------------------------------------------------------
