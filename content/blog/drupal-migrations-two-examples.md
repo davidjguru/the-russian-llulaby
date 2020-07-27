@@ -68,7 +68,7 @@ In the former post, I was writing about migrations in Drupal from a point of vie
 * [Remember ETL processes](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#1--introduction-and-remember-etl-processes).  
 * [Exposing Data Through Google Spreadsheet](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#2--exposing-data-through-google-spreadsheet).  
 * [Special Properties from the JSON transformation](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#3--special-properties-from-the-json-transformation).
-* [Chararcteristics of the Migration](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#4--characteristics-of-the-migration).  
+* [Characteristics of the Migration](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#4--characteristics-of-the-migration).  
 * [Custom Module for Migration](https://www.therussianlullaby.com/blog/drupal-migrations-three-migrating-from-google-spreadsheet/#5--custom-module-for-migration).
 
 [4- Drupal Migrations (IV): Debugging Migrations First Part](https://www.therussianlullaby.com/blog/drupal-migrations-four-debugging-migrations-i/)  
