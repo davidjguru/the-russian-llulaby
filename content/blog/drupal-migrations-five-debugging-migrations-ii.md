@@ -1,7 +1,7 @@
 ---
 title: "Drupal Migrations (V): Debugging Migrations-II"
-date: 2020-07-26
-draft: true
+date: 2020-07-28
+draft: false
 
 # post thumb
 image: "images/post/davidjguru_drupal_migrations_debugging_xdebug_main.jpg"
