@@ -39,7 +39,7 @@ Following the previous post, in this article I wanted to share again some guidel
 [2- Xdebug for DDEV](#2--xdebug-for-ddev)  
 [3- Steps for seeting up the IDE](#3--steps-for-setting-up-the-ide)  
 [4- Errors launching Drush in containers](#4--errors-launching-drush-in-containers)  
-[5- :wq!](#5--wq)
+[5- :wq!](#5--wq)  
 <!-- /TOC -->
 -----------------------------------------------------------------------------------------
 
@@ -154,7 +154,7 @@ For this we have two options. We can either load it for each debugging session, 
 
 You can also permanently load the environment variable by creating a companion file in the ```.ddev/``` folder of the project, a ```docker-compose.env.yaml``` file that is located next to the other docker-compose related files from the DDEV configuration, with the content: 
 
-```yaml
+```toml
 version: '3.6'
 services:
  web:
