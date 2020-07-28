@@ -193,7 +193,8 @@ This will allow us to run debugging with Xdebug for our migrations in DDEV envir
 * [github.com/docker4drupal/issues/127](https://github.com/wodby/docker4drupal/issues/127).
 * [github.com/ddev/issues/2341](https://github.com/drud/ddev/issues/2341).
 
-**Now you can run your migration with all the safety and comfort!**  
+**Now you can run your migration with all the safety and comfort!** You can now launch your migration-related Drush commands and get the expected feedback from your breakpoints...start debugging your migration.  
+
 
 
 ## 5- :wq!
