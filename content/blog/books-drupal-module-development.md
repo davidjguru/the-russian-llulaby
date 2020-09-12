@@ -47,8 +47,10 @@ For a long time I was thinking about write or not a review of the Drupal 8 Modul
 
 ## 1- Introduction
 
-Daniel Sipos (or just Danny Sipos, or [Upchuk in Drupal.org](https://www.drupal.org/u/upchuk) or [@drupalexp in twitter](https://twitter.com/drupalexp)) is a developer related to Drupal for many years. He is also a regular speaker at Drupal events and is also the person behind the website called Web Omelette ([https://www.webomelette.com](https://www.webomelette.com/)), such a popular website that you should get to know it if you're a Drupal developer (put the URL in your favorites if you don't know).  
+**Daniel Sipos** (or just Danny Sipos, or [Upchuk in Drupal.org](https://www.drupal.org/u/upchuk) or [@drupalexp in twitter](https://twitter.com/drupalexp)) is a developer related to Drupal for many years. He is also a regular speaker at Drupal events and is also the person behind the website called Web Omelette ([https://www.webomelette.com](https://www.webomelette.com/)), such a popular website that you should get to know it if you're a Drupal developer (put the URL in your favorites if you don't know).  
+I already knew his website from looking for doubts, consulting references and obtaining examples (almost as a study and training online resource), when I had the opportunity to be a little closer to his work through a project in the context of the European Commission, where I had to use a [Drupal distribution and set of tools and resources, called **Open Europa**](https://github.com/openeuropa) to generate new platforms for the European Commission. At that time I left some written lines [here in my notebook](https://davidjguru.github.io/blog/openeuropa-the-european-commission-in-drupal-8) about this.  
 
+As it is easy to contextualize, the author has a lot of experience in the field of knowledge about Drupal, and that shows well. Perhaps that is why he has written successive editions (Drupal 9 would be the third iteration) of what can perhaps be considered the fundamental book for Drupal-based development. In fact, because of its scope and size, this book should be considered the **Holy Bible of Drupal**. A resource that should be part of any developer's shelf or ebook/kindle/tablet. But if the metaphor about the bible were accurate, then we could extend it a little further. Because basically, a sacred text requires its own ["hermeneutics"](https://en.wikipedia.org/wiki/Hermeneutics) in order to be interpreted correctly, that is, its own study of meaning. We hope that this article will be useful to unravel its essence and value. Let's continue.  
 
 
 
@@ -119,23 +121,23 @@ And remember: **"Code flows up, Data flows down"**. Always.
 
 | Question // Answer         | 
 | ------------- |
-| 1- Is it progressive, Iterative and Incremental?         |
+| **1- Is this book progressive, Iterative and Incremental?**         |
 | Yes, the book has a simple - complex sequencing.         |
-| 2- Does it offer specific solutions to particular problems or concrete issues?         |
+| **2- Does it offer specific solutions to particular problems or concrete issues?**         |
 | Yes, the book is built in a clear problem-solution scheme.         |
-| 3- Does it explain well the original problems or needs it aims to solve?       |
+| **3- Does it explain well the original problems or needs it aims to solve?**       |
 | Yes, exactly the book begins by setting out the premises of a good environment and the related problems.        |
-| 4- Is it rich in examples?         |
+| **4- Is this book rich in examples?**         |
 | Yes, it contains many examples and practical demonstrations.          |
-| 5- Is it written in plain English, suitable for non-English speakers?          |
+| **5- Is this book written in plain English, suitable for non-English speakers?**          |
 | Yes, it’s a very comfortable reading, very simple, very pleasant.         |
-| 6- Is it up to date?         |
+| **6- Is it up to date?**         |
 | Yes, it is updated frequently. This edition I have is from July 2019 and I know there is a later edition from August 2019.          |
 
 
 ## 6- Ratings
 
-![Table of Book Ratings for DDEV](../../images/post/davidjguru_drupal_8_ddev_rating_table_books.png)
+![Table of Book Ratings for DDEV](../../images/post/davidjguru_drupal_9_module_development_rating_table_books.png)
 
 
 ## 7- :wq!
@@ -143,4 +145,4 @@ And remember: **"Code flows up, Data flows down"**. Always.
 
 ##### Recommended song
 
-{{< youtube zqNTltOGh5c >}}
+{{< youtube LP7z7rOphMU >}}
