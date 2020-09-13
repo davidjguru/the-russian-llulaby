@@ -37,11 +37,12 @@ We know that for some years, working with Docker Engine has become a MUST. From 
 [1- Introduction](#1--introduction)  
 [2- Basics](#2--basics)  
 [3- Dockerfile](#3--dockerfile)  
-[4- Containers](#4--containers)  
-[5- Docker-Compose](#5--docker-compose)  
-[6- Others](#6--others)  
-[7- DDEV](#7--ddev)   
-[8- :wq!](#8--wq)    
+[4- Images](#4--images)
+[5- Containers](#5--containers)  
+[6- Docker-Compose](#6--docker-compose)  
+[7- Others](#7--others)  
+[8- DDEV](#8--ddev)   
+[9- :wq!](#9--wq)    
 <!-- /TOC -->
 
 -------------------------------------------------------------------------------
@@ -121,8 +122,42 @@ docker login
 # Push the selected Dockerfile tagged to Dockerhub
 docker push vendor/tag
 ```
+## 4- Images
 
-## 4- Containers
+```
+# Get a list of existing images
+docker images // docker image ls
+
+# Get all the images but by its ID
+docker image ls -q
+
+# Run an image
+docker run hello-world
+
+# Build image from a certain Dockerfile
+docker build -t web-custom-name /path/to/dockerfile/
+
+# Run an instance of the former image
+# and publish port 8080 in container
+# to the port 8282 on host.
+docker run -p 8282:8080 web-custom-name
+
+# If the image isn't downloaded, then pull it from 
+# remote at DockerHub
+docker run centos
+
+# If only want download an image, without run 
+# a container
+docker pull ubuntu
+
+# Delete images by ID
+docker rmi $(docker image ls -q) 
+
+# Remove unused images
+docker image prune
+```
+
+## 5- Containers
 
 ```
 # Run a container but in detached mode and
@@ -224,7 +259,7 @@ docker stats --all --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}"
 docker ps -q | xargs  docker stats --no-stream
 
 ```
-## 5- Docker-Compose
+## 6- Docker-Compose
 
 ```
 # Run a multi-container application with Docker Compose
@@ -258,19 +293,23 @@ docker-compose logs -t ALIAS
 docker-compose logs -t -f ALIAS
 ```
 
-## 6- Others
+## 7- Others
 
 ```
 # Docker Swarm: Deploy instances of application 
-# across docker host
+# across docker host.
 docker stack deploy -c docker-compose.yml
 
 # Remove ALL: stopped containers, all networks 
-# not used and all dangling images
+# not used and all dangling images.
 docker system prune
+
+# Getting a full summary about the Docker resources
+# in your system, ordered by type.
+docker system df
 ```
 
-## 7- DDEV
+## 8- DDEV
 If you need an introduction to DDEV, I recommend you read this article that I wrote recently (the previous month): [Development environments for Drupal with DDEV](https://www.therussianlullaby.com/blog/creating-development-environments-for-drupal-with-ddev/).
 
 | ![Picture from Unsplash, by @hannahmgibbs](../../images/post/davidjguru_docker_docker_compose_ddev_tools_3.jpg) |
@@ -304,7 +343,7 @@ ddev describe [project-name]
 # Using SSH in DDEV Containers
 ddev ssh 
 
-# Executing Drush in DDEV Containers
+# Executing Drush in DDEV Containers from outside the container.
 ddev exec drush status
 ddev exec drush cex
 ddev exec drush site-install
@@ -314,11 +353,11 @@ ddev exec drush site-install standard \
 --account-mail=mail@example.com -y
 
 
-# Installing dependencies from a ddev container
+# Installing dependencies inside a ddev container.
 ddev composer require drupal/devel
 
 # Install a complete Drupal Site using ddev 
-# in a "single" instruction
+# in a "single" instruction.
 mkdir NAMEPROJECT && cd NAMEPROJECT \
 && ddev config --project-type php \
 --php-version 7.3 \
@@ -357,7 +396,7 @@ ddev stop --remove-data --omit-snapshot
 
 ```
 
-## 8- :wq!
+## 9- :wq!
 
 ##### Recommended song
 
