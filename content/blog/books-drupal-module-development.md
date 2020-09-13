@@ -1,7 +1,7 @@
 ---
 title: "Books/ Drupal 9 Module Development"
 date: 2020-09-12
-draft: true
+draft: false
 
 # post thumb
 image: "images/post/davidjguru_books_drupal_module_development_main.png"
@@ -55,66 +55,53 @@ As it is easy to contextualize, the author has a lot of experience in the field 
 
 
 ## 2- The Book
-![Image of DDEV explained](../../images/post/davidjguru_drupal_8_books_ddev_explained_one.png)
 
-The fact that this book has a lot of experience behind it is something you can see, and a lot. Not in vain it is written by Mike Anello, one of the thinking heads behind Drupal Easy, a company with a lot of experience in training processes in general and Drupal in particular. But it is also edited by OSTraining, another organization strongly focused on training, and this is a quite important plus.
+Imagine a tutorial that contains all the most important issues of Drupal. A review through its diverse concepts, systems, subsystems, elements...Well here you have about six hundred pages with all of it. As we said in the previous section by way of introduction, the true Drupal bible. Here you will have access to all the ins and outs of Drupal, even those parts that are not well known even to many senior developers (such as the TypedData API).  
+**The paradox, the real tension of this book** is to assume a length and depth that sometimes does not meet the expectations of didactics for people who want to start in Drupal. In my experience, I have tried to share the book with fellow juniors and it has been difficult for them to advance: first those who are not fluent in English, but then those who were. In all the cases observed, the colleagues considered the book too hard, rough, complex... however, when they commented and shared it with the older profiles, they made a much more agile and profitable use of the book. They did know how to get into the inner workings of the book. This is important and marks my view of the book in some ways.  
 
-I can say -_without fear of being wrong_-, that this is the most consistent handbook on technology I have read recently, and by this I mean that any technological proposal should consist of an intuitive sequence:
+**Based on these observations**, I have concluded that if Drupal were a medicine, I would say that this extensive manual is something like a help for healthy people. It is in itself a treatment for people who are already initiated, those who are already able to place themselves within the world of Drupal. It is really curious, since it would be easy to accuse or blame the book of anti - didactic (in the second chapter, right when you create your first Drupal module the content are already talking about services or Form API, this is a very, very fast trip). You could say that everything (or almost everything) is sacrificed to try to make the ambitious goal of explaining Drupal deeply (or to demonstrate the author's mastery of the subject, but that belongs to another set of interpretations). This book contains the same information as a thousand articles, hundreds of posts, and dozens of online guides. It is the perfect accumulation of Drupal content, and in order not to get lost in the way, it is better to be in the hands of a senior profile that acts [as a sherpa](https://en.wikipedia.org/wiki/Sherpa_people).  
 
-1. **Problem** / Need that comes to solve.
-2. **Analysis** of the situation.
-3. **Proposal** (technical solution).
+The book -by the way- is still edition after edition the reference guide on Drupal, as you can see in the books section of the Drupal.org website: [https://www.drupal.org/books](https://www.drupal.org/books).  
 
-Well, this is the sequence that we normally do not find in the _anti-teaching_ of technology. And this is where the construction of this book shines. Here and in the background, and the training background is evident in the fact that this scheme is perfectly fulfilled in this book: we obtain, before anything else, a reference model on the configuration of environments with which we can compare the existence of a functional GAP in our day-to-day life: so we can assess in what moment we are and what sense would have the adoption of the proposed technical solution.   
+**Some APIs that are discussed in this book:**  
+* **Mail API:** Send emails programmatically, by code (Chapter 3: Logging and Mailing).  
+* **Token API:** How to manage formatted placeholders (Chapter 3: Logging and Mailing).  
+* **State API:** Simple Storage by key/value pairs (Chapter 6: Data Modeling and Storage).  
+* **UserData API:** Storage of some pieces of data related with users (Chapter 6: Data Modeling and Storage).  
+* **Configuration API:** Related with this important subsystem of Drupal, set of methods (Chapter 6: Data Modeling and Storage).  
+* **TypedData API:** Low level object oriented API for descriptive data processing over PHP (Chapter 6: Data Modeling and Storage).  
+* **Entity API:** The most important API for interactions with Entities (Chapter 6: Data Modeling and Storage).  
+* **Database API:** Describes methods and resources for manage the database, including queries (Chapter 8: The Database API).  
+* **Schema API:** Allows defining database table structures (Chapter 8: The Database API).  
+* **Cache API:** Creating, Reading and Invalidating caching entries (Chapter 11: Caching).  
+* **AJAX API:** Client-Side interactions using PHP and without JavaScript (Chapter 12: JavaScript and the AJAX API).  
+* **Translation API:** Working with entity translations (Chapter 13: Internationalization and Languages).  
+* **Lock API:** Low level resource for processes (Chapter 14: Batches, Queues, and Cron).  
 
-We're tired of running after new libraries, versions, etc. Increasing the tooling of our projects, simply chasing the hype, without having clear ideas about what problem we are trying to solve, and this is a very important thing (in fact, the only important thing).  
-
-It is very gratifying to see that the book devotes an entire chapter to the presentation of the initial problem as a premise (_Chapter 2: Introducing Our web development problem_), and then continues with the ideal process model (_Chapter 3: Professional Development Workflows Explained_). After these initial chapters, we will move on to more specific DDEV issues such as:  
-
-* Basics of DDEV  
-* Installing DDEV (Windows, Mac, Linux)  
-* Installing new sites with DDEV (Drupal, WordPress)  
-* Cloning existing sites with DDEV (Drupal, WordPress)  
-
-And these are only the "_essential_" chapters about the tool...in addition to these, we have other chapters dedicated to equally important issues, such as: DDEV commands, Tips & Tricks, an specific example of Apache Solr-Drupal integration using DDEV containers, sharing the DDEV project with ngrok, or how to configure Xdebug - PHP Storm in order to work with your DDEV projects.   
-
-At the end, bringing all pieces together, you will get a complete map of how to approach the project development process (workflow) using DDEV from start to finish, from local to live.  
-If you have doubts or you only know some sections but you don't know the rest, instead of reading N:M articles about the subject, you can have this whole blueprint reading this book. 
 
 
 ## 3- Recommendations
-Mainly, this book is indicated for anyone who wants to get introduced to the construction of working environments for WordPress or Drupal. 
+Mainly, this book is indicated for someone who wants to deepen their knowledge of Drupal.  
 
-In principle, there are no key prerequisites to enjoy this book, but due to the special emphasis it places on the ideal characteristics of a development environment/team, its reading makes it especially interesting for those people who, due to work circumstances or management conditions, cannot work in the way they might prefer. If you choose to make your team a more productive environment, then it is your book. 
+In principle, there are some requirements to enjoy this book, related with some kind of previous experiencie in the Drupal World, or it runs the risk of becoming a "book - door", since you will have to go to the Internet to find many concepts and other examples in order to establish the knowledge set out in this great manual.  
+On the other hand, we will say: Ok, the book it's a MUST. All teams should have a copy nearby, for consultations, to resolve doubts, to clarify ideas. So if you've decided that you want to make Drupal the best way to make a living (and earn your salary). I would recommend you take this tutorial and handle it as what it is: an excellent cartographic compendium, with plenty of maps to go through all the routes of Drupal.  
 
-![Tips from DDEV explained](../../images/post/davidjguru_drupal_8_books_ddev_explained_two.png)
-
-The book has a very specific target...
-* **Do you feel the irremediable existential void when you are solving configuration problems in the project-environment relationship for several days?**  
-Well, this book is for you.
-* **Do you think you can convince your team of the importance of aligning environments around an easy, simple, agile and intuitive solution?**  
-This book is also for you.
-* **Do you think you need to provide evidence to an _old-school_ manager in order to consider more productive the adoption of this kind of tools?**  
-  Don't hesitate, this is your book.
-
-You can take it in hand and hold it up in front of your managers as if it were Mao's little red book. For us, it will be like that. I assure you.
-
-And remember: **"Code flows up, Data flows down"**. Always.
+Read it, study it, practice it and repeat all the examples. It's a master's degree in Drupal whose execution only depends on you (and with a very good price).  
 
 
 ## 4- Book Information
 
 | Field         | Description   |
 | ------------- |:-------------:|
-| Title         | Local web Development with DDEV Explained. |
-| Author      | Michael Anello.      |
-| Publisher | OSTraining      |
-| Date | July 15, 2019      |
-| Pages | 157      |
-| Overview | DDEV tool installation and use manual.      |
-| Keywords | DDEV, WordPress, Drupal, Docker, Development, Environment.      |
-| Price | 9.99$ // 8.95€ (aprox)      |
-| Links | [Ostraining](https://www.ostraining.com/books/local/">https://www.ostraining.com/books/local/), [Amazon](https://www.amazon.es/Local-Development-Explained-Step-Step/dp/1731048858)      |
+| Title         | Drupal 9 Module Development. |
+| Author      | Daniel Sipos.      |
+| Publisher | Packt.      |
+| Date | August, 2020.      |
+| Pages | 626      |
+| Overview | Comprehensive guide to Drupal 9 development.      |
+| Keywords | Drupal, Backend, API, PHP, Symfony, Testing.      |
+| Price | 30$ // 29.99€ (aprox)      |
+| Links | [Packt](https://www.packtpub.com/product/drupal-9-module-development-third-edition/9781800204621), [Amazon](https://www.amazon.com/dp/1800204620/?tag=drupal0a-20)      |
 
 
 ## 5- Fast Review
@@ -122,17 +109,17 @@ And remember: **"Code flows up, Data flows down"**. Always.
 | Question // Answer         | 
 | ------------- |
 | **1- Is this book progressive, Iterative and Incremental?**         |
-| Yes, the book has a simple - complex sequencing.         |
+| No, the book tries to be lineal using the idea of implementing a custom module, but it's more complex than this.         |
 | **2- Does it offer specific solutions to particular problems or concrete issues?**         |
-| Yes, the book is built in a clear problem-solution scheme.         |
+| Yes, the book is full-filled with a lot of proposals, solutions and ideas.         |
 | **3- Does it explain well the original problems or needs it aims to solve?**       |
-| Yes, exactly the book begins by setting out the premises of a good environment and the related problems.        |
+| Yes, Yes, although it does not have a problem-solution structure it's rather a topic-exposition.        |
 | **4- Is this book rich in examples?**         |
 | Yes, it contains many examples and practical demonstrations.          |
 | **5- Is this book written in plain English, suitable for non-English speakers?**          |
-| Yes, it’s a very comfortable reading, very simple, very pleasant.         |
+| No, it contains set phrases, expressions, usages that sometimes take it away from plain English. .         |
 | **6- Is it up to date?**         |
-| Yes, it is updated frequently. This edition I have is from July 2019 and I know there is a later edition from August 2019.          |
+| Yes, is a recent issue from August 2019.          |
 
 
 ## 6- Ratings
