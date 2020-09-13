@@ -28,7 +28,7 @@ Following the previous post, in this article I wanted to share again some guidel
  
 --------------------------------------------------------------------------------------
 
-**Picture from Unsplash, user [Krzysztof Niewolny, @epan5](https://unsplash.com/@epan5)**
+**Picture from Unsplash, user [Neenu Vimalkumar, @dreamquest12610](https://unsplash.com/@dreamquest12610)**
 
   
 ---------------------------------------------------------------------------------
