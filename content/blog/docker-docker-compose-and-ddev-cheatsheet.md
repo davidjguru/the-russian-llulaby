@@ -264,12 +264,17 @@ docker ps -q | xargs  docker stats --no-stream
 ```
 # Run a multi-container application with Docker Compose
 docker-compose up -d
+
 # Turn on the Docker Compose network
 # but building images before starting containers
 docker-compose up --build
 
 # Stop a multi-container application with Docker Compose
 docker-compose stop
+
+# Stop your docker-compose network, rebuild it and launch.
+# Think about creating an alias in your bashrc file ;-) 
+docker-compose stop && docker-compose up --build --force-recreate
 
 # Kill and delete containers based in Docker Compose
 docker-compose down
