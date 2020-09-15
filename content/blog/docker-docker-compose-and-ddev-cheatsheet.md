@@ -40,9 +40,10 @@ We know that for some years, working with Docker Engine has become a MUST. From 
 [4- Images](#4--images)
 [5- Containers](#5--containers)  
 [6- Docker-Compose](#6--docker-compose)  
-[7- Others](#7--others)  
-[8- DDEV](#8--ddev)   
-[9- :wq!](#9--wq)    
+[7- Docker Swarm](#7--docker-swarm)  
+[8- Others](#8--others)   
+[9- DDEV](#9--ddev)   
+[10- :wq!](#10--wq)    
 <!-- /TOC -->
 
 -------------------------------------------------------------------------------
@@ -298,13 +299,44 @@ docker-compose logs -t ALIAS
 docker-compose logs -t -f ALIAS
 ```
 
-## 7- Others
+## 7- Docker Swarm 
 
 ```
+# Docker Swarm: enabling Swarm with the current node.
+# Swarm is disabled by default.
+docker swarm init 
+
+# Docker Swarm: leave this swarm and join another one.
+docker swarm leave
+
+# Docker Swarm: create new service.
+docker service create my-app
+
+# Docker Swarm: create new service with a name.
+docker service create --name my-service my-app 
+
+# Docker Swarm: create 3 instances for the service.
+docker service create --name my-service --replicas 3 my-app
+
+# Docker Swarm: Set ports to the application <host_port>:<container_port>
+docker service create --replicas 3 --name my-service -p 8080:80 my-app
+
+# Docker Swarm: Now load a network for the services. 
+docker service create --replicas 3 --name my-service -p 8080:80 --network net-end my-app
+
+# Docker Swarm: Updating the service from 3 to six containers. 
+# option 1
+docker service scale my-service=6
+# option 2
+docker service update --replicas=6 my-service
+
 # Docker Swarm: Deploy instances of application 
 # across docker host.
 docker stack deploy -c docker-compose.yml
+```
 
+## 8- Others
+```
 # Remove ALL: stopped containers, all networks 
 # not used and all dangling images.
 docker system prune
@@ -314,7 +346,7 @@ docker system prune
 docker system df
 ```
 
-## 8- DDEV
+## 9- DDEV
 If you need an introduction to DDEV, I recommend you read this article that I wrote recently (the previous month): [Development environments for Drupal with DDEV](https://www.therussianlullaby.com/blog/creating-development-environments-for-drupal-with-ddev/).
 
 | ![Picture from Unsplash, by @hannahmgibbs](../../images/post/davidjguru_docker_docker_compose_ddev_tools_3.jpg) |
@@ -401,7 +433,7 @@ ddev stop --remove-data --omit-snapshot
 
 ```
 
-## 9- :wq!
+## 10- :wq!
 
 ##### Recommended song
 
