@@ -37,7 +37,7 @@ We know that for some years, working with Docker Engine has become a MUST. From 
 [1- Introduction](#1--introduction)  
 [2- Basics](#2--basics)  
 [3- Dockerfile](#3--dockerfile)  
-[4- Images](#4--images)
+[4- Images](#4--images)  
 [5- Containers](#5--containers)  
 [6- Docker-Compose](#6--docker-compose)  
 [7- Docker Swarm](#7--docker-swarm)  
