@@ -23,8 +23,7 @@ type: "post"
 ---
 
 
-
-For a long time I was thinking about write or not a review of the Drupal 8 Module Development (the former edition of the current). For me there were two very important keys: on the one hand, it was a very ambitious book in terms of scope and content (so it was an important challenge to make a synthesis on its simple review). On the other hand, Drupal 9 was already on its way and it was possible that it would be deprecated quickly. Luckily, Drupal 9 has already arrived and the transition from 8 to 9 has not only not been at all traumatic (there are still many people trapped in the crack between Drupal 7 and Drupal 8), but it has also been an easy road. There won't be substantial or profound differences in how to approach the creation of custom modules in Drupal 9 respect to Drupal 8 and with this new edition adapted to Drupal 9, everything is ready to review this ambitious book. There we go!  
+It is said that a small change or the sum of many of them can end up generating great transformations. This is valid as a legend to address improvements or to analyze the meaning of chaos, but now I just want to use it to frame the meaning of today's article. There we go!  
 
 --------------------------------------------------------------------------------------
 **Picture from Unsplash, user [Benjamin @Child](https://unsplash.com/@bchild311)**
