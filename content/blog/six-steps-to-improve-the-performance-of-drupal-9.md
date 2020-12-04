@@ -34,6 +34,10 @@ It is said that a small change or the sum of many of them can end up generating 
 **Table of Contents**  
 <!-- TOC -->  
 [Introduction](#introduction)  
+* [Acknowledgements and Reading Materials](#acknowledgements--reading-materials)
+* [The Heuristic Approach](#the-heuristic-approach)
+* [Scenario](#scenario)  
+  
 [Step 1 - Select your Tooling](#step-1-select-your-tooling)  
 * [Prompt](#prompt)  
 * [Browser Extensions](#browser-extensions)  
@@ -75,11 +79,21 @@ It is said that a small change or the sum of many of them can end up generating 
 
 Managing Performance and the related improvements is a complex and arduos process consisting of a multitude of records, testing and interventions, in a continuous cycle of test-measure-review-intervention, and this can be quite a tedious task. Due to this, therefore, in order to better define the baselines, I'll describe the intervention escenarios as layers within the tech stack of our project, in order to address increasingly specific tasks and technological differences based on their own context.  
 
-### Acknowledgements
+Maybe for some people the scope of this post will be advanced, for others it will be very basic...in my defense, I can only say that I have over a hundred pages in various documents that I have been writing down, and that I would like to put in the form of articles. As always, I would like these publications to be of interest to someone in the same situation. This is just the first one (I guess). In any case, be patient and enjoy.  
 
-The first assumption that we must make is that we have a long, complex and abstract path ahead of us, so to conjure up these challenges we will take as a premise the idea that _**"Knowing where to start and which issues are of high priority can be one of the most difficult parts of optimizing a site"**_ , one of the first (and main idea) present in the fundamental work _**"High Performance Drupal"(2014)**_ , written by Sheltren, Newton and Catchpole: [oreilly.com/high-performance-drupal](https://www.oreilly.com/library/view/high-performance-drupal/9781449358013/) and which has turned out to be an old basic pillar of our training as part of the Drupal community.  
+
+### Acknowledgements & Reading Materials
+
+The first assumption that we must make is that we have a long, complex and abstract path ahead of us, so to conjure up these challenges we will take as a premise the idea that _**"Knowing where to start and which issues are of high priority can be one of the most difficult parts of optimizing a site"**_ , one of the first (and main idea) present in the fundamental work _**"High Performance Drupal"(2013)**_ , written by Sheltren, Newton and Catchpole: [oreilly.com/high-performance-drupal](https://www.oreilly.com/library/view/high-performance-drupal/9781449358013/) and which has turned out to be an old basic pillar of our training as part of the Drupal community.  
 
 This journey will take place together with them and always with a hand on their essential work about performance issues in the context of Drupal-based projects. Only if we stading on the shoulders of giants can we better see the horizon. Don't you think so?.  
+
+This whole process of experience and iterative learning, has been produced - _in my case, at least_ - progressively through practice and theory. In addition to a set of links that I am incorporating in the final section [-here-](#step-6---read-more-and-more-and-more), I recommend as study material the following related books: 
+
+* PHP 7 Data Structures and Algorithms - Mizanur Rahman (2018), [published by Packt](https://www.packtpub.com/product/php-7-data-structures-and-algorithms/9781786463890).
+* High Performance Drupal - Jeff Sheltren, Narayan Newton, Nathaniel Catchpole (2013), [published by O'Reilly](https://www.oreilly.com/library/view/high-performance-drupal/9781449358013/).
+* Drupal 9 Module Development - Daniel Sipos (2020), [published by Packt](https://www.packtpub.com/product/drupal-9-module-development-third-edition/9781800204621). Was already [reviewed here in this article](https://www.therussianlullaby.com/blog/books-drupal-module-development/).  
+
 
 ### The Heuristic Approach 
 
@@ -98,18 +112,37 @@ The case of Pólya is important in this case, since with his seminal work _**["H
 
 As with any major problem that remains (for the moment) in the form of the enormous and the abstract, our situation invites a lateral approach, intuitive interpretation, thoughtful creativity: we have some macro figures, some "general" assessments regarding the performance of our Drupal installation and we must reduce it: that is our mission, the only important thing now, Mr Anderson. 
 
-But as it's still an undetermined scenario (thinking about the first time), we require and propose a lateral, partial, iterative and incremental approach. We need perhaps to induce more than to deduct and take the parts until we reach the category and settle the whole. For all these reasons, we have chosen a heuristic approach that allows us to work with items, activities and strategies that facilitate the lateral approach of that great vessel that is itself the performance of an online platform of these characteristics. 
+But as it's still an undetermined scenario (thinking about the first time), I require and propose a lateral, partial, iterative and incremental approach. We need perhaps to induce more than to deduct and take the parts until we reach the category and settle the whole. For all these reasons, we have chosen a heuristic approach that allows us to work with items, activities and strategies that facilitate the lateral approach of that great vessel that is itself the performance of an online platform of these characteristics.  
+
+**How do I prepare my little heuristic?** My approach is based on the gathering of a series of fundamental items from which to establish the basic framework: we will resort to the great sources of each technology to study, collect and evaluate the configuration proposals they offer, to accumulate possible actions that will give rise to an initial study checklist that we can compare and check in parallel if the interventions generate fruits in the form of measurable changes. I build checklists, execute interventions, obtain values and compare results.  
+ 
+We will then operate on that base framework by extending reviews of more advanced issues.  
+
 
 
 ### Scenario   
 
+Now I would like to share what is my current stack, just in the moment while I'm writing these lines. Actually the experiences gathered here come from different scenarios, for several different projects and clients, so as part of the objectives of this article I wanted to unify everything in a single scenario. 
+
+So my current environment is build so: 
+
+Hardware (Host)
+Processor: i7 - 10510U, 1.80GHz, 2.30GHz
+RAM: 16GB
+Drive: SSD, 476GB
+System: 64bit
+
+Operating System (Host): Windows 10, build 18363.
+
+Virtualization Hardware provided by Virtual Box 6.1.16
+
+Operating System (Guest): 
+
+Container
+
 * For Debian Ubuntu   
 
 * Stack (Envinronment)  
-
-### Reading Materials  
-
-This whole process of experience and iterative learning, has been produced - _for me_ - progressively through practice and theory.  
 
 
 
@@ -176,7 +209,7 @@ $ wget https://gitlab.com/davidjguru/scripting_for_drupal/-/raw/main/clinic/inst
 $ chmod +x installing_tooling_for_performance
 $ ./installing_tooling_for_performance
 ```
-But remember that: the script will executes update and upgrade of your installed packages.  
+**AWARE:** Remember that the script will executes update and upgrade of your installed packages.  
 
 
 ### Browser Extensions
