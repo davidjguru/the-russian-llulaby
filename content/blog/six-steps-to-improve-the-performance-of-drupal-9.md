@@ -124,25 +124,41 @@ We will then operate on that base framework by extending reviews of more advance
 
 Now I would like to share what is my current stack, just in the moment while I'm writing these lines. Actually the experiences gathered here come from different scenarios, for several different projects and clients, so as part of the objectives of this article I wanted to unify everything in a single scenario. 
 
-So my current environment is build so: 
+**Why?** Well, while I was reviewing and checking all the tests and values, I remembered that many were also conducted in different environments: from local development to production (live)...so to move forward I have unified everything in a environment ready for testing.  
 
-Hardware (Host)
-Processor: i7 - 10510U, 1.80GHz, 2.30GHz
-RAM: 16GB
-Drive: SSD, 476GB
-System: 64bit
+This test environment does not really represent other scenarios with much fidelity: DDEV is not its "live" version but its DDEV-Local version, or it does not contain orchestration tools such as Kubernetes (required in almost any deployment), or management from OpenShift. However, it's a stack that anyone can reproduce on their computer with very basic tools and does not require hard learning or installation, configuration, deployment or scaling processes. That's why I think it's a good idea to keep it simplified for the purposes of this article.  
 
-Operating System (Host): Windows 10, build 18363.
+So my current environment is build so:  
 
-Virtualization Hardware provided by Virtual Box 6.1.16
 
-Operating System (Guest): 
+|  **Host**           |                                 |
+| -------------------:|:--------------------------------|
+| Processor           | i7 - 10510U, 1.80GHz, 2.30GHz   |
+| RAM                 | 16GB                            |
+| Drive               | SSD, 476GB                      |
+| System              | 64bit                           |
+| OS                  | Windows 10, build 18363         |
+| Virtualization      | Hardware                        |
+| Virtualization tool | VirtualBox 6.1.16               |
 
-Container
 
-* For Debian Ubuntu   
+|  **Guest**          |                                 |
+| -------------------:|:--------------------------------|
+| Processor           | 4CPUs                           |
+| RAM                 | 11GB                            |
+| Drive               | vdi, 30GB                       |
+| System              | 64bit                           |
+| OS                  | Ubuntu 18.05.5 (LTS)            |
+| Virtualization      | Software                        |
+| Virtualization tool | Containerization                |
 
-* Stack (Envinronment)  
+
+|  **Containerization**  |                                 |
+| ----------------------:|:--------------------------------|
+| Docker                 | 19.03.14                        |
+| Docker-Compose         | 1.24.1                          |
+| DDEV                   | 1.16.0                          |
+
 
 
 
