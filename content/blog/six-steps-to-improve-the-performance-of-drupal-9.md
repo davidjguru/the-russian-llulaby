@@ -273,6 +273,90 @@ using the information gathered in the performance baseline and your review.
 
 ### Understanding PHP 
 
+
+https://gitlab.com/snippets/1925326
+
+#### PHP 5.6 for a Drupal 6
+
+```bash
+$ ddev ssh 
+drupal@old-drupal-web:/var/www/html$ wget https://gitlab.com/-/snippets/1925326/raw/master/show_memory_usage.php
+```
+
+```bash
+drupal@old-drupal-web:/var/www/html$ php -v
+PHP 5.6.40-38+0~20201103.42+debian10~1.gbpb211e0 (cli) 
+```
+
+
+```bash
+drupal@old-drupal-web:/var/www/html$ php show_memory_usage.php 
+Initial memory: 221.45 KB
+Final memory: 14.19 MB
+Memory Usage: 13.97 MB
+
+Initial memory for Fixed Array: 14.19 MB
+Final memory for Fixed Array: 19.53 MB
+Memory Usage for Fixed Arrays: 5.34 MB
+```
+
+#### PHP 7.3 for Drupal 8
+
+```bash
+drupal@current-drupal-web:/var/www/html/docroot$ php -v
+PHP 7.3.24-3+0~20201103.72+debian10~1.gbp945915 (cli) 
+```
+
+```bash
+drupal@current-drupal-web:/var/www/html/docroot$ php show_memory_usage.php 
+Initial memory: 384.07 KB
+Final memory: 4.38 MB
+Memory Usage: 4 MB
+
+Initial memory for Fixed Array: 4.38 MB
+Final memory for Fixed Array: 5.91 MB
+Memory Usage for Fixed Arrays: 1.53 MB
+```
+
+#### PHP 8 for Drupal 9.1.0
+
+In `.ddev/config.yml`:
+
+```bash
+name: next-drupal-web
+type: drupal9
+docroot: web
+php_version: "8.0"
+webserver_type: nginx-fpm
+router_http_port: "80"
+router_https_port: "443"
+```
+
+```bash
+$ ddev ssh
+drupal@next-drupal-web-web:/var/www/html/web$ php -v
+PHP 8.0.0RC3 (cli)
+```
+```bash
+drupal@next-drupal-web-web:/var/www/html/web$ php show_memory_usage.php 
+Initial memory: 343.89 KB
+Final memory: 4.34 MB
+Memory Usage: 4 MB
+
+Initial memory for Fixed Array: 4.34 MB
+Final memory for Fixed Array: 5.87 MB
+Memory Usage for Fixed Arrays: 1.53 MB
+```
+
+#### Comparative table  
+
+|  **Memory Consumption**  |   PHP Array 100K elements  |  PHP Fixed Array 100K elements  |
+| :------------------------|:---------------------------|:--------------------------------|
+| PHP 5.6                  | 13.97 MB                   |  5.34 MB                        |
+| PHP 7.3                  | 4 MB                       |  1.53 MB                        |
+| PHP 8.0.0RC3             | 4 MB                       |  1.53 MB                        |
+
+
 ### OPCache 
 
 **Memory**
