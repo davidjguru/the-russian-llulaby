@@ -31,46 +31,54 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
   
 ---------------------------------------------------------------------------------
 
-**Table of Contents**  
+**Index of sections**  
 <!-- TOC -->  
-[1-Introduction](#introduction)  
+[1-Introduction](#1--introduction)   
+[2- JavaScript and Drupal: basic concepts](#2--javascript-and-drupal-basic-concepts)  
+[3- How to include JavaScript code in Drupal](#3--how-to-include-javascript-code-in-drupal)  
+  * [3.1- Setting up the scenario: creating a custom module](#31--setting-up-the-scenario-creating-a-custom-module)  
+  * [3.2- The Library concept](#32--the-library-concept)  
+    * [3.2.1- Secuence for creating libraries](#321--secuence-for-creating-libraries)  
+    * [3.2.2- Loading libraries in head](#322--loading-libraries-in-head)  
+    * [3.2.3- Libraries as external resources](#323--libraries-as-external-resources)  
+    * [3.2.4- Libraries and dependencies](#324--libraries-and-dependencies)  
+  * [3.3- The JavaScript file](#33--the-javascript-file)  
+  * [3.4- Adding JavaScript Libraries](#34--adding-javascript-libraries)  
+    * [3.4.1- Using the attached property in Render Arrays](#341--using-the-attached-property-in-render-arrays)  
+    * [3.4.2- Libraries in a TWIG template](#342--libraries-in-a-twig-template)  
+    * [3.4.3- Global libraries for a Theme](#343--global-libraries-for-a-theme)  
+    * [3.4.4- Adding libraries from hooks](#344--adding-libraries-from-hooks)  
+[4- Just a little bit more of JavaScript in Drupal](#4--just-a-little-bit-more-of-javascript-in-drupal)  
+  * [4.1- Structure and Guidelines for IIFE](#41--structure-and-guidelines-for-iife)
+  * [4.2- Passing parameters in IIFE](#42--passing-parameters-in-iife)  
+  * [4.3- Passing values from PHP to JavaScript using drupalSettings](#43--passing-values-from-php-to-javascript-drupalsettings)  
+  * [4.4- Changes in rendered HTML](#44--changes-in-rendered-html)  
+    * [4.4.1- Counting visits using web storage](#441--counting-visits-using-web-storage)  
+[5- Drupal and the old jQuery](#5--drupal-and-the-old-jquery)  
+  * [Fast Review of the jQuery keys](#51--fast-review-of-the-jquery-keys)  
+  * [Using jQuery in our Drupal installation](#52--using-jquery-in-our-drupal-installation)  
+  * [Using a different version of jQuery](#53--using-a-different-version-of-jquery)  
+[6- Drupal Behaviors](#6--drupal-behaviors)
+  * [Anatomy of a Behavior](#61--anatomy-of-a-behavior)  
+  * [The global object: Drupal](#62--the-global-object-drupal)  
+  * [Behaviors in Drupal](#63--behaviors-in-drupal)  
+[7- JavaScript without JavaScript: #ajax, #states](#7--javascript-without-javascript-ajax-states)  
+  * [Brief Introduction to AJAX in Drupal](#71--brief-introduction-to-ajax-in-drupal)  
+  * [Rendering elements with #states propery](#72--rendering-elements-with-states-property)  
+[8- Problems and Solutions](#8--problems-and-solutions)  
+  * [Slow execution due to wrong use of context](#81--slow-execution-due-to-wrong-use-of-context)  
+  * [Loading JavaScript out of context](#82--loading-javascript-out-of-context)  
+[9- Links and reading resources](#9--links-and-reading-resources)  
+[10- :wq!](#wq)  
+
+**Index of Exercises**  
+<!-- TOC -->  
+[1-Introduction](#1--introduction)  
 * [Acknowledgements and Reading Materials](#acknowledgements--reading-materials)
 * [The Heuristic Approach](#the-heuristic-approach)
 * [Scenario](#scenario)  
-  
-[Step 1 - Select your Tooling](#step-1-select-your-tooling)  
-* [Prompt](#prompt)  
-* [Browser Extensions](#browser-extensions)  
-* [Drupal Modules](#drupal-modules)  
 
-[Step 2 - Take an updated photo](#step-2-take-an-update-photo)  
-* [Make your own plan](#make-your-own-plan)  
-* [Get a snapshot](#get-a-snapshot)  
-* [Goals and Benchmarking ](#goals-and-benchmarking)  
 
-[Step 3 - Check out PHP](#step-3-check-out-php)  
-* [Understanging PHP](#understanding-php)
-* [OPCache](#opcache)  
-* [Some More Optimizations](#some-more-optimizations)  
-  
-[Step 4 - Review your Nginx webserver](#step-4-review-your-nginx-webserver)  
-* [FPM: Processes, Workers and Threads](#fpm-processes-workers-and-threads)  
-* [Enabling some key params](#enabling-some-key-params)  
-* [Compression and functions](#compression-and-functions)  
-  
-[Step 5 - Have a little checklist for your stack](#step-5---have-a-little-checklist-for-your-stack)
-* [Review your Drupal installation](#review-your-drupal-installation)  
-* [Tuning MySQL (MariaDB)](#tuning-mysql-mariadb)  
-* [How Docker Works](#how-docker-works)  
-
-[Step 6 - Read more and more, and more](#step-6---read-more-and-more-and-more)  
-* [About Drupal Performance](#about-drupal-performance)  
-* [About Nginx Performance](#about-nginx-performance)  
-* [About PHP Performance](#about-php-performance)  
-* [About MySQL Performance](#about-mysql-performance)  
-* [About Docker Performance](#about-docker-performance)  
-
-[:wq!](#wq)  
 <!-- /TOC -->
 
 -------------------------------------------------------------------------------
@@ -107,4 +115,109 @@ By this way you will know what we are talking about at any time in the manual an
 
 * **Immediately-invoked Function Expressions(IIFE)**: Also called "self-executing" function, it's a specific format to declare JavaScript functions so they are executed as they are declared, as soon as they are defined. See: [flaviocopes.com/javascript-iife](https://flaviocopes.com/javascript-iife/) to understand better this important concept. In this article we tried to integrate JavaScript into Drupal through this format, so it would be optimal if you at least understand the concept.  
   
-* **
+* **AJAX**: This stands for Asynchronous JavaScript + XML, a combination of technologies for use partial requests (lighter than complete requests) from the client to the server, which results in speed and performance improvements. See more: [developer.mozilla.org/Guide/AJAX](https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX). Although it is a complex and extensive topic, we will focused in the possibilities of implementing AJAX in Drupal.  
+  
+* **DOM**: The Document Object Model is the tree structure that represents all the HTML code used in the representation of the web we are visiting. See: [developer.mozilla.org/Glossary/DOM](https://developer.mozilla.org/en-US/docs/Glossary/DOM). In this guide we are going to make modifications and operations on HTML elements, so we will learn how to make changes on the DOM from Drupal.  
+  
+* **jQuery**: It's a mythical library based on JavaScript to facilitate (theoretically) manipulations of the DOM. In Drupal it (still, by now) maintains a very extensive presence, so we better get along with it. See: [developer.mozilla.org/Glossary/jQuery](https://developer.mozilla.org/en-US/docs/Glossary/jQuery). We're going to execute jQuery code in the Drupal context.  
+
+## 3- How to include JavaScript code in Drupal
+
+### 3.1- Setting up the scenario: creating a custom module
+
+### 3.2- The "library" concept
+
+#### 3.2.1- Secuence for creating libraries  
+
+#### 3.2.2- Loading libraries in head 
+
+#### 3.2.3- Libraries as external resources  
+
+#### 3.2.4- Libraries and dependencies 
+
+### 3.3- The JavaScript file  
+
+### 3.4- Adding JavaScript libraries 
+
+#### 3.4.1- Using the #attached property in Render Arrays 
+
+#### 3.4.2- Libraries in a TWIG template
+
+#### 3.4.3- Global libraries for a Theme 
+
+#### 3.4.4- Adding libraries from Hooks
+
+## 4- Just a little bit more of JavaScript in Drupal  
+
+### 4.1- Structure and guidelines for IIFE
+
+### 4.2- Passing parameters in IIFE
+
+### 4.3- Passing values from PHP to JavaScript: drupalSettings  
+
+### 4.4- Changes in rendered HTML 
+
+#### 4.4.1- Counting visits using Web Storage
+
+## 5- Drupal and the old jQuery 
+
+### 5.1- Fast review of the jQuery keys
+
+### 5.2- Using jQuery in our Drupal installation  
+
+### 5.3- Using a different version of jQuery  
+
+## 6- Drupal Behaviors  
+
+### 6.1- Anatomy of a Behavior  
+
+### 6.2- The global object "Drupal" 
+
+### 6.3- Behaviors in Drupal 
+
+## 7- JavaScript without JavaScript: #ajax, #states  
+
+### 7.1- (Brief) Introduction to AJAX in Drupal  
+
+### 7.2- Rendering elements with #states property 
+
+## 8- Problems and solutions 
+
+### 8.1- Slow execution due to wrong use of 'context' 
+
+
+### 8.2- Loading JavaScript out of context 
+
+
+## 9- Links and Reading resources 
+
+### 9.1- JavaScript fundamentals 
+
+* [http://ryanmorr.com/understanding-scope-and-context-in-javascript/](http://ryanmorr.com/understanding-scope-and-context-in-javascript/)  
+  
+### 9.2- Functions in JavaScript and the IIFE format 
+
+* [https://developer.mozilla.org/en-US/docs/Glossary/IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)  
+* [https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript#Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript#Functions)  
+* [https://medium.com/@vvkchandra/essential-javascript-mastering-immediately-invoked-function-expressions-67791338ddc6](https://medium.com/@vvkchandra/essential-javascript-mastering-immediately-invoked-function-expressions-67791338ddc6)  
+
+### 9.3- JavaScript and Drupal  
+
+* [Unofficial JavaScript API for Drupal, by Théodore Biadala, @nod_](http://read.theodoreb.net/drupal-jsapi/)  
+* [https://stackoverflow.com/questions/34025396/how-to-open-a-modal-in-drupal-8-without-using-a-link](https://stackoverflow.com/questions/34025396/how-to-open-a-modal-in-drupal-8-without-using-a-link)  
+* [An example about Drupal.dialog](https://gist.github.com/devudit/dcdb76502975a13dd7c623cecc04f509)  
+* [https://stackoverflow.com/questions/3941426/drupal-behaviors](https://stackoverflow.com/questions/3941426/drupal-behaviors)  
+* [https://sqndr.github.io/d8-theming-guide/javascript/behaviors.html](https://sqndr.github.io/d8-theming-guide/javascript/behaviors.html)  
+* [http://www.jaypan.com/tutorial/high-performance-javascript-using-drupal-7s-javascript-api](http://www.jaypan.com/tutorial/high-performance-javascript-using-drupal-7s-javascript-api)  
+
+### 9.4- jQuery 
+
+  * [https://github.com/robloach/jquery-once](https://github.com/robloach/jquery-once)  
+  * [https://github.com/RobLoach/jquery-once/blob/master/API.md#readme](https://github.com/RobLoach/jquery-once/blob/master/API.md#readme)  
+
+
+## 10- :wq! 
+
+##### Recommended song
+
+{{< youtube e5Z56ZXvAy4 >}}
