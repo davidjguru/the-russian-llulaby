@@ -55,20 +55,25 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
   * [4.4- Changes in rendered HTML](#44--changes-in-rendered-html)  
     * [4.4.1- Counting visits using web storage](#441--counting-visits-using-web-storage)  
 [5- Drupal and the old jQuery](#5--drupal-and-the-old-jquery)  
-  * [Fast Review of the jQuery keys](#51--fast-review-of-the-jquery-keys)  
-  * [Using jQuery in our Drupal installation](#52--using-jquery-in-our-drupal-installation)  
-  * [Using a different version of jQuery](#53--using-a-different-version-of-jquery)  
+  * [5.1- Fast Review of the jQuery keys](#51--fast-review-of-the-jquery-keys)  
+  * [5.2- Using jQuery in our Drupal installation](#52--using-jquery-in-our-drupal-installation)  
+  * [5.3- Using a different version of jQuery](#53--using-a-different-version-of-jquery)  
 [6- Drupal Behaviors](#6--drupal-behaviors)
-  * [Anatomy of a Behavior](#61--anatomy-of-a-behavior)  
-  * [The global object: Drupal](#62--the-global-object-drupal)  
-  * [Behaviors in Drupal](#63--behaviors-in-drupal)  
+  * [6.1- Anatomy of a Behavior](#61--anatomy-of-a-behavior)  
+  * [6.2- The global object: Drupal](#62--the-global-object-drupal)  
+  * [6.3- Behaviors in Drupal](#63--behaviors-in-drupal)  
 [7- JavaScript without JavaScript: #ajax, #states](#7--javascript-without-javascript-ajax-states)  
-  * [Brief Introduction to AJAX in Drupal](#71--brief-introduction-to-ajax-in-drupal)  
-  * [Rendering elements with #states propery](#72--rendering-elements-with-states-property)  
+  * [7.1- Brief Introduction to AJAX in Drupal](#71--brief-introduction-to-ajax-in-drupal)  
+  * [7.2- Rendering elements with #states propery](#72--rendering-elements-with-states-property)  
 [8- Problems and Solutions](#8--problems-and-solutions)  
-  * [Slow execution due to wrong use of context](#81--slow-execution-due-to-wrong-use-of-context)  
-  * [Loading JavaScript out of context](#82--loading-javascript-out-of-context)  
+  * [8.1- Slow execution due to wrong use of context](#81--slow-execution-due-to-wrong-use-of-context)  
+  * [8.2- Loading JavaScript out of context](#82--loading-javascript-out-of-context)  
 [9- Links and reading resources](#9--links-and-reading-resources)  
+  * [9.1- JavaScript fundamentals](#91--javascript-fundamentals)  
+  * [9.2- Functions in JavaScript and the IIFE format](#92--functions-in-javascript-and-the-iife-format)  
+  * [9.3- JavaScript and Drupal](#93--javascript-and-drupal)  
+  * [9.4- jQuery](#94--jquery)  
+  * [9.5- Snippets](#95--snippets)  
 [10- :wq!](#wq)  
 
 **Index of Exercises**  
@@ -123,7 +128,27 @@ By this way you will know what we are talking about at any time in the manual an
 
 ## 3- How to include JavaScript code in Drupal
 
+We will practice with the inclusion of JavaScript code in our project. To do this, we will create a new custom module and iterate on it providing you with JavaScript based functionality while we discuss the most important concepts in the following sections. In order to doing this, I recommend quickly creating a containerised test environment, using DDEV to deploy a Drupal installation on the fly. If you don't know DDEV, you can follow my own guide published in Digital Ocean: [How To Develop a Drupal 9 Website on Your Local Machine Using Docker and DDEV](https://www.digitalocean.com/community/tutorials/how-to-develop-a-drupal-9-website-on-your-local-machine-using-docker-and-ddev).  
+
+You can also deploy a lightweight version of a Drupal installation just using your PHP local config, with a light server. Follow the steps in the next snippet:  
+
+* [Drupal 8 || 9 : Ultra-lightweight deploy of Drupal setup (without Apache or MySQL)](https://gitlab.com/-/snippets/2021961)
+
+
 ### 3.1- Setting up the scenario: creating a custom module
+
+To begin with, let's define the new custom module we will work with. I don't know what context you have with respect to Drupal, so I'll write down here a sequence of links that you can update with. You will need a Drupal deploy, maybe XAMP+ environment with web server, database and a Drupal deployed and ready to use, or if you're using DDEV (as I recommended in the previous section).  
+
+Explaining how to create a custom module for Drupal is beyond the scope of this guide, but here are some links to read:  
+
+* [Drupal.org guide: Creating Custom Module](https://www.drupal.org/docs/creating-custom-modules)  
+
+**Snippets**
+* [Drupal 9 in six steps using DDEV: Quick Deploy](https://gitlab.com/-/snippets/2012512)  
+* [Drupal 8 || 9: Deploying a new Drupal Site with Composer / Drush on the fly](https://gitlab.com/-/snippets/1897782)  
+* [Drupal 8 || 9: Creating modules and forms using Drupal Console](https://gitlab.com/-/snippets/1898128)  
+
+
 
 ### 3.2- The "library" concept
 
@@ -209,13 +234,20 @@ By this way you will know what we are talking about at any time in the manual an
 * [https://stackoverflow.com/questions/3941426/drupal-behaviors](https://stackoverflow.com/questions/3941426/drupal-behaviors)  
 * [https://sqndr.github.io/d8-theming-guide/javascript/behaviors.html](https://sqndr.github.io/d8-theming-guide/javascript/behaviors.html)  
 * [http://www.jaypan.com/tutorial/high-performance-javascript-using-drupal-7s-javascript-api](http://www.jaypan.com/tutorial/high-performance-javascript-using-drupal-7s-javascript-api)  
+* [Drupal.org guide: Creating Custom Module](https://www.drupal.org/docs/creating-custom-modules)  
+* [How To Develop a Drupal 9 Website on Your Local Machine Using Docker and DDEV](https://www.digitalocean.com/community/tutorials/how-to-develop-a-drupal-9-website-on-your-local-machine-using-docker-and-ddev)
 
 ### 9.4- jQuery 
 
   * [https://github.com/robloach/jquery-once](https://github.com/robloach/jquery-once)  
   * [https://github.com/RobLoach/jquery-once/blob/master/API.md#readme](https://github.com/RobLoach/jquery-once/blob/master/API.md#readme)  
 
+### 9.5- Snippets
 
+* [Drupal 8 || 9 : Ultra-lightweight deploy of Drupal setup (without Apache or MySQL)](https://gitlab.com/-/snippets/2021961)
+* [Drupal 9 in six steps using DDEV: Quick Deploy](https://gitlab.com/-/snippets/2012512)  
+* [Drupal 8 || 9: Deploying a new Drupal Site with Composer / Drush on the fly](https://gitlab.com/-/snippets/1897782)  
+* [Drupal 8 || 9: Creating modules and forms using Drupal Console](https://gitlab.com/-/snippets/1898128)  
 ## 10- :wq! 
 
 ##### Recommended song
