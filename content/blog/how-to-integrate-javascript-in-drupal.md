@@ -78,10 +78,10 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
 
 **Index of Exercises**  
 <!-- TOC -->  
-[1-Introduction](#exercise-1-creating-a-basic-custom-module-for-testing)  
-* [Acknowledgements and Reading Materials](#acknowledgements--reading-materials)
-* [The Heuristic Approach](#the-heuristic-approach)
-* [Scenario](#scenario)  
+[Exercise 1: Creating a basic custom module](#exercise-1-creating-a-basic-custom-module-for-testing)  
+[Exercise 2: Defining our new custom library](#exercise-2-defining-our-new-custom-library)  
+[Exercise 3: Defining our initial JavaScript file](#exercise-3-defining-our-initial-javascript-file)  
+
 
 
 <!-- /TOC -->
@@ -247,7 +247,7 @@ But in this case, we are going to reverse steps 1 and 2: first we will see how t
 
 ### Exercise 2: Defining our new custom library
 
-Let's see...in our custom module, we'll include un nuevo fichero module_name.libraries.yml in order to describe the new dependencies, so in our case study, we'll create a new file called javascript_custom_module.libraries.yml filled with the next lines:  
+Let's see...in our custom module, we'll include a new file module_name.libraries.yml in order to describe the new dependencies, so in our case study, we'll create a new file called javascript_custom_module.libraries.yml filled with the next lines:  
 
 ```
 // Case 1: Basic library file with only JavaScript dependencies.
@@ -320,13 +320,77 @@ Quite interesting, right?
 
 
 
-#### 3.2.4- Libraries and dependencies 
+#### 3.2.4- Libraries and dependencies  
+
+It is possible that within our JavaScript code, in your own .js file, we may need to use another third-party library for our functionality. Well, in that case, we can declare libraries with dependencies following a basic vendor/resource or vendor/library scheme.
+
+Let's see an example in which we intend to use a hide/show effect. As such animations are available in the jQuery library and it's integrated in Drupal (we will see it later), then instead of creating those functions we'll declare the dependency and we will be able to use them:  
+
+
+```
+js_library_hide_show:
+  js:
+    js/my_custom_javascript_library.js: {}
+  dependencies:
+    - core/jquery
+```
+
+In addition, there is a set of options that you can use as attributes to customize the use of your new CSS / JavaScript libraries. See: [Drupal org Docs: Libraries options and details](https://www.drupal.org/docs/8/theming/adding-stylesheets-css-and-javascript-js-to-a-drupal-8-theme#libraries-options-details).  
 
 ### 3.3- The JavaScript file  
 
+The next step will be to define that JavaScript file that we have declared as a resource within the new previous library.  
+
+### Exercise 3: Defining our initial JavaScript file 
+
+For that, we'll create a /js folder and will put inside our new file hello-world.js wich contains our new library with a little action, just say hello by Console:  
+
+```
+(function () {
+  'use strict';
+
+  // Put here your custom JavaScript code.
+  console.log ("Hello World");
+})();
+```
+
+So the internal structure of our custom module for testing should look like this:  
+
+```
+/javascript_custom_module
+    /js
+        javascript_file_name.js
+    /src
+        /Controller
+            YourCustomExampleController.php
+    javascript_custom_module.info.yml
+    javascript_custom_module.routing.yml
+    javascript_custom_module.libraries.yml
+```
+
+
 ### 3.4- Adding JavaScript libraries 
 
+Now our goal is linking the new library with its JavaScript .js file associated with the context in which it should work, right? Well, for that we are going to make a base case and then we are going to add more probable cases, given that in Drupal it is possible to attach JavaScript libraries in various ways, depending on how we need to use them in our code.  
+
+But let's see first the base case for our case: #attached.
+
 #### 3.4.1- Using the #attached property in Render Arrays 
+
+On one hand, we have the eternal Drupal Render Arrays, that is, the arrays loaded with properties, values, parameters and others that we use to send to the Drupal rendering system so it transforms everything and ends up painting HTML renderable in a browser.  
+
+On the other hand, we have a property called "#attached" that offers us a set of already defined sub-properties that allow us to attach resources of different nature to any render array we are using (a controller response, a form build, etc):  
+
+* Library -> $render_array['#attached']['library']  
+* drupalSettings (from PHP to JavaScript) -> $render_array['#attached']['drupalSettings']  
+* Http_Header -> $render_array['#attached']['http_header']  
+* HTML Link in Head -> $render_array['#attached']['html_head_link']  
+* HTML Head -> $render_array['#attached']['html_head']  
+* Feed -> $render_array['#attached']['feed']  
+* Placeholders -> $render_array['#attached']['placeholders']  
+* HTML Response Placeholders -> $render_array['#attached']['html_response_attachment_placeholders']  
+
+We will come back to some of these cases in following sections, But for more info about the processing of attached resources, You can visit the official documentation in Drupal.org: [public function HtmlResponseAttachmentsProcessor](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21HtmlResponseAttachmentsProcessor.php/function/HtmlResponseAttachmentsProcessor%3A%3AprocessAttachments/8.7.x).  
 
 #### 3.4.2- Libraries in a TWIG template
 
@@ -398,6 +462,8 @@ Quite interesting, right?
 * [http://www.jaypan.com/tutorial/high-performance-javascript-using-drupal-7s-javascript-api](http://www.jaypan.com/tutorial/high-performance-javascript-using-drupal-7s-javascript-api)  
 * [Drupal.org guide: Creating Custom Module](https://www.drupal.org/docs/creating-custom-modules)  
 * [How To Develop a Drupal 9 Website on Your Local Machine Using Docker and DDEV](https://www.digitalocean.com/community/tutorials/how-to-develop-a-drupal-9-website-on-your-local-machine-using-docker-and-ddev)
+* [Drupal org Docs: Libraries, options and details](https://www.drupal.org/docs/8/theming/adding-stylesheets-css-and-javascript-js-to-a-drupal-8-theme#libraries-options-details)  
+* [public function HtmlResponseAttachmentsProcessor](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21HtmlResponseAttachmentsProcessor.php/function/HtmlResponseAttachmentsProcessor%3A%3AprocessAttachments/8.7.x).  
 
 ### 9.4- jQuery 
 
