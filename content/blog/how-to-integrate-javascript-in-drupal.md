@@ -78,7 +78,7 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
 
 **Index of Exercises**  
 <!-- TOC -->  
-[1-Introduction](#1--introduction)  
+[1-Introduction](#exercise-1-creating-a-basic-custom-module-for-testing)  
 * [Acknowledgements and Reading Materials](#acknowledgements--reading-materials)
 * [The Heuristic Approach](#the-heuristic-approach)
 * [Scenario](#scenario)  
@@ -148,13 +148,140 @@ Explaining how to create a custom module for Drupal is beyond the scope of this 
 * [Drupal 8 || 9: Deploying a new Drupal Site with Composer / Drush on the fly](https://gitlab.com/-/snippets/1897782)  
 * [Drupal 8 || 9: Creating modules and forms using Drupal Console](https://gitlab.com/-/snippets/1898128)  
 
+### Exercise 1: Creating a basic custom module for testing
+
+In case you already have a Drupal site available for testing (including use of Drupal Console), just type this from the console while being inside your project and Drupal Console will take care of creating the new module:
+
+```txt
+// Using Drupal Console with params.
+drupal generate:module \
+--module="Custom Module for JavaScript" \
+--machine-name="javascript_custom_module" \
+--module-path="modules/custom" \
+--description="This is a custom generated module for JavaScript." \
+--package="Custom" \
+--module-file \
+--no-interaction
+```
+
+If Drupal Console is not your option, you can use Drush, launching the command: 
+
+```txt
+$ drush generate
+$ ddev drush generate
+```
+And you'll get a list of options, including:  
+
+```txt
+ module:                                                                                    
+   module-configuration-entity                       Generates configuration entity module  
+   module-content-entity (content-entity)            Generates content entity module        
+   module-file                                       Generates a module file                
+   module-standard (module)                          Generates standard Drupal 8 module     
+```
+And ask for a custom module creation with params, avoiding all parameters setting through dialogue:  
+
+```txt
+$ drush gen module-standard --directory modules/custom --answers '{"name": "Custom Module for JavaScript", "machine_name": "javascript_custom_module", "description": "Custom Generated Module for JavaScript.", "package": "Custom", "dependencies": "", "install_file": "no", "libraries": "no", "permissions": "no", "event_subscriber": "no", "block_plugin": "no", "controller": "no", "settings_form": "no"}'
+```
+
+See an example here: [Drupal 8 || 9 : Creating custom module using Drush generate](https://gitlab.com/-/snippets/2054593).
+
+You can also download this basic custom module created for examples from my gitlab repository: [gitlab.com/davidjguru/basic_custom_module](https://gitlab.com/davidjguru/drupal-custom-modules-examples/tree/master/basic_custom_module), or doing git clone from the whole repository for custom modules: [gitlab.com/davidjguru/drupal-custom-modules-examples](https://gitlab.com/davidjguru/drupal-custom-modules-examples).  
+
+This module is quite simple and basic, only for first setps in Drupal: when enabled, only creates a new path /basic/custom with a Controller that gives you a response creating a render array in Drupal, with a very simple markup message for HTML. With this, we can start to test.  
+
+![Basic Custom First Route in Drupal](../../images/post/davidjguru_drupal_javascript_guide_1.png)  
+
+We will now generate some content automatically for our exercises / test scenario. We can rename the custom module if we want, to particularize it a bit more (I'll use the naming javascript_custom_module to avoid confusion with other test modules. We will install, activate and generate a random comments set within our platform.  
+To do this we'll use the [Drupal Devel Module](https://www.drupal.org/project/devel) and its [Devel Generate sub-module](https://www.drupal.org/docs/8/modules/devel/installation-whats-in-the-box) to create test content, adding [new commands and sub-commands to Drush](https://www.drupal.org/docs/8/modules/devel/new-drush-commands). We'll use Composer and Drush from inside the console project folder, just by typing:
+
+```txt
+$ composer require drupal/devel
+$ drush en devel devel_generate
+$ drush genc 10 5 --types=article
+```
+With these instructions above we asked to devel-generate to create ten items, using the type nodes (default in Drupal) with a comments set in each node, between 0 and 5 per node. We now have ten initial nodes to build our initial exercise scenario:  
+
+![Creating a new set of nodes with type article](../../images/post/davidjguru_drupal_javascript_guide_2.png)  
+
+Next, we will reorder what this example Controller originally returned. Until now it was simply a text message, but now we are going to add a table with comments associated with the current user. To do this we are going to perform a database query using the database service, extract the returned values and process them by launching them into the table rendering system. For the query filtered by the current user data through the current_user service .  
+
+Let's see, now the controller class would look like this:  
+
+{{< gist davidjguru 7896402 cd2e0bacbe4fb39ca511610ff58d0930 "CommentsListcontroller.php" >}}
+
+What once enabled the test module (using Drush or Drupal Console -if it works in your Drupal installation-):
+
+```txt
+$ drush en -y javascript_custom_module
+$ drupal moi javascript_custom_module 
+```
+This will generate the /javascript/custom path through the Controller and it will render on screen the following table:  
+
+![Showing list of Comments in a table](../../images/post/davidjguru_drupal_javascript_guide_3.png)  
+
+With this step, we have already prepared the initial scenario and can move on to perform exercises directly with JavaScript.  
+
+**Next!**  
 
 
 ### 3.2- The "library" concept
 
+Working with both CSS and JS from Drupal 8 onwards has become standardised. In previous versions of Drupal you had to use specific functions to add CSS or JS resources.
+As I explained in this snippet: [Drupal 8 || 9 : Altering HTML in headers from hooks](https://gitlab.com/-/snippets/1927862), you had to use things like [drupal_add_html_head()](https://api.drupal.org/api/drupal/includes%21common.inc/function/drupal_add_html_head/7.x) to add new HTML tags, [drupal_add_js()](https://api.drupal.org/api/drupal/includes%21common.inc/function/drupal_add_js/7.x) to incorporate JavaScript or the [drupal_add_css()](https://api.drupal.org/api/drupal/includes%21common.inc/function/drupal_add_css/7.x) function to add more style sheets.  
+
+
 #### 3.2.1- Secuence for creating libraries  
 
+From Drupal 8, the sequence of inserting libraries has been standardised, and consists of fulfilling these three steps:  
+
+* Create the CSS/JS files.  
+* Define a library that includes these files.  
+* Add this library to a typical Drupal render array.  
+
+But in this case, we are going to reverse steps 1 and 2: first we will see how to create the library and then we will talk about the JavaScript file itself, which could be a little more complex.  
+
+### Exercise 2: Defining our new custom library
+
+Let's see...in our custom module, we'll include un nuevo fichero module_name.libraries.yml in order to describe the new dependencies, so in our case study, we'll create a new file called javascript_custom_module.libraries.yml filled with the next lines:  
+
+```txt
+// Case 1: Basic library file with only JavaScript dependencies.
+module_name.library_name:
+  js:
+    js/hello_world.js: {}
+
+// Example
+custom_hello_world:
+  js:
+    js/hello_world.js: {}
+
+```
+
+All the libraries will be declared, as a rule of style, in the same .libraries.yml file, where we will describe all the libraries we need in our project, grouped by function or use.  
+
+Here you can see several examples of definition of libraries for Drupal with some example models:  
+
+{{< gist davidjguru 7896402 23b85a0dfea3ebf311245110a42316aa "basic_custom_module.libraries.yml" >}}
+
+As we can see in the examples listed in the previous gist, there are different ways to declare libraries and even to add them externally. About the declaration of libraries, we can add a couple of curiosities that are nice to know:  
+
+
 #### 3.2.2- Loading libraries in head 
+
+By default, all libraries will tend to be loaded into the footer: In order to avoid operations over elements in DOM (Document Object Model) that have not yet been loaded, JS files will be included at the end of the DOM. If for some reason you need to load it at the beginning, then you can declare it explicitly using the pair parameter/value "header: true":
+
+```txt 
+js_library_for_header:
+  header: true
+  js:
+    header.js: {}
+    
+js_library_for_footer:
+  js:
+    footer.js: {}
+```
 
 #### 3.2.3- Libraries as external resources  
 
@@ -244,10 +371,15 @@ Explaining how to create a custom module for Drupal is beyond the scope of this 
 
 ### 9.5- Snippets
 
-* [Drupal 8 || 9 : Ultra-lightweight deploy of Drupal setup (without Apache or MySQL)](https://gitlab.com/-/snippets/2021961)
-* [Drupal 9 in six steps using DDEV: Quick Deploy](https://gitlab.com/-/snippets/2012512)  
+* [Drupal 8 || 9: Creating custom module using Drush generate](https://gitlab.com/-/snippets/2054593)  
+* [Drupal 8 || 9: Altering HTML in headers from hooks](https://gitlab.com/-/snippets/1927862)  
+* [Drupal 8 || 9: Ultra-lightweight deploy of Drupal setup (without Apache or MySQL)](https://gitlab.com/-/snippets/2021961)
+* [Drupal 8 || 9: Altering HTML in headers from hooks](https://gitlab.com/-/snippets/1927862)
 * [Drupal 8 || 9: Deploying a new Drupal Site with Composer / Drush on the fly](https://gitlab.com/-/snippets/1897782)  
-* [Drupal 8 || 9: Creating modules and forms using Drupal Console](https://gitlab.com/-/snippets/1898128)  
+* [Drupal 8 || 9: Creating modules and forms using Drupal Console](https://gitlab.com/-/snippets/1898128)
+* [Drupal 9 in six steps using DDEV: Quick Deploy](https://gitlab.com/-/snippets/2012512)    
+
+
 ## 10- :wq! 
 
 ##### Recommended song
