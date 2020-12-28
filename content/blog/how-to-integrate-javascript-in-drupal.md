@@ -104,6 +104,9 @@ So although my first intention was to move all this content to an open book form
 
 In a complementary way, you can download all the code from the exercises grouped as a single Drupal custom module, available here: [gitlab.com/davidjguru/javascript_custom_module](https://gitlab.com/davidjguru/javascript_custom_module). This works in Drupal 8 and Drupal 9.  
 
+**DISCLAIMER:** This guide is actually a manual for the integration of JavaScript code in Drupal-based projects, but only in the context of implementing Drupal modules. This is basically a backend issue. This guide does not contain information related to JavaScript frameworks (React, Angular, Vue) or about the use of Drupal headless as decoupled. Neither does it deal with Drupal Theming issues and its approach to them is only tangential. This tutorial is only for people related to the Drupal backend.  
+
+
 **There we go!**  
 
 ## 2- JavaScript and Drupal: basic concepts  
@@ -152,7 +155,7 @@ Explaining how to create a custom module for Drupal is beyond the scope of this 
 
 In case you already have a Drupal site available for testing (including use of Drupal Console), just type this from the console while being inside your project and Drupal Console will take care of creating the new module:
 
-```txt
+```
 // Using Drupal Console with params.
 drupal generate:module \
 --module="Custom Module for JavaScript" \
@@ -166,13 +169,13 @@ drupal generate:module \
 
 If Drupal Console is not your option, you can use Drush, launching the command: 
 
-```txt
+```
 $ drush generate
 $ ddev drush generate
 ```
 And you'll get a list of options, including:  
 
-```txt
+```
  module:                                                                                    
    module-configuration-entity                       Generates configuration entity module  
    module-content-entity (content-entity)            Generates content entity module        
@@ -181,7 +184,7 @@ And you'll get a list of options, including:
 ```
 And ask for a custom module creation with params, avoiding all parameters setting through dialogue:  
 
-```txt
+```
 $ drush gen module-standard --directory modules/custom --answers '{"name": "Custom Module for JavaScript", "machine_name": "javascript_custom_module", "description": "Custom Generated Module for JavaScript.", "package": "Custom", "dependencies": "", "install_file": "no", "libraries": "no", "permissions": "no", "event_subscriber": "no", "block_plugin": "no", "controller": "no", "settings_form": "no"}'
 ```
 
@@ -196,7 +199,7 @@ This module is quite simple and basic, only for first setps in Drupal: when enab
 We will now generate some content automatically for our exercises / test scenario. We can rename the custom module if we want, to particularize it a bit more (I'll use the naming javascript_custom_module to avoid confusion with other test modules. We will install, activate and generate a random comments set within our platform.  
 To do this we'll use the [Drupal Devel Module](https://www.drupal.org/project/devel) and its [Devel Generate sub-module](https://www.drupal.org/docs/8/modules/devel/installation-whats-in-the-box) to create test content, adding [new commands and sub-commands to Drush](https://www.drupal.org/docs/8/modules/devel/new-drush-commands). We'll use Composer and Drush from inside the console project folder, just by typing:
 
-```txt
+```
 $ composer require drupal/devel
 $ drush en devel devel_generate
 $ drush genc 10 5 --types=article
@@ -213,7 +216,7 @@ Let's see, now the controller class would look like this:
 
 What once enabled the test module (using Drush or Drupal Console -if it works in your Drupal installation-):
 
-```txt
+```
 $ drush en -y javascript_custom_module
 $ drupal moi javascript_custom_module 
 ```
@@ -246,7 +249,7 @@ But in this case, we are going to reverse steps 1 and 2: first we will see how t
 
 Let's see...in our custom module, we'll include un nuevo fichero module_name.libraries.yml in order to describe the new dependencies, so in our case study, we'll create a new file called javascript_custom_module.libraries.yml filled with the next lines:  
 
-```txt
+```
 // Case 1: Basic library file with only JavaScript dependencies.
 module_name.library_name:
   js:
@@ -272,7 +275,7 @@ As we can see in the examples listed in the previous gist, there are different w
 
 By default, all libraries will tend to be loaded into the footer: In order to avoid operations over elements in DOM (Document Object Model) that have not yet been loaded, JS files will be included at the end of the DOM. If for some reason you need to load it at the beginning, then you can declare it explicitly using the pair parameter/value "header: true":
 
-```txt 
+``` 
 js_library_for_header:
   header: true
   js:
@@ -284,6 +287,38 @@ js_library_for_footer:
 ```
 
 #### 3.2.3- Libraries as external resources  
+
+We are looking at examples of creating our own custom libraries, but it's also possible to declare in the .libraries.yml file of our custom module the use of an external library that is available via CDN or by an external repository.  
+
+It is possible to request to Drupal the use of an external library to incorporate it to our project, as we can see in the example of the use of backbone.js in the Drupal core, created by third parties, incorporated to Drupal and declared coherently with their external data:  
+
+![Libraries as external resources](../../images/post/davidjguru_drupal_javascript_guide_4.png)  
+
+By the way, in the same file core.libraries.yml you'll can see all the JavaScript resources declared from the core of Drupal. Some of these resources will be used here in this guide.  ;-)   
+
+In this former example about backbone.js in Core, we're seeing that finally, the library is used from a local environtment, right? so...It is possible loading a library directly from remote? we'll see the official documentation from Drupal saying something like this:  
+
+> *“You might want to use JavaScript that is externally on a CDN (Content Delivery Network) to improve page loading speed. This can be done by declaring the library to be “external”. It is also a good idea to include some information about the external library in the definition.”.*  
+
+* [Source: Drupal.org/docs Adding js to a Drupal Module](https://www.drupal.org/docs/creating-custom-modules/adding-stylesheets-css-and-javascript-js-to-a-drupal-module#external)  
+  
+So we can do something like this: 
+
+```
+angular.angularjs:
+  remote: https://github.com/angular/angular.js
+  version: 1.4.4
+  license:
+    name: MIT
+    url: https://github.com/angular/angular.js/blob/master/LICENSE
+    gpl-compatible: true
+  js:
+    https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js: { type: external, minified: true }
+```
+
+Quite interesting, right?  
+
+
 
 #### 3.2.4- Libraries and dependencies 
 
