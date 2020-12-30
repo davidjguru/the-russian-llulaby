@@ -81,6 +81,7 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
 [Exercise 1: Creating a basic custom module](#exercise-1-creating-a-basic-custom-module-for-testing)  
 [Exercise 2: Defining our new custom library](#exercise-2-defining-our-new-custom-library)  
 [Exercise 3: Defining our initial JavaScript file](#exercise-3-defining-our-initial-javascript-file)  
+[Exercise 4: Adding libraries to our Drupal custom module](#exercise-4-adding-libraries-to-our-drupal-custom-module)  
 
 
 
@@ -392,6 +393,65 @@ On the other hand, we have a property called "#attached" that offers us a set of
 
 We will come back to some of these cases in following sections, But for more info about the processing of attached resources, You can visit the official documentation in Drupal.org: [public function HtmlResponseAttachmentsProcessor](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21HtmlResponseAttachmentsProcessor.php/function/HtmlResponseAttachmentsProcessor%3A%3AprocessAttachments/8.7.x).  
 
+See some examples at: 
+* [davidjguru.github.io/the-magic-of-attached](https://davidjguru.github.io/blog/drupal-fast-tips-the-magic-of-attached).  
+* [dev.to/davidjguru/erasing-traces-of-generator-in-drupal-projects](https://dev.to/davidjguru/erasing-traces-of-generator-in-drupal-projects-1cdh)  
+
+
+### Exercise 4: Adding libraries to our Drupal custom module  
+
+By now, we just need to go to the PHP class file (The Controller) and modify the render array that is returned at the end, including the #attached property with our new library:
+
+```
+// Path: javascript_custom_module/src/Controller/
+// File: CommentsListController.php
+// Function: gettingList()
+
+// Before (line 42):
+$final_array['welcome_message'] = [
+  '#type' => 'item',
+  '#markup' => $this->t('Hello World, I am just a text.'),
+];
+
+// Now (line 42): 
+$final_array['welcome_message'] = [
+  '#type' => 'item',
+  '#markup' => $this->t('Hello World, I am just a text.'),
+  '#attached' => [
+    'library' => [
+      'javascript_custom_module/js_hello_world_console',
+    ],
+  ],
+];
+
+// Form : 
+$attachments['#attached']['library'][] = 'module/library';
+```
+Just after changed it, We will reinstall our custom module, clearing cache:
+
+```
+$ drush pmu javascript_custom_module
+$ drush en -y javascript_custom_module
+$ drush cr
+
+// Drupal Console (include clearing cache)
+$ drupal mou javascript_custom_module
+$ drupal moi javascript_custom_module
+```
+
+ We can see now from the Console of your browser the result of the execution of our first JavaScript code, just going to the declared route:  
+
+ ![Loading JavaScript file in the custom module](../../images/post/davidjguru_drupal_javascript_guide_5.png)  
+
+**We've made our first interaction with JavaScript in Drupal!**  
+Well, now we are going to continue adding new JS cases, and then we will come back to this same initial case to continue iterating and looking at more and more available functionality.  
+
+Following this simple initial exercise, we can check the operation of basic JavaScript methods such as an alert window or a confirmation window through the integration of libraries using the #attached property:  
+
+ ![Adding basic JavaScript functions to our custom code](../../images/post/davidjguru_drupal_javascript_guide_6.gif)  
+
+
+
 #### 3.4.2- Libraries in a TWIG template
 
 #### 3.4.3- Global libraries for a Theme 
@@ -464,6 +524,9 @@ We will come back to some of these cases in following sections, But for more inf
 * [How To Develop a Drupal 9 Website on Your Local Machine Using Docker and DDEV](https://www.digitalocean.com/community/tutorials/how-to-develop-a-drupal-9-website-on-your-local-machine-using-docker-and-ddev)
 * [Drupal org Docs: Libraries, options and details](https://www.drupal.org/docs/8/theming/adding-stylesheets-css-and-javascript-js-to-a-drupal-8-theme#libraries-options-details)  
 * [public function HtmlResponseAttachmentsProcessor](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21HtmlResponseAttachmentsProcessor.php/function/HtmlResponseAttachmentsProcessor%3A%3AprocessAttachments/8.7.x).  
+* [Drupal Fast Tips: The magic of 'attached'](https://davidjguru.github.io/blog/drupal-fast-tips-the-magic-of-attached)  
+* [Erasing traces of generator in Drupal projects](https://dev.to/davidjguru/erasing-traces-of-generator-in-drupal-projects-1cdh)  
+
 
 ### 9.4- jQuery 
 
