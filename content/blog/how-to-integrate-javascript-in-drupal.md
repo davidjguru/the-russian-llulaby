@@ -454,17 +454,275 @@ Following this simple initial exercise, we can check the operation of basic Java
 
 #### 3.4.2- Libraries in a TWIG template
 
+To add libraries to a Twig template within our project, either for a custom template within our own module or in a specific Twig template of the Theme we are using, we will load it through the Twig `attach_library()` function that allows us to add directly to the template:  
+
+```
+{% block salute %}
+  {% if salute_list is not empty %}
+    {{ attach_library('custom_module_name/library_name') }}
+    <div class="salute__wrapper layout-container">
+       {{ parent() }}
+    </div>
+   {% endif %}
+{% endblock salute %}
+```
+But the truth is that it can cause problems in the rendering (that it does not arrive in time to load in the rendering cycle of the Render system that is put in motion when "painting" a page) if it is added to the global template html.html.twig . This is a debate that has been going on for some time: [https://www.drupal.org/node/2398331#comment-9745117](https://www.drupal.org/node/2398331#comment-9745117) and is also a subject for discussion with a view to changing the way libraries are loaded in the near future of Drupal: [https://www.drupal.org/project/drupal/issues/3050386](https://www.drupal.org/project/drupal/issues/3050386). So beware of the template you use it on that might not work and pay attention to changes that might come in new versions of Drupal.  
+
+
 #### 3.4.3- Global libraries for a Theme 
+
+To declare your library as a global dependency for your Theme or your custom module, just include it in the declarative file of the *.info.yml resource using the libraries property:  
+
+```
+# resource.info.yml
+
+libraries:
+  - module/library
+```
+
+In any case and as in the previous section, there are discussions about the evolution of this and some measures that are supposed to be taken for future versions: [https://www.drupal.org/node/1542344](https://www.drupal.org/node/1542344). The advice remains the same: **Pay attention to possible changes.**
+
 
 #### 3.4.4- Adding libraries from Hooks
 
+It is also possible to add new custom libraries in our Drupal context, specifically before the time of rendering existing pages, through pre-processing hooks, such as [hook_page_attachments()](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21theme.api.php/function/hook_page_attachments/9.0.x), which still maintains the already seen way of adding resources:  
+
+```
+// Form: 
+$attachments['#attached']['library'][] = 'module/library';
+```
+
+Using a basic scheme for use:  
+
+```
+/**
+ * Implements hook_page_attachments().
+ */
+ 
+ function custom_page_attachments(array &$attachments) {
+   
+    $attachments['#attached']['library'][] = 'module/library';
+
+ }
+```
+
+Another option in hooks is the [hook_preprocess_HOOK()](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21theme.api.php/function/hook_preprocess_HOOK/9.0.x) function that according to its documentation, makes it easier for modules to preprocess theming variables for various elements. Let's see a couple of examples:  
+
+```
+/**
+ * Implements hook_preprocess_HOOK() for menu.
+ */
+function theme_name_preprocess_menu(&$variables) {
+
+  $variables[‘#attached’][‘library’][] = ‘theme/library’;
+}
+```
+
+The execution of this previous hook will make Drupal go to `menu.html.twig` and perform the addition of the differentiated library. Furthermore, this resource can be used in a generic way (for example, for all pages):  
+
+```
+/**
+ * Implements hook_preprocess_HOOK() for page.
+ */
+function custom_theming_preprocess_page(&$variables) {
+  
+  $variables['#attached']['library'][] = 'module/library';
+}
+```
+
+In this case it is recommended to specify metadata to facilitate the caching of the new change, specifically if the aggregation operation of the new library depends on conditions, for example:  
+
+```
+/**
+ * Implements hook_preprocess_HOOK() for page with conditions.
+ */
+function custom_theming_preprocess_page(&$variables) {
+
+  $variables['page']['#cache']['contexts'][] = 'route';
+  $route = "entity.node.preview";  
+  
+  if (\Drupal::routeMatch()->getRouteName() === $route) {
+    $variables['#attached']['library'][] = 'module/library';
+  }
+}
+```
+
+And for more specific resources:  
+
+```
+/**
+ * Implements hook_preprocess_HOOK() for maintenance_page.
+ */
+function seven_preprocess_maintenance_page(&$variables) {
+
+  $variables[‘#attached’][‘library’][] = ‘theme/library’;
+}
+``` 
+
+
 ## 4- Just a little bit more of JavaScript in Drupal  
+
+Let's take a closer look at the rules of use and integration of JavaScript code in a Drupal project.  
 
 ### 4.1- Structure and guidelines for IIFE
 
+The first thing that should call our attention is the fact that the structure of the .js extension file that we have introduced in our project through the /js folder has the following structure:  
+
+```
+(function () {
+  'use strict';
+
+  // Put here your custom JavaScript code.
+  console.log ("Hello World");
+})();
+```
+
+In Drupal, all our JavaScript code will be integrated within a closure function, as a wrapper of the code based on the IIFE pattern, that is, the "Immediately Invoked Function Expression (IIFE)" model, used as a useful structure for three key issues:  
+
+1. First, it allows immediate execution (or self-execution).  
+2. Second, it limits the scope of internal variables: does not alter other JavaScript codes present in the project.  
+3. Third, The context execution of the IIFE is created and ends up destroying it automatically: it frees up memory space, and releases it quickly.  
+
+How is this achieved? Well I think we can understand the IIFE model in an intuitive way in four steps. Let's see:  
+
+1. We can create a function in JavaScript as normal:  
+```
+function myFunction() {
+
+  // Here your JavaScript code.
+}
+```
+2. This function may or may not have a name (being an anonymous function) but in this case must be assigned to a variable:  
+
+```
+// Function with name:
+function myFunction(){ 
+
+  // Here your JavaScript code. 
+
+} -> Right
+
+// Anonymous function assigned to a variable:
+var myFunction = function() { 
+  
+  // Here your JavaScript code. 
+
+} -> Right
+
+// Anonymous function being not assigned to a variable:  
+function() { 
+  
+  // Here your JavaScript code. 
+  
+} -> JavaScript error
+```
+
+So JavaScript does not allow us to execute the function, because after the keyword "function" it waits for a name that it cannot find.  
+
+3. This can be avoided by introducing the anonymous function in parentheses (well actually just by putting a sign in front of it would already serve but we adopt this consensus of the parentheses as a style guideline). This makes the JavaScript engine consider it an expression, or Function Expression (instead of Function Statement, with a name):  
+   
+```
+(function() {
+  
+  // Here your JavaScript code.
+
+})
+```
+
+4. The function remains in memory but nobody is using it. How do we execute it? Well, we can use the final parenthesis to call its execution:  
+
+
+```
+(function() { 
+
+  // Here your JavaScript code. 
+
+})()   -> It's only a guideline, since this algo serves:   
+
+(function() { 
+  
+  // Here your JavaScript code. 
+
+}())  -> We've passed the invocative parentheses into the expression.
+```
+
+In fact, if we enter parameters in the execution brackets, the function will treat them with absolute normality. We will see an example later on through a small exercise (Ex. 5: Passing values to the IIFE format).
+
+Besides, as it is an anonymous function, it can be used as an "arrow function":  
+
+```
+(() => {   // Here your JavaScript code. //   })()
+```
+
+The latter are the forms that our JavaScript code can take in Drupal. Remember that whatever the style guideline we choose, we always need to comply with two fundamental guidelines:  
+
+1. They are built in a compartmentalized way, without "contaminating" any global object, that is, the global execution space (that the variables only live inside their function, like a private code block).  
+2. They are executed immediately, destroyed and cannot be executed again (if a page is reloaded, they are requested again).  
+
+
 ### 4.2- Passing parameters in IIFE
 
+We are going to makechanges on the rendered HTML of our Drupal through our custom module, for which we must first assign a custom selector to the element we want to modify.  
+
+### Exercise 5: Passing values to the IIFE format  
+
+We start by going back to the controller class file and adding two new Drupal element rendering system properties: #prefix and #suffix which allow an HTML element to be framed within other HTML tags. In this case we want to add our own id to the element.
+
+```
+// Line 42.
+$final_array['welcome_message'] = [
+  '#type' => 'item',
+  '#markup' => $this->t('Hello World, I am just a text.'),
+  '#prefix' => '<div id="salute">',
+  '#suffix' => '</div>',
+  '#attached' => [
+    'library' => [
+      'javascript_custom_module/js_hello_world_console',
+     ],
+   ],
+ ];
+
+```
+
+Next we create a new .js file ('iife_salute_example.js')with a function in IIFE format. To this function we will pass a text string as a greeting for our users ('Dear User'), and we will declare the input parameter in its definition ('parameter').  
+
+```
+(function (parameter) {
+  'use strict';
+
+  // Get the HTML element by it ID.
+  let element = document.getElementById("salute");
+  console.log(element);
+
+  // Add to the HTML the new string using the parameter.
+  element.innerHTML += "Salute, " + parameter;
+
+  // Creating and adding a line for the HTML element.
+  var hr = document.createElement("hr");
+  console.log(hr);
+  element.prepend(hr);
+
+})('Dear User');
+```
+
+We'll introduce some changes with pure JavaScript, like adding a text to the message of the HTML element, taking the value of the text string passed by parameter. Then we also put a dividing line over the element, as a separator.  
+
+We added the new file to the library resources that we had already defined previously:  
+
+```
+js_hello_world_console:
+  js:
+    js/hello_world_console.js: {}
+    js/iife_salute_example.js: {}
+```
+
+And so, if we clean the drush cr cache and reload the /javascript/custom path in the browser, we will be able to see the new changes made using JavaScript:  
+
+![Rendering custom changes in HTML using JavaScript](../../images/post/davidjguru_drupal_javascript_guide_7.png) 
+
 ### 4.3- Passing values from PHP to JavaScript: drupalSettings  
+
+We have seen in the previous section how to pass values to that IIFE within the revision of the structure and operation of this JavaScript code format and now we are going to stop at a very particular construction that is available for us to make connections between our server executable code (PHP) and our client executable code (JavaScript) within Drupal: let's talk about drupalSettings.  
 
 ### 4.4- Changes in rendered HTML 
 
