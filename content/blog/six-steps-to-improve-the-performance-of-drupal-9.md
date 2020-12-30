@@ -446,13 +446,12 @@ https://www.percona.com/blog/2014/01/28/10-mysql-performance-tuning-settings-aft
 
 ### About Docker Performance
 
-https://rancher.com/5-tips-making-containers-faster/
+*https://rancher.com/5-tips-making-containers-faster/
 https://containerjournal.com/features/make-docker-containers-faster-improve-performance/
 https://hackernoon.com/another-reason-why-your-docker-containers-may-be-slow-d37207dec27f
 https://jobandtalent.engineering/optimizing-docker-images-for-a-faster-development-workflow-591dc3ac4de0
 https://crate.io/a/analyzing-docker-container-performance-native-tools/
 https://medium.com/@beld_pro/how-does-docker-play-with-cgroups-when-i-create-an-instance-6ce24daccfb2
-
 https://shekhargulati.com/2019/01/03/how-docker-uses-cgroups-to-set-resource-limits/
 
 
@@ -460,4 +459,4 @@ https://shekhargulati.com/2019/01/03/how-docker-uses-cgroups-to-set-resource-lim
 
 ##### Recommended song
 
-{{< youtube e5Z56ZXvAy4 >}}
+{{< youtube  >}}
