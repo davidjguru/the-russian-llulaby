@@ -74,6 +74,7 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
   * [9.3- JavaScript and Drupal](#93--javascript-and-drupal)  
   * [9.4- jQuery](#94--jquery)  
   * [9.5- Snippets](#95--snippets)  
+  * [9.6- Others](#96--others)  
 [10- :wq!](#wq)  
 
 **Index of Exercises**  
@@ -82,6 +83,8 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
 [Exercise 2: Defining our new custom library](#exercise-2-defining-our-new-custom-library)  
 [Exercise 3: Defining our initial JavaScript file](#exercise-3-defining-our-initial-javascript-file)  
 [Exercise 4: Adding libraries to our Drupal custom module](#exercise-4-adding-libraries-to-our-drupal-custom-module)  
+[Exercise 5: Passing values to the IIFE format](#exercise-5-passing-values-to-the-iife-format)  
+[Exercise 6: Transfering values trough drupalSettings](#exercise-6-transfering-values-trough-drupalsettings)  
 
 
 
@@ -724,9 +727,105 @@ And so, if we clean the drush cr cache and reload the /javascript/custom path in
 
 We have seen in the previous section how to pass values to that IIFE within the revision of the structure and operation of this JavaScript code format and now we are going to stop at a very particular construction that is available for us to make connections between our server executable code (PHP) and our client executable code (JavaScript) within Drupal: let's talk about drupalSettings.  
 
-### 4.4- Changes in rendered HTML 
+Let's think about implementing a slightly more particular greeting to the user who visits our url `/javascript/custom` . We want to extract data about the visitor's identity in order to give them a more personal greeting. Ok. We can extract this information inside our Controller through the service `current_user`: [api.drupal.org/core.services.yml/current_user/9.0.x](https://api.drupal.org/api/drupal/core%21core.services.yml/service/current_user/9.0.x), which offers us methods to obtain this information. We want to take this information into the code that runs on the client, so we will transfer it to JavaScript.   
 
-#### 4.4.1- Counting visits using Web Storage
+We were including the `current_user` service in the Controller, between lines 24 - 29 of the source code:  
+
+```
+ public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('current_user'),
+      $container->get('database')
+    );
+  }
+```
+
+So you will can use the service from the Controller using a class property, the so called `$this->current_user`.   
+
+We can transfer it all through drupalSettings, a sub-property available for the property #attached , which is received from the JavaScript side through the drupalSettings object, which will have the values available as new properties. Let's see the next exercise.  
+
+
+### Exercise 6: Transfering values trough drupalSettings
+
+We will create a new JavaScript file for a more particular greeting, called `hello_world_advanced.js`. On the one hand, we're extracting the information and adding the new library from the PHP side:  
+
+```
+// We're adding the new resources to the same welcome element.
+$final_array['welcome_message']['#attached']['library'][] = 'javascript_custom_module/js_hello_world_advanced';
+
+$final_array['welcome_message']['#attached']['drupalSettings']['data']['name'] = $this->current_user->getDisplayName();
+
+$final_array['welcome_message']['#attached']['drupalSettings']['data']['mail'] = $this->current_user->getEmail();
+
+```
+
+On the other hand, we're getting the values from the JavaScript side:  
+
+```
+(function () {
+  'use strict';
+
+  // Recovering the user name and mail from drupalSettings.
+  let element = document.getElementById("salute");
+  let user_name = drupalSettings.data.name;
+  let user_mail = drupalSettings.data.mail;
+
+  // Add to the HTML the new strings.
+  element.innerHTML += "Update-> You are the user: " + user_name +
+                       " with mail: " + user_mail;
+
+})();
+
+``` 
+
+Now, adding the library drupalSettings (from the Drupal core) as a new dependency, we can to start connecting variables between PHP and JavaScript. We will change our library definition file in order to define a new custom resource that will use this new dependency:  
+
+```
+js_hello_world_advanced:
+  js:
+    js/hello_world_advanced: {}
+  dependencies:
+    - core/drupalSettings
+```
+
+So we can see the new values loaded both from the web rendering and from the drupalSettings object itself, through the console (drupalSettings.data, remember):  
+
+
+![Getting values from PHP to JavaScript using drupalSettings](../../images/post/davidjguru_drupal_javascript_guide_8.png) 
+
+
+**Ready!** 
+
+
+### 4.4- Changes in rendered HTML  
+
+We will use this section to extend functionally our custom module for JavaScript by implementing some simple and interesting features, to continue practicing with JavaScript in the context of Drupal and to standardize its use in our projects.  
+
+#### 4.4.1- Counting visits using Web Storage  
+
+Let's see... Do you know the concept of ["Web Storage"](https://flaviocopes.com/web-storage-api/)? Well, in short, it's a small HTML API available in modern browsers to store information internally through two mechanisms: Session Storage (for information maintained only in the context of the open page session) and Local Storage (to persist information until we explicitly remove it).  
+
+Read more about the web storage API at: [developer.mozilla.org/Web_Storage_API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)  
+
+Here, for example, you can check the availability and capacity (usually around 5MB) of your web browser for web storage (Local and Session): [http://dev-test.nemikor.com/web-storage/support-test/](http://dev-test.nemikor.com/web-storage/support-test/).  
+
+
+### Exercise 7: Custom visit counter with JavaScript  
+
+In this step we will create a small and persistent visit counter to inform the user of the number of times he or she has loaded our custom `/javascript/custom/` route.  
+
+First, we ask for the current values:  
+
+```
+// Asking for the localStorage parameter value if exists.
+let visit_value = localStorage.getItem('visit_number');
+console.log("LocalStorage - current value: " + visit_value);
+
+// Same but for the sessionStorage.
+let session_value = sessionStorage.getItem('session_number');
+console.log("SessionStorage - current value: " + session_value);
+```
+
 
 ## 5- Drupal and the old jQuery 
 
@@ -762,7 +861,9 @@ We have seen in the previous section how to pass values to that IIFE within the 
 
 ### 9.1- JavaScript fundamentals 
 
-* [http://ryanmorr.com/understanding-scope-and-context-in-javascript/](http://ryanmorr.com/understanding-scope-and-context-in-javascript/)  
+* [Understanding Scope and Context in JavaScript](http://ryanmorr.com/understanding-scope-and-context-in-javascript/)  
+* [Web Storage API](https://flaviocopes.com/web-storage-api/)  
+* [developer.mozilla.org/Web_Storage_API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)
   
 ### 9.2- Functions in JavaScript and the IIFE format 
 
@@ -784,7 +885,7 @@ We have seen in the previous section how to pass values to that IIFE within the 
 * [public function HtmlResponseAttachmentsProcessor](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21HtmlResponseAttachmentsProcessor.php/function/HtmlResponseAttachmentsProcessor%3A%3AprocessAttachments/8.7.x).  
 * [Drupal Fast Tips: The magic of 'attached'](https://davidjguru.github.io/blog/drupal-fast-tips-the-magic-of-attached)  
 * [Erasing traces of generator in Drupal projects](https://dev.to/davidjguru/erasing-traces-of-generator-in-drupal-projects-1cdh)  
-
+* [api.drupal.org/core.services.yml/current_user/9.0.x](https://api.drupal.org/api/drupal/core%21core.services.yml/service/current_user/9.0.x)
 
 ### 9.4- jQuery 
 
@@ -800,6 +901,11 @@ We have seen in the previous section how to pass values to that IIFE within the 
 * [Drupal 8 || 9: Deploying a new Drupal Site with Composer / Drush on the fly](https://gitlab.com/-/snippets/1897782)  
 * [Drupal 8 || 9: Creating modules and forms using Drupal Console](https://gitlab.com/-/snippets/1898128)
 * [Drupal 9 in six steps using DDEV: Quick Deploy](https://gitlab.com/-/snippets/2012512)    
+
+### 9.6- Others 
+
+* [Web Storage Support Test](http://dev-test.nemikor.com/web-storage/support-test/)  
+
 
 
 ## 10- :wq! 
