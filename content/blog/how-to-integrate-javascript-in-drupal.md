@@ -56,7 +56,7 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
     * [4.4.1- Counting visits using web storage](#441--counting-visits-using-web-storage)  
 [5- Drupal and the old jQuery](#5--drupal-and-the-old-jquery)  
   * [5.1- Fast Review of the jQuery keys](#51--fast-review-of-the-jquery-keys)  
-  * [5.2- Using jQuery in our Drupal installation](#52--using-jquery-in-our-drupal-installation)  
+  * [5.2- Availability of jQuery in our Drupal version](#52--availability-of-jquery-in-our-drupal-version)  
   * [5.3- Using a different version of jQuery](#53--using-a-different-version-of-jquery)  
 [6- Drupal Behaviors](#6--drupal-behaviors)
   * [6.1- Anatomy of a Behavior](#61--anatomy-of-a-behavior)  
@@ -85,6 +85,7 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
 [Exercise 4: Adding libraries to our Drupal custom module](#exercise-4-adding-libraries-to-our-drupal-custom-module)  
 [Exercise 5: Passing values to the IIFE format](#exercise-5-passing-values-to-the-iife-format)  
 [Exercise 6: Transfering values trough drupalSettings](#exercise-6-transfering-values-trough-drupalsettings)  
+[Exercise 7: Custom Visit Counter with JavaScript](#exercise-7-custom-visit-counter-with-javascript)  
 
 
 
@@ -302,7 +303,7 @@ By the way, in the same file core.libraries.yml you'll can see all the JavaScrip
 
 In this former example about backbone.js in Core, we're seeing that finally, the library is used from a local environtment, right? so...It is possible loading a library directly from remote? we'll see the official documentation from Drupal saying something like this:  
 
-> *“You might want to use JavaScript that is externally on a CDN (Content Delivery Network) to improve page loading speed. This can be done by declaring the library to be “external”. It is also a good idea to include some information about the external library in the definition.”.*  
+> *“You might want to use JavaScript that is externally on a CDN (Content Delivery Network) to improve page loading speed. This can be done by declaring the library to be “external”. It is also a good idea to include some information about the external library in the definition.”*  
 
 * [Source: Drupal.org/docs Adding js to a Drupal Module](https://www.drupal.org/docs/creating-custom-modules/adding-stylesheets-css-and-javascript-js-to-a-drupal-module#external)  
   
@@ -826,12 +827,97 @@ let session_value = sessionStorage.getItem('session_number');
 console.log("SessionStorage - current value: " + session_value);
 ```
 
+Then we check if they are already created and initialized. Just a little intuitive game. If they are null, we create them and load them with an initial value equal to one. If they already exist we increase them and load them again updated. We take advantage of this to display them through the console:   
+
+```
+// Testing the localStorage visit value.
+if(visit_value === null) {
+
+  // If null we'll create the initial value.
+  localStorage.setItem('visit_number', 1);
+  console.log("LocalStorage: " +localStorage.getItem('visit_number'));
+
+}else {
+
+  // If not null we'll increment the current value.
+  localStorage.setItem('visit_number', ++visit_value);
+  console.log("LocalStorage: " + localStorage.getItem('visit_number'); 
+}
+
+// Same for sessionStorage.
+if(session_value === null) {
+
+  // If null we'll create the initial value.
+  sessionStorage.setItem('session_number', 1);
+  console.log("Session: " + sessionStorage.getItem('session_number'));
+
+}else {
+  // If not null we'll increment the current value.
+  sessionStorage.setItem('session_number', ++session_value);
+  console.log("Session: " + sessionStorage.getItem('session_number'));
+}
+```
+At the end, we take the opportunity to display the counter values in the HTML of the page:  
+
+```
+// Add to the HTML the counter value.
+element.innerHTML += "<br>" + "Total visits: " +
+                              localStorage.getItem('visit_number');
+
+element.innerHTML += "<br>" + "Total visits during this session: " +
+                           sessionStorage.getItem('session_number');
+```
+
+And when the address is reloaded, it shows the registration values via the Web Storage API:  
+
+![Showing values from WebStorage](../../images/post/davidjguru_drupal_javascript_guide_9.png) 
+
+Did you know about this little storage API? and what other ideas do you have that could be implemented using it?  
+
+
 
 ## 5- Drupal and the old jQuery 
 
+According to its own mission:
+> *"The purpose of jQuery is to make it much easier to use JavaScript on your website."*  
+
+* Source: [jQuery Official documentation: https://jquery.com](https://jquery.com/)
+
+And so it has been for many years. It is, in short, a JavaScript library created to offer a standardized way (or something like that) to interact with the elements of the Document Object Model (DOM) in the simplest and most direct way possible.  
+
+jQuery has -at the time of writing- [fourteen years](https://en.wikipedia.org/wiki/JQuery#Release_history) of life since its first published version and extensive use throughout all the websites published on the Internet. Without falling into technological holy wars, we will just assume that it is still present (for now) in the development of Drupal and that several versions and formats of jQuery are offered within the platform. We will see how to use it and how to relate to it in a (relatively) efficient way.  
+
+
 ### 5.1- Fast review of the jQuery keys
 
-### 5.2- Using jQuery in our Drupal installation  
+As this article is not by itself a jQuery tutorial and I'm afraid that at the end the extension of it will exceed twelve thousand words, you will excuse me for not stopping too much here. jQuery requires another manual of the same (or higher) extension. So let's give some context through some basic keys and we'll go on. Pay attention.  
+
+**Remember:**  
+
+1. In jQuery, $ is an alias for jQuery.  
+   
+2. Usually, jQuery starts when the document is fully loaded, through the instruction: `$(document).ready(function(){ // }`.  
+   
+3. jQuery offers thousands of ways to interact with HTML elements, from selectors through the element id (#id), its CSS class (.class), HTM tag names ("div"), or attribute values (name = value). The list and its options is endless and it is convenient to have it somewhat tested: [https://api.jquery.com/category/selectors](https://api.jquery.com/category/selectors).  
+
+4. With the management of its selectors, you will be able to make changes at several levels in your HTML: CSS styles, add/alter/remove elements, add visual effects, make callbacks and Ajax requests. For all this you will use jQuery (perhaps).  
+   
+And don't forget to consider jQuery's recommendations for good use. See this set of guidelines, quite old but interesting: [http://lab.abhinayrathore.com/jquery-standards](http://lab.abhinayrathore.com/jquery-standards/).  
+
+
+### 5.2- Availability of jQuery in our Drupal version  
+
+From Drupal 8 onwards, was changed the system for loading libraries and resources, causing nothing (or almost nothing) to be loaded by default.This, among other things, implies that jQuery is not included in every page unless you request it as a dependency for your resource (a library dependency for your module or theme, declared as we have already seen).  
+
+At this moment, all the libraries related to jQuery are declared in advance but they will only be preloaded if you need them. These libraries can be located in the `/core/core.libraries.yml` file:  
+
+
+![The jQuery dependencies marked in core](../../images/post/davidjguru_drupal_javascript_guide_10.png) 
+
+Where you can see from line 350 of the file the list of jQuery libraries associated to Drupal's core. As you can see, there are many jQuery libraries declared, some of them to be explicitly requested as dependencies in custom resources (modules or themes) and others for internal consumption, since sometimes, Drupal uses underneath jQuery plugins to build elements like buttons, navigation tabs and other resources.  
+
+Here is a graph prepared in 2015 by [Théodore Biadala, @nod_](https://twitter.com/nod_) about the extensive use Drupal makes of jQuery (a little outdated, is from 2015): [http://read.theodoreb.net/viz-drupal-use-of-jquery](http://read.theodoreb.net/2015/viz-drupal-use-of-jquery.html). 
+
 
 ### 5.3- Using a different version of jQuery  
 
@@ -887,10 +973,17 @@ console.log("SessionStorage - current value: " + session_value);
 * [Erasing traces of generator in Drupal projects](https://dev.to/davidjguru/erasing-traces-of-generator-in-drupal-projects-1cdh)  
 * [api.drupal.org/core.services.yml/current_user/9.0.x](https://api.drupal.org/api/drupal/core%21core.services.yml/service/current_user/9.0.x)
 
+
 ### 9.4- jQuery 
 
-  * [https://github.com/robloach/jquery-once](https://github.com/robloach/jquery-once)  
-  * [https://github.com/RobLoach/jquery-once/blob/master/API.md#readme](https://github.com/RobLoach/jquery-once/blob/master/API.md#readme)  
+* [jQuery API documentation](https://api.jquery.com/)  
+* [jQuery release history](https://en.wikipedia.org/wiki/JQuery#Release_history)  
+* [jQuery API: Selectors](https://api.jquery.com/category/selectors)  
+* [jQuery Standars (old)]([http://lab.abhinayrathore.com/jquery-standards/](http://lab.abhinayrathore.com/jquery-standards/))  
+* [jQuery Visualization of use in Drupal 8](http://read.theodoreb.net/2015/viz-drupal-use-of-jquery.html)  
+* [https://github.com/robloach/jquery-once](https://github.com/robloach/jquery-once)  
+* [https://github.com/RobLoach/jquery-once/blob/master/API.md#readme](https://github.com/RobLoach/jquery-once/blob/master/API.md#readme)  
+
 
 ### 9.5- Snippets
 
@@ -901,6 +994,7 @@ console.log("SessionStorage - current value: " + session_value);
 * [Drupal 8 || 9: Deploying a new Drupal Site with Composer / Drush on the fly](https://gitlab.com/-/snippets/1897782)  
 * [Drupal 8 || 9: Creating modules and forms using Drupal Console](https://gitlab.com/-/snippets/1898128)
 * [Drupal 9 in six steps using DDEV: Quick Deploy](https://gitlab.com/-/snippets/2012512)    
+
 
 ### 9.6- Others 
 
