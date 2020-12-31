@@ -1500,9 +1500,63 @@ Here you have available the complete code of the Behavior that we have just impl
 
 ## 7- JavaScript without JavaScript: #ajax, #states  
 
-
+It was necessary, at least, to make a review on these knowledge areas where JavaScript is of indirect handling and execution. It is there but it is not seen. The subject is so extensive and can reach a level that would require more articles about the topic, so I will limit myself to make a review of some keys and launch the "to be continued..." for later (or maybe this article would never see the light).  
 
 ### 7.1- (Brief) Introduction to AJAX in Drupal  
+
+The Ajax API in Drupal contains such an extensive set of classes, events, resources and possibilities that you can make several articles of the extension of it just about using Ajax. Due to the limitations regarding the extension of this tutorial, we will focus on some basic keys, leaving for later the possibility of preparing an article on more advanced issues.  
+
+[Here you can check it out the AJAX API in Drupal](https://api.drupal.org/api/drupal/core%21core.api.php/group/ajax).  
+
+We can use, at a basic level, Ajax for three well known formulas:  
+
+* In links: using the class 'use-ajax' in a link, we can give you Ajax treatment.  
+
+* In form elements: We can add Ajax events to our form elements by using the #ajax property within a render array definition.  
+  
+* In form buttons: adding the class 'use-ajax-submit' in the element declaration, we will make a call with Ajax.
+
+Let's see one of its main uses in form elements. In this case we're adding the #ajax property to an element in order to change its options, so we can load some related properties and after that, we'll create a new callback function:  
+
+```
+   // Offers a select for Regions.
+    $form['main_region'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select Region'),
+      '#description' => $this->t('This will be your selected region for contact.'),
+      '#options' => $terms_options_2,
+      '#weight' => '8',
+      '#prefix' => '<div id="contact_form_region">',
+      '#suffix' => '</div>',
+      '#ajax' => [
+        'event' => 'change',
+        'method' => 'html',
+        'callback' => '::loadRelatedOfficesCallback',
+        'wrapper' => 'contact_form_office',
+        'progress' => [
+          'type' => 'throbber',
+          'message' => $this->t('loading related offices'),
+        ],
+      ],
+    ];
+
+```
+
+In this case I'm building a form using the Drupal Form API and I need some operations over a select element. Due to this, I'm adding a very specific block focused to AJAX:  
+
+```
+ '#ajax' => [
+        'event' => 'change',
+        'method' => 'html',
+        'callback' => '::loadRelatedOfficesCallback',
+        'wrapper' => 'contact_form_office',
+        'progress' => [
+          'type' => 'throbber',
+          'message' => $this->t('loading related offices'),
+        ],
+      ],
+```
+Here I'm specifying a event (change), a method for the event (html), a callback, marking a wrapper (the div for the element that will be changed from this one) and at last some indicators for the AJAX processing: an icon of "loading" and a message for the user.  
 
 ### 7.2- Rendering elements with #states property 
 
@@ -1547,6 +1601,7 @@ Here you have available the complete code of the Behavior that we have just impl
 * [The Drupal.t function](http://read.theodoreb.net/drupal-jsapi/Drupal.html#.t)  
 * [The Drupal.dialog API](http://read.theodoreb.net/drupal-jsapi/Drupal.html#.dialog#~dialogDefinition)  
 * [The Drupal.theme function](http://read.theodoreb.net/drupal-jsapi/Drupal.theme.html).  
+* [AJAX API in Drupal](https://api.drupal.org/api/drupal/core%21core.api.php/group/ajax). 
 
 
 ### 9.4- jQuery 
