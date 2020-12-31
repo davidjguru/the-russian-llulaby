@@ -217,7 +217,7 @@ Next, we will reorder what this example Controller originally returned. Until no
 
 Let's see, now the controller class would look like this:  
 
-{{< gist davidjguru 7896402 cd2e0bacbe4fb39ca511610ff58d0930 "CommentsListcontroller.php" >}}
+{{< gist davidjguru cd2e0bacbe4fb39ca511610ff58d0930 "CommentsListcontroller.php" >}}
 
 What once enabled the test module (using Drush or Drupal Console -if it works in your Drupal installation-):
 
@@ -271,7 +271,7 @@ All the libraries will be declared, as a rule of style, in the same .libraries.y
 
 Here you can see several examples of definition of libraries for Drupal with some example models:  
 
-{{< gist davidjguru 7896402 23b85a0dfea3ebf311245110a42316aa "basic_custom_module.libraries.yml" >}}
+{{< gist davidjguru 23b85a0dfea3ebf311245110a42316aa "basic_custom_module.libraries.yml" >}}
 
 As we can see in the examples listed in the previous gist, there are different ways to declare libraries and even to add them externally. About the declaration of libraries, we can add a couple of curiosities that are nice to know:  
 
@@ -921,15 +921,586 @@ Here is a graph prepared in 2015 by [Théodore Biadala, @nod_](https://twitter.c
 
 ### 5.3- Using a different version of jQuery  
 
+Let's suppose that for some specific needs of the project, we want to use a different version of jQuery than the ones supported within our version of Drupal, what to do? (asked the wise man). Well, we can add it as a resource to our project without problems through the guidelines we already know:  
+
+```
+jquery-custom:
+  remote: https://github.com/jquery/jquery
+  version: "2.2.4"
+  license:
+    name: MIT
+    url: https://github.com/jquery/jquery/blob/2.2.4/LICENSE.txt
+    gpl-compatible: true
+  js:
+    js/jquery-2.2.4.min.js: { minified: true, weight: -20 }
+```
+
+And then we can overwrite the dependency from its declaration in the file `my_custom_resource.info.yml`:  
+
+```
+libraries-override:
+  # Replace the entire library.
+  core/jquery: my_custom_resource/jquery-custom
+``` 
+
+### Exercise 8: Changes based in jQuery  
+
+We will perform a couple of exercises using jQuery in our custom module.  
+
+1. Loading text Lorem Ipsum via AJAX  
+
+After the previous exercises with JavaScript, if we close all the windows we have now, we will stay in our `/javascript/custom` route alone with our table of results showing comments associated with the current user, which was:  
+
+![Showing the original list of comments](../../images/post/davidjguru_drupal_javascript_guide_11.png) 
+
+We will provide an introductory text to the page through the consumption of an external API that will provide us with Lorem Ipsum paragraphs. We will declare the new dependency in the usual `*.libraries.yml` file:  
+
+```
+js_playing_with_jquery:
+  js:
+    js/playing_with_jquery: {}
+  dependencies:
+    - core/jquery
+```
+
+In this case we will try to load the new library through a hook of type `hook_page_attachments()` inside the file `javascript_custom_module.module`:  
+
+```
+/**
+ * Implements hook_page_attachments().
+ */
+function javascript_custom_module_page_attachments(array &$attachments) {
+
+  // Getting the current route name.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  
+  // Load the library only if match with the selected page by route.
+  if (strcmp($route_name, 'javascript_custom.hello') == 0) {
+    $attachments['#attached']['library'][] = 'javascript_custom_module/js_playing_with_jquery';
+  }
+}
+```
+
+And in the folder `js/` we will create the new file `playing_with_jquery.js` , in which we will dump all our [mandanga](https://www.spanishdict.com/translate/mandanga).  
+
+Let's start by adding some introductory text to the page. in order to do this we'll make a request to the web [baconipsum](https://baconipsum.com) through its API, for which we will use the jQuery function `$.getJSON()` that handles three parameters: a URL address, some data to build the request and a callback function in case the request is successful. This itself is a wrapper provided by jQuery to handle as a HTTP GET verb request in a JSON format: [api.jquery/getJSON](https://api.jquery.com/jQuery.getJSON).  
+
+Let's see what we can do: First we will add a new HTML container for the texts `(<div id='bacon-text'>)`, then we will make the request, getting the results and loading a new paragraph `(<p>)` into the newly created container.  
+
+```
+(function ($) {
+  'use strict';
+
+  $(document).ready(function(){
+
+    console.log("The Playing with jQuery script has been loaded");
+
+    $('#block-bartik-page-title').append("<div id='bacon-text'></div>");
+
+    // Calling AJAX.
+    $.getJSON('https://baconipsum.com/api/?callback=?',
+      { 'type':'meat-and-filler', 'start-with-lorem':'1', 'paras':'4' },
+      function(baconTexts) {
+        if (baconTexts && baconTexts.length > 0)
+        {
+          $("#bacon-text").html('');
+          for (var i = 0; i < baconTexts.length; i++)
+            $("#bacon-text").append('<p>' + baconTexts[i] + '</p>');
+          $("#bacon-text").show();
+        }
+      });
+  });
+
+})(jQuery);
+```
+
+But let's give it some movement thanks to the bizarr errrr...dynamic functions provided by jQuery. We are going to rethink a little this initial script to make a progressive loading of the Bacon Ipsum welcome paragraphs.  
+
+**First of all**, we will put a button. We've already stained the rendered page too much and we're going to leave the view clean before playing with bacon:  
+
+```
+// Creating the new elements just a div and a button.
+$('#block-bartik-page-title').append("<input type='button' id='getting-bacon' class='btn-bacon' value='Bacon' />");
+
+$('#block-bartik-page-title').append("<div id='bacon-text'></div>");
+```
+
+**Next**, we will add a click event to that button so that when it is pressed, it will start processing bacon:  
+
+```
+// Adding a click event to the former button.
+$('#getting-bacon').click(function () {
+  
+  // Processing bacon. 
+  
+});
+```
+
+In case we already have bacon loaded, we take care of cleaning the div:  
+
+```
+// Hidding the block for the next load.
+  $("#bacon-text").hide();
+```
+
+And we go ahead to process out bacon requests:  
+
+```
+// Getting values in JSON format.
+  $.getJSON('https://baconipsum.com/api/?callback=?',
+    {'type': 'meat-and-filler', 'start-with-lorem': '1', 'paras': '4'},
+    function (baconTexts) {
+
+    // We're in the callback function for success in JSON request.
+      if (baconTexts && baconTexts.length > 0) {
+
+        $("#bacon-text").html('');
+
+        // Loop into the received items.
+        for (var i = 0; i < baconTexts.length; i++) {
+
+          // Creating the naming keys.
+          var bacon_id = "bacontext_" + i;
+          var new_bacon = "<p" + " id='" + bacon_id + "'" + ">" + baconTexts[i] + "</p>";
+
+          // Add the new element to the div mother.
+          $("#bacon-text").append(new_bacon);
+        }
+      }
+    });
+```
+
+To make the subject a bit more dynamic, we added one of jQuery's less poisono...emm...more discreet animations with a confirmation message and the [.slideDown() function from jQuery](https://api.jquery.com/slideDown/#slideDown-duration-complete), which vertically scrolls the content from top to bottom:  
+
+```
+// Show the div mother show in a progressive way.
+$("#bacon-text").slideDown(7000, function(){
+  console.log("New bacon has been loaded");
+});
+```
+And when you reload everything, you see the completeexecution of all the JavaScript on the page:  
+
+
+![Execution of the whole JavaScript code](../../images/post/davidjguru_drupal_javascript_guide_12.gif) 
+
+Here you have the code formatted as a gist:  
+
+{{< gist davidjguru 0a61b8b08b7feb0100eacfdef3282589 "playing_with_jquery.js" >}}
+
+
 ## 6- Drupal Behaviors  
+
+In this guide, we already know how to integrate JavaScript in our modules and projects, how to create interactions, passing parameters between PHP (server) and JavaScript (client), integrating jQuery in our dependencies and as a final step to prepare the last step that should integrate all the above, we must talk about the concept of **"Drupal Behaviors"**.  
+
+**What is a Behavior?** It's the organized way that Drupal offers us to add and index behaviors based on JavaScript, through the extension of an own hook_behavior object that is part of another global `Drupal` JavaScript object.  
+
 
 ### 6.1- Anatomy of a Behavior  
 
+We will review the basic functional structure of the Behavior itself, as this format becomes the essential form of Drupal's JavaScript integration and it is in our interest to know its parts first. Let's see.  
+
+![Anatomy of a Drupal behavior](../../images/post/davidjguru_drupal_javascript_guide_13.png)  
+
+Let's have a look.  
+
+1. **namespace:** A Drupal behavior has to have a specific and unique name in order to be located, identified, executed and removed. It will become part of the Behaviors object and will be indexed there. In this case it is simply named "namespace".  
+   
+2. **attach:** This is the function to be executed as soon as the Behavior is loaded. For the executions of Behaviors, it will be gone through the indexed behaviors and for each one will be called its function"attach", each one doing what it has to do.  
+
+3. **detach:** As when adding, a function is provided to be executed when the behaviour is removed from the behaviour log.  
+
+4. **context:** It's a variable where the piece of the page that is being transformed is loaded. In an initial loading of the page, it will be the complete DOM, in AJAX operations it will be the corresponding HTML piece. This variable helps us to tune up more with our operations, so we must have clear how to handle it.  
+   
+5. **settings:** This variable we're seeing in the screenshot is used to transfer values from the PHP code to JavaScript and make them available in the form we saw earlier from our code. To do this we must declare the `core/drupalSettings` as a dependency of our JavaScript library.  
+   
+6. **trigger:** The trigger variable that is passed to the function associated to detach represents the condition for the deactivation of the behavior, where some causes are admitted:  
+  * unload: This is the default reason, it means that the context element has been removed from the DOM.  
+  * serialize: For forms with AJAX, where this variable is used to send the form itself as context.  
+  * move: The element has been moved from its position in the DOM from its initial location.
+   
+7. **jQuery:** In this case, this point just represents the passage of parameters to the IIFE, usually (jQuery, Drupal) as integrated dependencies available for our code.  
+
+
 ### 6.2- The global object "Drupal" 
+
+As stated in the official Drupal documentation, `Drupal.behaviors` is an object that is by itself part of the global JavaScript object "Drupal", created for the entire running Drupal instance. This was a concept already used and exploited in previous versions of Drupal, with some aspects remaining over time.  
+
+The main one: that the modules that want to implement JavaScript must do so by adding logic to the `Drupal.behaviors` Object. Let's see how, and let's know the basis of Behaviors: the global object "Drupal".  
+
+If you know the concept of "Object" in JavaScript, you will know that it's an advanced way of handling data in JavaScript, and basically, it consists of a disordered collection of related information: primitive data types, values in properties, methods... everything designed under a basic structure of key pairs: value.  
+
+```
+// Basic example for a JavaScript Object.
+    let drupal_event= { 
+    name: 'Drupal Camp Spain 2020',
+    location: 'Málaga',
+    original_location: 'Barcelona', 
+    established: '2010',
+    displayInfo: function(){
+         console.log(`${drupal_event.name} was established in
+                      ${drupal_event.established} at
+                      ${drupal_event.original_location}`); 
+     }                                                                            
+ }
+ 
+ // Shows feedback by Console.
+ drupal_event.displayInfo();
+```
+
+This object is perfectly executable in the JavaScript console of your browser, and will work as expected:  
+
+![JavaScript Object example from Console](../../images/post/davidjguru_drupal_javascript_guide_14.png)  
+
+Read more about objects and properties in JavaScript: [geeksforgeeks.org/objects-in-javascript/](https://www.geeksforgeeks.org/objects-in-javascript/).  
+
+Objects in JavaScript can be browsed, modified, deleted and above all (for the reasons we are dealing with now), extended. This is exactly what will happen with our new friend, the global object "Drupal", an existing resource -always- in any Drupal site installed from the `drupal.js` library present in the `/core/misc/` path:  
+
+![Main file drupal.js in core](../../images/post/davidjguru_drupal_javascript_guide_15.png)  
+
+Here in the previous image we see the file (a fundamental script in Drupal), which serves to provide centrally various JavaScript APIs in Drupal and to provide a common namespace to group all the extensions that will be added to the global object. In fact, if you call the global Drupal object, you will be able to see the base content it brings:  
+
+![Watching the content of the global object Drupal](../../images/post/davidjguru_drupal_javascript_guide_16.png)  
+
+Of all the previous list, perhaps it is `Drupal.behaviors` and its related methods (attachBehaviors, detachBehaviors) that are most important to us now, although we should point out some interesting utilities:  
+
+* The Drupal.t function, which is equivalent to the t() translation function for translations in Drupal: [theodoreb.net/drupal-jsapi/Drupal.html#.t](http://read.theodoreb.net/drupal-jsapi/Drupal.html#.t)
+* The small Drupal.dialog API, which simulates the dialog window element of HTML5: [theodoreb.net/drupal-jsapi/Drupal.html#.dialog#~dialogDefinition](http://read.theodoreb.net/drupal-jsapi/Drupal.html#.dialog#~dialogDefinition)  
+* Drupal.theme, to invite to process any HTML answer that should be submitted to theming (it is extended by many contrib libraries, like ckeditor): [theodoreb.net/drupal-jsapi/Drupal.theme.html](http://read.theodoreb.net/drupal-jsapi/Drupal.theme.html).  
+  
+Well, we've already seen a little piece of theory to gain context...it's time to practice a little. Let's extend what we already know how to do with a new exercise:  
+
+### Exercise 9: Dialog window from the global object "Drupal" 
+
+We will take the Drupal dialog API as a reference to build a window into our project through our custom module. To begin with, we are going to register a new library in our custom `javascript_custom_module` module, inside the `javascript_custom_module_libraries.yml` file, which will now look like this:  
+
+```
+js_hello_world_console:
+  js:
+    js/iife_execution_example.js: {}
+    js/hello_world_console.js: {}
+    js/iife_salute_example.js: {}
+
+js_hello_world_advanced:
+  js:
+    js/hello_world_advanced: {}
+  dependencies:
+    - core/drupalSettings
+
+js_custom_dialog_window:
+  js:
+    js/custom_dialog_window: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/drupalSettings
+```
+
+Next we load the new library as `#attached` in our render array returned by the Controller, from line 55 in the file `CommentsListController.php` :  
+
+```
+$final_array['welcome_message']['#attached']['library'][] = 'javascript_custom_module/js_custom_dialog_window';
+```
+
+And we'll build a very basic modal window, based on pure JavaScript. This dialogue will only have a simple message and a button to interact, in which we will include a style change on the element containing the message.  
+
+Let's see the new file `custom_dialog_window.js` :
+
+```
+function () {
+  'use strict';
+
+  // Put here your custom JavaScript code.
+
+  // First creating and initialising the new element.
+  let new_tag = document.createElement("P");
+  new_tag.setAttribute("id", "my_p");
+  new_tag.innerHTML = "Hello World from a custom Dialog Window.";
+
+  // Then we'll creating a new modal window.
+  Drupal.dialog(new_tag, {
+    title: 'Custom Dialog Window',
+    buttons: [{
+      text: 'Change colour',
+      click: function() {
+        let change_colour = document.getElementById("my_p");
+        change_colour.style.backgroundColor = "red";
+      }
+    }]
+  }).showModal();
+
+})();
+```
+
+You can review all the JavaScript associated with the global object "Drupal" thanks to the great documentation Théodore Biadala (@nod_) published years ago about the Drupal JavaScript API:  
+
+[http://read.theodoreb.net/drupal-jsapi/index.html](http://read.theodoreb.net/drupal-jsapi/index.html)  
+
 
 ### 6.3- Behaviors in Drupal 
 
+In a previous section, we already saw how to run jQuery in our code. We also know that it is important to check if the document (DOM) has already been fully loaded before starting to perform actions. Basically:  
+
+```
+(function ($) {
+  'use strict';
+  $(document).ready(function() {
+   // Put here your jQuery code. 
+  });
+})(jQuery)
+```
+
+But let's think carefully about this execution: it will be performed when the DOM has been loaded completely (at an initial moment), but it will not make adjustments after a partial loading of the DOM (for example, after an AJAX execution that modifies only a portion of the DOM). We need another idea. See the next example:  
+
+```
+(function ($, Drupal ) {
+  'use strict';
+
+  // Put here your custom JavaScript code.
+  Drupal.behaviors.unsplash_connector = {
+    attach: function (context, settings) {
+          console.log("Loaded Unsplash Behavior");
+
+    },
+
+    detach: function (context, settings, trigger) {
+    // JavaScript code.
+    }
+  }
+
+
+})(jQuery, Drupal);
+```
+
+This code, when executed, will make several print calls in Console (in this case, up to three times):  
+
+![Executing code from a Drupal behavior](../../images/post/davidjguru_drupal_javascript_guide_17.png)
+
+
+**Why is this? Well**, as we can see using breakpoints in the JavaScript debugging console of our phavorite browser, the loading of behaviors by the global Drupal object is done several times during the loading process of a single link: in this case there is a "full" loading of the DOM and several "partial" reloads through AJAX. In each case, a processing of behaviors is done through the method:  
+
+```
+Drupal.attachBehaviors (line 17, library drupal.js)
+```
+
+Which loads a function that runs through all the behaviours and executes them according to their context and parameters:  
+
+![Looping over Drupal.behaviors](../../images/post/davidjguru_drupal_javascript_guide_18.png)  
+
+The next step is to put some control on the execution of the instruction, passing it from an active mode (that writes in the console just when loading) to a reactive mode (that writes only when an interaction takes place):  
+
+```
+(function ($, Drupal ) {
+  'use strict';
+
+  // Put here your custom JavaScript code.
+  Drupal.behaviors.unsplash_connector = {
+    attach: function (context, settings) {
+      $('#unsplash_section', context).click(function() {
+        console.log("Loaded Unsplash Behavior");
+      });
+
+    },
+  }
+
+
+})(jQuery, Drupal);
+```
+
+So now we have placed over the ID selector of our welcome message a click control event, which when clicked loads a message into the console:  
+
+![Loading messages in Console by click event](../../images/post/davidjguru_drupal_javascript_guide_19.gif)  
+
+With this small example above, we have seen how to add a small event-based (click) functionality. Let's go on to do something more interesting.  
+
+### Exercise 10: Image Board from Unsplash using Drupal.behavior
+
+We will implement a functionality that operates by consuming an external API through Drupal Behavior.
+
+We are going to practice with a slightly more advanced (and more beautiful) idea: we will connect to the public API for applications of an online image stock service from a new Drupal Behavior and from there we will make image requests that we'll show then from a custom image board in our Drupal.
+
+**What do we need?** Well for this recipe we will need the following ingredients:  
+
+* An account for application access to the Unsplash API, you can do it here [https://unsplash.com/developers](https://unsplash.com/developers) and extract the request URL [https://api.unsplash.com/search/photos](https://api.unsplash.com/search/photos) and your private access key to make requests. You must register as an API user, register a new app and extract the key:  
+
+
+![Getting the Unsplash API key](../../images/post/davidjguru_drupal_javascript_guide_20.png)  
+
+* A new JavaScript library within our custom module with its own .js file to store this Behavior:  
+  
+  ![Creating the new JavaScript library](../../images/post/davidjguru_drupal_javascript_guide_21.png)  
+
+* A new route set declared in the routing file, a new controller class and a method that generates a render array as response:  
+
+  ![More resources for the new unsplash functionality](../../images/post/davidjguru_drupal_javascript_guide_22.png)  
+
+To facilitate the following integrations, we are going to add to the render array a couple of properties (#prefix, #suffix) to add a new `<div>` with a own id = unsplash (see the image above).
+
+Now with these ingredients, we'll start. First we create the skeleton of our Behavior and define what we only want to be loaded once (and not reloaded with AJAX):  
+
+```
+(function ($, Drupal) {
+
+  'use strict';
+  Drupal.behaviors.getting_unsplash_items = {
+    attach: function(context, settings) {
+      $(context).find("#unsplash").once('unsplashtest').each(function() {  
+        
+        // All our new functionality.   
+        });  
+      }
+ };
+})(jQuery, Drupal);
+```
+  
+**Remember:** the term we provide to jQuery.once() is totally random and non-repeatable, just to trace internally that the action already happened.  
+
+**First part:** We create a welcome message and two buttons: one to start an image search process and another one to clean the image board generated from the search and the results.  
+
+```
+// Adding the buttons through jQuery.
+$("#unsplash", context).append("<button type='button' id='load_button'>Load Images</button>" );
+$("#unsplash", context).append("<button type='button' id='clean_button'>Clean Board</button>" );
+
+// Adding an event listener to the new buttons using jQuery.
+$('#load_button').click(function() {
+
+  // In case of click we will clean the former message.
+  $("#message", context).remove();
+
+  // In case of click we will call to the prompt window.
+  processingKeywords();
+});
+
+// Adding a second event listener to the clean button. 
+$('#clean_button').click(function() {
+
+  // In case of click we will clean the written former message.
+  $("#message", context).remove();  
+  
+  // And we will remove the entire image board too.
+  $("#image-board").remove();
+});
+```
+
+As we can see in one of the previous calls, the image search process from the introduction of a keyword begins to be delegated to functions, started by the `processingKeywords()` function and we launch a prompt to capture the keyword and make sure to check if empty terms are being accepted:  
+
+```
+function processingKeywords(){
+ let message = '';
+ let option = prompt("Please write a keyword for search: ", "boat");
+
+ if(option == null || option == ""){
+
+   // Null option without response.
+   message = "Sorry but the keyword is empty.";
+
+   // Render in screen the message from the prompt.
+   $("#unsplash", context).append("<br/><p id='message'>" + message + "</p>");
+ }else {
+
+   // Valid answer launches request.
+   message = "Ok, we're searching..." + option;
+
+   // Render in screen the message from the prompt.
+   $("#unsplash", context).append("<br/><p id='message'>" + message + "</p>");
+
+   // Launching external request with some delay with arrow format.
+   setTimeout(() => {
+     gettingImages(option);
+     }, 4000);
+
+   }
+
+ }
+```
+
+And we call the function responsible for managing the requests, `gettingImages()`, with the keyword as a parameter. We will use async / await to avoid problems of uninitialized variables in case the service was delayed. We also give a little delay to the call of the next function.  
+
+```
+async function gettingImages(keyword){
+
+// Loading basic values Access Key and End Point.
+const unsplash_key = 'YOUR APP KEY';
+const end_point = 'https://api.unsplash.com/search/photos';  
+
+// Building the petition.
+let response = await fetch(end_point + '?query=' + keyword + '&client_id=' + unsplash_key);
+
+// Processing the results.
+let json_response = await response.json();  
+
+// Getting an array with URLs to images.
+let images_list = await json_response.results;
+
+// Calling the createImages method.
+creatingImages(images_list);
+
+}
+
+```
+
+At last we'll invoke the function that will take the image address list and we will build the corresponding HTML tags:  
+
+```
+function creatingImages(images_list) {
+
+ // If a former image board exists we will delete it.
+  $("#image-board", context).remove();
+
+ // Creating a new image board as frame for the images.
+ $("#unsplash", context).append("<section id='image-board'> </section>");
+
+  // We will add some CSS classes for styling the image board.
+  $("#image-board").addClass("images-frame");
+
+  // Now we will set the received images inside the new board.
+  for(let i = 0; i < images_list.length; i++){
+    const image = document.createElement('img');
+    image.src = images_list[i].urls.thumb;
+    document.getElementById('image-board').appendChild(image);
+  }
+
+  // When finished we will put a border for the image board.
+  $(".images-frame").css({'background-color': '#babb8f', 'border': '5px solid #1E1E1E'});
+}
+
+```
+
+**Note:** If you are looking for information about the use of `jQuery.once()`, remember the transition in its use from Drupal 7 to Drupal 8 and 9 for the passage of functions as a parameter ->  
+
+```
+// Example of use in Drupal 7 
+$(context).find(".element").once("random-key", function () {});
+
+// Example of use in Drupal 8 || 9
+$(context).find(".element").once("random-key").each(function () {});
+
+```
+
+Read more about jQuery.once(): 
+
+* [Is jQuery .once() needed if we filter by context?](https://drupal.stackexchange.com/questions/283935/is-jquery-once-needed-if-we-filter-by-context)
+* [https://github.com/robloach/jquery-once](https://github.com/robloach/jquery-once)  
+* [https://github.com/RobLoach/jquery-once/blob/master/API.md#readme](https://github.com/RobLoach/jquery-once/blob/master/API.md#readme)
+
+
+And so, if we go in our test Drupal on the path:  
+```
+http://drupal.localhost/unsplash/service
+```
+We will already have available the new image board obtained from the Unsplash API and built from a Drupal Behavior:  
+
+![Loading images from Unsplash](../../images/post/davidjguru_drupal_javascript_guide_23.gif) 
+
+
+Here you have available the complete code of the Behavior that we have just implemented:  
+
+{{< gist davidjguru 5906bf4edd838243cec588b4589e3bb3 "getting_unsplash_items.js " >}}
+
+
 ## 7- JavaScript without JavaScript: #ajax, #states  
+
+
 
 ### 7.1- (Brief) Introduction to AJAX in Drupal  
 
@@ -948,6 +1519,7 @@ Here is a graph prepared in 2015 by [Théodore Biadala, @nod_](https://twitter.c
 ### 9.1- JavaScript fundamentals 
 
 * [Understanding Scope and Context in JavaScript](http://ryanmorr.com/understanding-scope-and-context-in-javascript/)  
+* [Objects and properties in JavaScript](https://www.geeksforgeeks.org/objects-in-javascript/)  
 * [Web Storage API](https://flaviocopes.com/web-storage-api/)  
 * [developer.mozilla.org/Web_Storage_API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)
   
@@ -971,7 +1543,10 @@ Here is a graph prepared in 2015 by [Théodore Biadala, @nod_](https://twitter.c
 * [public function HtmlResponseAttachmentsProcessor](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21HtmlResponseAttachmentsProcessor.php/function/HtmlResponseAttachmentsProcessor%3A%3AprocessAttachments/8.7.x).  
 * [Drupal Fast Tips: The magic of 'attached'](https://davidjguru.github.io/blog/drupal-fast-tips-the-magic-of-attached)  
 * [Erasing traces of generator in Drupal projects](https://dev.to/davidjguru/erasing-traces-of-generator-in-drupal-projects-1cdh)  
-* [api.drupal.org/core.services.yml/current_user/9.0.x](https://api.drupal.org/api/drupal/core%21core.services.yml/service/current_user/9.0.x)
+* [api.drupal.org/core.services.yml/current_user](https://api.drupal.org/api/drupal/core%21core.services.yml/service/current_user/9.0.x)
+* [The Drupal.t function](http://read.theodoreb.net/drupal-jsapi/Drupal.html#.t)  
+* [The Drupal.dialog API](http://read.theodoreb.net/drupal-jsapi/Drupal.html#.dialog#~dialogDefinition)  
+* [The Drupal.theme function](http://read.theodoreb.net/drupal-jsapi/Drupal.theme.html).  
 
 
 ### 9.4- jQuery 
@@ -981,6 +1556,9 @@ Here is a graph prepared in 2015 by [Théodore Biadala, @nod_](https://twitter.c
 * [jQuery API: Selectors](https://api.jquery.com/category/selectors)  
 * [jQuery Standars (old)]([http://lab.abhinayrathore.com/jquery-standards/](http://lab.abhinayrathore.com/jquery-standards/))  
 * [jQuery Visualization of use in Drupal 8](http://read.theodoreb.net/2015/viz-drupal-use-of-jquery.html)  
+* [jQuery getJSON for AJAX](https://api.jquery.com/jQuery.getJSON)  
+* [jQuery .slideDown() function](https://api.jquery.com/slideDown/#slideDown-duration-complete)  
+* [Is jQuery.once() needed if we filter by context?](https://drupal.stackexchange.com/questions/283935/is-jquery-once-needed-if-we-filter-by-context)
 * [https://github.com/robloach/jquery-once](https://github.com/robloach/jquery-once)  
 * [https://github.com/RobLoach/jquery-once/blob/master/API.md#readme](https://github.com/RobLoach/jquery-once/blob/master/API.md#readme)  
 
@@ -998,7 +1576,8 @@ Here is a graph prepared in 2015 by [Théodore Biadala, @nod_](https://twitter.c
 
 ### 9.6- Others 
 
-* [Web Storage Support Test](http://dev-test.nemikor.com/web-storage/support-test/)  
+* [Web Storage Support Test](http://dev-test.nemikor.com/web-storage/support-test/).  
+* [Bacon Ipsum, a lorem ipsum generator with API](https://baconipsum.com).  
 
 
 
