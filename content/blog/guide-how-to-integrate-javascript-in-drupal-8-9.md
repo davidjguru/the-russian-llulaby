@@ -1,6 +1,6 @@
 ---
 title: "Guide: How to integrate JavaScript in Drupal 8 || 9"
-date: 2020-11-25
+date: 2021-01-01
 draft: false
 
 # post thumb
