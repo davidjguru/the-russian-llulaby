@@ -1516,7 +1516,7 @@ We can use, at a basic level, Ajax for three well known formulas:
   
 * In form buttons: adding the class 'use-ajax-submit' in the element declaration, we will make a call with Ajax.
 
-Let's see one of its main uses in form elements. In this case we're adding the #ajax property to an element in order to change its options, so we can load some related properties and after that, we'll create a new callback function:  
+Let's see one of its main uses in form elements. This is an example of AJAX actions to be performed from the change of option selected in a drop-down list, specifically one that allows to select a region, so we are using AJAX like a trigger. In this case we're adding the #ajax property to an element in order to change its options, so we can load some related properties and after that, we'll create a new callback function:  
 
 ```
    // Offers a select for Regions.
@@ -1539,26 +1539,117 @@ Let's see one of its main uses in form elements. In this case we're adding the #
         ],
       ],
     ];
-
 ```
 
 In this case I'm building a form using the Drupal Form API and I need some operations over a select element. Due to this, I'm adding a very specific block focused to AJAX:  
 
 ```
  '#ajax' => [
-        'event' => 'change',
-        'method' => 'html',
-        'callback' => '::loadRelatedOfficesCallback',
-        'wrapper' => 'contact_form_office',
-        'progress' => [
-          'type' => 'throbber',
-          'message' => $this->t('loading related offices'),
-        ],
+    'event' => 'change',
+    'method' => 'html',
+    'callback' => '::loadRelatedOfficesCallback',
+    'wrapper' => 'contact_form_office',
+    'progress' => [
+    'type' => 'throbber',
+    'message' => $this->t('loading related offices'),
+    ],
       ],
 ```
 Here I'm specifying a event (change), a method for the event (html), a callback, marking a wrapper (the div for the element that will be changed from this one) and at last some indicators for the AJAX processing: an icon of "loading" and a message for the user.  
 
+What is happening in the callback? well, First we ask for the triggered element, by using `$form_state->getTriggeringElement()`. So you can get the item. Other importante step is get the css selector marked in the triggered element, by using `$triggeringElement["#ajax"]["wrapper"]`. 
+
+
+```
+/**
+ * Callback function ready to get offices renewing the HTML component.
+ */
+public function loadRelatedOfficesCallback(array &$element, FormStateInterface $form_state){
+
+  // Gets the initial values from the triggered element.
+  $triggeringElement = $form_state->getTriggeringElement();
+
+  // Gets more info or computed values.
+  [...]
+
+  // Gets the css selector to modify when callback ends.
+  $wrapper_id = $triggeringElement["#ajax"]["wrapper"];
+
+  // Executes changes and alterations.
+  [...]
+
+// Creates a new AjaxResponse and adds a jQuery Command for replace the item.
+$response = new AjaxResponse();
+$response->addCommand(new ReplaceCommand('#' . $wrapper_id, $changed_value));
+
+return $response;
+}
+
+```
+
+From the former callback, only two lines are interesting: the creation of a new AjaxResponse, using the related class: [api.drupal.org/class/AjaxResponse](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Ajax%21AjaxResponse.php/class/AjaxResponse/9.0.x) and the load of a new command for AJAX, using the action commands defined in the AJAX API of Drupal: [drupal.org/ajax-api/core-ajax-callback-commands](https://www.drupal.org/docs/drupal-apis/ajax-api/core-ajax-callback-commands).  
+
+These AJAX commands will add the required jQuery internally and will prepare the action without us having to add the necessary JavaScript code directly.  
+
 ### 7.2- Rendering elements with #states property 
+
+The `#states` property is available for use within Drupal's render arrays and assigned to a form element, it allows you to add certain conditions to the behavior of that element, enabling changes dynamically.
+
+Actually, the `#states` property ends up being managed from the JavaScript library `drupal.states` available for loading as a dependency in the form `core/drupal.states`, which points to the path where the library `/core/misc/states.js` is located inside Drupal, although it's not necessary to make an explicit load of it since the rendering system that manages the Render Arrays checks the existence of the property and if it is present, it directly assigns the JavaScript library.  
+
+The use of this property allows the creation of elements within a form that can alter their status -show, hide, disable, enable, etc.- based on conditions both of the element itself and of another element different from the form (that when one is clicked another is hidden, for example) and using jQuery syntax when declaring the selectors.  
+
+The mechanics is that we will declare actions from our side and Drupal from its side will provide all the Javascript/JQuery needed to make those declared actions happen on the fly. Everything starts with the use of `#states` as a property when declaring the element of the form, and from there Drupal is in charge of adding the necessary JavaScript to change elements through the [`drupal_process_states` function](https://api.drupal.org/api/drupal/core%21includes%21common.inc/function/drupal_process_states/8.8.x) which is deprecated from Drupal 8.8 and becomes part of the [FormHelper class](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Form%21FormHelper.php/function/FormHelper%3A%3AprocessStates/9.0.x) (although it maintains the same functionality).  
+
+```
+// States that you can apply with remote conditions (origin):
+empty, filled, checked, unchecked, expanded, collapsed, value.
+
+// States that you can apply over an element (target):
+enabled, disabled, required, optional, visible, invisible, checked, unchecked, expanded, collapsed.
+```
+
+The basic structure of a state is that of a multidimensional array with the following form:  
+
+```
+[
+  STATE1 => CONDITIONS_ARRAY1,
+  STATE2 => CONDITIONS_ARRAY2,
+  ...
+]
+```
+
+Where an array of conditions, in turn, is another array that stores the conditions foreseen for the change of state of that element, through the scheme of use of conditions in `#states`:  
+
+```
+'#states' => [
+  'STATE' => [
+    JQUERY_SELECTOR => REMOTE_CONDITIONS,
+    JQUERY_SELECTOR => REMOTE_CONDITIONS,
+    JQUERY_SELECTOR => REMOTE_CONDITIONS,
+    JQUERY_SELECTOR => REMOTE_CONDITIONS,    
+    ...
+  ],
+)],
+```
+
+I the next block  code we will see an example of using `#states`. In the context of a Form created with the Drupal Form API, we make a textfield called "Name", reacting to the state change of a previous checkbox option. If the previous checkbox is clicked, then we make our field invisible:  
+
+```
+$form['name'] = [
+     '#type' => 'textfield',
+     '#title' => t('Name:'),
+     '#weight' => 1,
+     '#states' => [
+       'invisible' => [
+         ':input[name="newcheck"]' => ['checked' =>TRUE],
+          ],
+        ],
+      ];
+```
+
+
+
 
 ## 8- Problems and solutions 
 
@@ -1566,6 +1657,9 @@ Here I'm specifying a event (change), a method for the event (html), a callback,
 
 
 ### 8.2- Loading JavaScript out of context 
+
+
+### 8.3- 
 
 
 ## 9- Links and Reading resources 
@@ -1602,6 +1696,10 @@ Here I'm specifying a event (change), a method for the event (html), a callback,
 * [The Drupal.dialog API](http://read.theodoreb.net/drupal-jsapi/Drupal.html#.dialog#~dialogDefinition)  
 * [The Drupal.theme function](http://read.theodoreb.net/drupal-jsapi/Drupal.theme.html).  
 * [AJAX API in Drupal](https://api.drupal.org/api/drupal/core%21core.api.php/group/ajax). 
+* [AjaxResponse Class in Drupal AJAX API](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Ajax%21AjaxResponse.php/class/AjaxResponse/9.0.x)  
+* [AJAX Callback Commands in Drupal](https://www.drupal.org/docs/drupal-apis/ajax-api/core-ajax-callback-commands)  
+* [drupal_process_states function in Drupal 8.x](https://api.drupal.org/api/drupal/core%21includes%21common.inc/function/drupal_process_states/8.8.x)  
+* [FormHelper class in Drupal 9.x](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Form%21FormHelper.php/function/FormHelper%3A%3AprocessStates/9.0.x)
 
 
 ### 9.4- jQuery 
