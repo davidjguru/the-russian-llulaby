@@ -1,5 +1,5 @@
 ---
-title: "Guide: How to integrate JavaScript in Drupal 8 || 9"
+title: "Guide: How to integrate JavaScript in Drupal 8-9"
 date: 2021-01-01
 draft: false
 
@@ -7,7 +7,7 @@ draft: false
 image: "images/post/davidjguru_drupal_9_javascript_integration_main.jpg"
 
 # meta description
-description: "Guide: How to integrate JavaScript in Drupal 8 || 9"
+description: "Guide: How to integrate JavaScript in Drupal 8-9"
 
 # taxonomies
 categories: 
@@ -38,7 +38,7 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
 [3- How to include JavaScript code in Drupal](#3--how-to-include-javascript-code-in-drupal)  
   > * [3.1- Setting up the scenario: creating a custom module](#31--setting-up-the-scenario-creating-a-custom-module)  
   > * [3.2- The Library concept](#32--the-library-concept)  
-    >> * [3.2.1- Secuence for creating libraries](#321--secuence-for-creating-libraries)  
+    >>* [3.2.1- Secuence for creating libraries](#321--secuence-for-creating-libraries)  
     >> * [3.2.2- Loading libraries in head](#322--loading-libraries-in-head)  
     >> * [3.2.3- Libraries as external resources](#323--libraries-as-external-resources)  
     >> * [3.2.4- Libraries and dependencies](#324--libraries-and-dependencies)  
