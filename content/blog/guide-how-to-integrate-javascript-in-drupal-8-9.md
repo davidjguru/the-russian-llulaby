@@ -123,7 +123,7 @@ So although my first intention was to move all this content to an open book form
 
 In a complementary way, you can download all the code from the exercises grouped as a single Drupal custom module, available here: [gitlab.com/davidjguru/javascript_custom_module](https://gitlab.com/davidjguru/javascript_custom_module). This works in Drupal 8 and Drupal 9.  
 
-**DISCLAIMER:** This guide is actually a manual for the integration of JavaScript code in Drupal-based projects, but only in the context of implementing Drupal modules. This is basically a backend issue. This guide does not contain information related to JavaScript frameworks (React, Angular, Vue) or about the use of Drupal headless as decoupled. Neither does it deal with Drupal Theming issues and its approach to them is only tangential. This tutorial is only for people related to the Drupal backend.  
+__DISCLAIMER:__ This guide is actually a manual for the integration of JavaScript code in Drupal-based projects, but only in the context of implementing Drupal modules. This is basically a backend issue. This guide does not contain information related to JavaScript frameworks (React, Angular, Vue) or about the use of Drupal headless as decoupled. Neither does it deal with Drupal Theming issues and its approach to them is only tangential. This tutorial is only for people related to the Drupal backend.  
 
 
 **There we go!**  
