@@ -10,4 +10,6 @@ description: "this is meta description"
 type : "contact"
 ---
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+You can contact me for Drupal related matters using the following contact details, or by sending me a message through the following contact form. 
+
+Some people have written me with doubts, problems or questions.  Although I am busy, I promise to answer you as soon as I can. 
