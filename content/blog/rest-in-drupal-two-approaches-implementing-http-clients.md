@@ -21,9 +21,7 @@ tags:
 # post type
 type: "post"
 ---
-Imagine that you have to integrate JavaScript code into your Drupal project... Where do you start? How do you do it? You're looking for information but you don't find anything "holistic", something that goes from 0 to 100 and that puts in context how the relationships between Drupal and JavaScript are structured. Well, this article was made for you (Or for other people in your team that you want to introduce to this topic).
-
-In this guide you will learn basic concepts of JavaScript, the terminology used in Drupal, functions, methods and common mechanics to enrich your projects by make them run with executable code on the client side. And all through a combination of theory and practice. It includes some exercises that I have integrated.
+The Representational State Transfer, or REST, is an old friend of inter-system communications that was designed by Roy Fielding circa 2000. As we already know, It's commonly used to create interactive applications using Web Services and called it RESTful. This combine a stateless client/server protocol (HTTP), a well-defined set of operations for all the resources (GET; POST; PUT, DELETED), and a universal syntax for resources(a resource is addressable only through its URI). But in this article I would like write about REST from a Drupal point of view, sharing a pair of models in order to implement new HTTP Client when we're developing our custom modules, related with Web Services.
 
 --------------------------------------------------------------------------------------
 **Picture from Unsplash, user [Krzysztof Niewolny, @epan5](https://unsplash.com/@epan5).**
