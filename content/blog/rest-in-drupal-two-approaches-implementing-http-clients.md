@@ -1,5 +1,5 @@
 ---
-title: "The LWM Module and REST Services in Drupal: Two approaches"
+title: "REST in Drupal: two approaches implementing HTTP Clients"
 date: 2021-04-12
 draft: true
 
@@ -7,7 +7,7 @@ draft: true
 image: "images/post/davidjguru_drupal_8_9_lm_module_rest_services_main.jpg"
 
 # meta description
-description: "The LWM Contrib module for Drupal and REST Services, two approaches for implementing resources as Http Clients."
+description: "REST in Drupal: two approaches implementing HTTP Clients."
 
 # taxonomies
 categories:
