@@ -90,16 +90,16 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
 
 **Index of Exercises**
 <!-- TOC -->
-[Exercise 1: Creating a basic custom module](#exercise-1-creating-a-basic-custom-module-for-testing)
-[Exercise 2: Defining our new custom library](#exercise-2-defining-our-new-custom-library)
-[Exercise 3: Defining our initial JavaScript file](#exercise-3-defining-our-initial-javascript-file)
-[Exercise 4: Adding libraries to our Drupal custom module](#exercise-4-adding-libraries-to-our-drupal-custom-module)
-[Exercise 5: Passing values to the IIFE format](#exercise-5-passing-values-to-the-iife-format)
-[Exercise 6: Transfering values trough drupalSettings](#exercise-6-transfering-values-trough-drupalsettings)
-[Exercise 7: Custom Visit Counter with JavaScript](#exercise-7-custom-visit-counter-with-javascript)
-[Exercise 8: Changes based in jQuery](#exercise-8-changes-based-in-jquery)
-[Exercise 9: Dialog Window from the global object Drupal](#exercise-9-dialog-window-from-the-global-object-drupal)
-[Exercise 10: Image Board from Unsplash using Drupal Behaviors](#exercise-10-image-board-from-unsplash-using-drupalbehavior)
+[Exercise 1: Creating a basic custom module](#exercise-1-creating-a-basic-custom-module-for-testing)  
+[Exercise 2: Defining our new custom library](#exercise-2-defining-our-new-custom-library)  
+[Exercise 3: Defining our initial JavaScript file](#exercise-3-defining-our-initial-javascript-file)  
+[Exercise 4: Adding libraries to our Drupal custom module](#exercise-4-adding-libraries-to-our-drupal-custom-module)  
+[Exercise 5: Passing values to the IIFE format](#exercise-5-passing-values-to-the-iife-format)  
+[Exercise 6: Transfering values trough drupalSettings](#exercise-6-transfering-values-trough-drupalsettings)  
+[Exercise 7: Custom Visit Counter with JavaScript](#exercise-7-custom-visit-counter-with-javascript)  
+[Exercise 8: Changes based in jQuery](#exercise-8-changes-based-in-jquery)  
+[Exercise 9: Dialog Window from the global object Drupal](#exercise-9-dialog-window-from-the-global-object-drupal)  
+[Exercise 10: Image Board from Unsplash using Drupal Behaviors](#exercise-10-image-board-from-unsplash-using-drupalbehavior)  
 
 
 
