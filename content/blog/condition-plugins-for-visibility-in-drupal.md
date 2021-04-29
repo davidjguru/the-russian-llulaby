@@ -334,7 +334,7 @@ And the JavaScript rendering the info about summary:
 
 It's true that it requires basic knowledge of other Drupal elements (Annotations, Plugins, JavaScript Libraries, Drupal Behaviors...) but in itself, the result is quite interesting. Now we can build our own visibility conditions Plugins!  
 
- 
+ ![Rendering new Visibility Condition Plugin](../../images/post/davidjguru_drupal_8_9_condition_plugins_for_visibility_5.gif)
 
 
 I have uploaded this test module to [my custom modules repository for testing, in Gitlab](https://gitlab.com/davidjguru/drupal-custom-modules-examples). You can [download it from here](https://gitlab.com/davidjguru/drupal-custom-modules-examples/-/tree/master/visibility_conditions). And remember, don't use these modules in production environments!  
