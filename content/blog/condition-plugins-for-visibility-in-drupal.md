@@ -153,7 +153,7 @@ In order to create a new vertical tab for the block configuration page, we hace 
 ```
 What about context? Well It's a way to know where is running our resource. Some Drupal's Plugins require context information to operate. In this case, we need to know if our Block is inside a node corpus, or not.  
 
-For the next lines, we have to extend the [ConditionPluginBase Class](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Condition%21ConditionPluginBase.php/class/ConditionPluginBase/9.2.x) and implement the ContainerFactoryPluginInterface Class](https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Plugin!ContainerFactoryPluginInterface.php/interface/ContainerFactoryPluginInterface/9.2.x):  
+For the next lines, we have to extend the [ConditionPluginBase Class](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Condition%21ConditionPluginBase.php/class/ConditionPluginBase/9.2.x) and implement the [ContainerFactoryPluginInterface Class](https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Plugin!ContainerFactoryPluginInterface.php/interface/ContainerFactoryPluginInterface/9.2.x):  
 
 ```
  class SelectedArticle extends ConditionPluginBase implements ContainerFactoryPluginInterface {
@@ -324,9 +324,17 @@ function checkSummary(context) {
     return Drupal.t('The block will be shown in all Articles');
   }
 ``` 
-Now you need enable the new custom module by `drush en -y visibility_conditions` from your command line. Clear cache by doing `drush cr` and...That's all! interesting? it's true that it requires basic knowledge of other Drupal elements (Annotations, Plugins, JavaScript Libraries, Drupal Behaviors...) but in itself, the result is quite interesting. Now we can build our own visibility conditions Plugins!  
+Now you need enable the new custom module by `drush en -y visibility_conditions` from your command line. Clear cache by doing `drush cr` and...That's all! interesting?  See the new Condition Plugin in action:   
 
 ![Rendering new Visibility Condition Plugin](../../images/post/davidjguru_drupal_8_9_condition_plugins_for_visibility_4.gif)  
+
+And the JavaScript rendering the info about summary:  
+
+![Rendering new Visibility Condition Plugin](../../images/post/davidjguru_drupal_8_9_condition_plugins_for_visibility_5.gif)  
+
+It's true that it requires basic knowledge of other Drupal elements (Annotations, Plugins, JavaScript Libraries, Drupal Behaviors...) but in itself, the result is quite interesting. Now we can build our own visibility conditions Plugins!  
+
+ 
 
 
 I have uploaded this test module to [my custom modules repository for testing, in Gitlab](https://gitlab.com/davidjguru/drupal-custom-modules-examples). You can [download it from here](https://gitlab.com/davidjguru/drupal-custom-modules-examples/-/tree/master/visibility_conditions). And remember, don't use these modules in production environments!  
@@ -334,6 +342,6 @@ I have uploaded this test module to [my custom modules repository for testing, i
 ## 6- :wq!
 
 
-##### Recommended song
+##### Recommended song: Fabrizio de Andrè - La ballata dell'amore cieco  
 
 {{< youtube SEN_-q2fGZI >}}
