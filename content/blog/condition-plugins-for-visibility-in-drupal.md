@@ -26,7 +26,7 @@ Hello there! In this new post I want to focus on a very interesting topic of Dru
 
 --------------------------------------------------------------------------------------
 
-**Picture from Unsplash, user [Benjamin Child, @@bchild311](https://unsplash.com/@bchild311)**
+**Picture from Unsplash, user [Benjamin Child, @bchild311](https://unsplash.com/@bchild311)**
 
 --------------------------------------------------------------------------------------
 
@@ -101,7 +101,7 @@ But there are a few more in other locations (in addition to some used in test cl
 
 ## 4- Available Condition Plugins in Drupal Contrib Modules
 
-As in Drupal Core you can find Condition Plugins in Contrib modules too. For instance, there are some modules developer by [Cambrico](https://www.drupal.org/cambrico) with many resources within:   
+As in Drupal Core you can find Condition Plugins in Contrib modules too. For instance, there are some modules developed by [Cambrico](https://www.drupal.org/cambrico) with many resources within:   
 
 * [Drupal Module Condition Plugins](https://www.drupal.org/project/condition_plugins)  
 
@@ -330,7 +330,7 @@ Now you need enable the new custom module by `drush en -y visibility_conditions`
 
 And the JavaScript rendering the info about summary:  
 
-![Rendering new Visibility Condition Plugin](../../images/post/davidjguru_drupal_8_9_condition_plugins_for_visibility_5.gif)  
+  
 
 It's true that it requires basic knowledge of other Drupal elements (Annotations, Plugins, JavaScript Libraries, Drupal Behaviors...) but in itself, the result is quite interesting. Now we can build our own visibility conditions Plugins!  
 
