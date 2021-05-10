@@ -130,6 +130,7 @@ Read it, study it, practice it and repeat all the examples. It's a master's degr
 ## 7- :wq!
 
 
-##### Recommended song
+##### ##### Recommended song: Dexter Gordon - Tanya  
+
 
 {{< youtube LP7z7rOphMU >}}
