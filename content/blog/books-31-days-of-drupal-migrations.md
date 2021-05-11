@@ -54,6 +54,9 @@ Perhaps of all the Drupal available APIs, the Migrate API is one of the areas of
 
 ## 2- The Book
 
+![Cover of 31 Days of Drupal Migrations, by Mauricio Dinarte](../../images/post/davidjguru_drupal_8_9_books_31_days_of_drupal_migrations_one.png)
+
+
 It's difficult for me to evaluate this book as it deserves. So I guess maybe the first thing I want to say is that I think this is the first time I'm faced with such an integrated and compact body of knowledge/experience. 
 
 
@@ -99,7 +102,7 @@ It's difficult for me to evaluate this book as it deserves. So I guess maybe the
 
 ## 6- Ratings
 
-![Table of Book Ratings for DDEV](../../images/post/davidjguru_drupal_9_module_development_rating_table_books.png)
+![Table of Book Ratings for DDEV](../../images/post/davidjguru_drupal_8_9_books_31_days_of_drupal_migrations_rating_table.png)
 
 
 ## 7- :wq!
