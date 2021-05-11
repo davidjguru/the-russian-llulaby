@@ -24,7 +24,7 @@ type: "post"
 ---
 
 
-For a long time I was thinking about write or not a review of the Drupal 8 Module Development (the former edition of the current). For me there were two very important keys: on the one hand, it was a very ambitious book in terms of scope and content (so it was an important challenge to make a synthesis on its simple review). On the other hand, Drupal 9 was already on its way and it was possible that it would be deprecated quickly. Luckily, Drupal 9 has already arrived and the transition from 8 to 9 has not only not been at all traumatic (there are still many people trapped in the crack between Drupal 7 and Drupal 8), but it has also been an easy road. There won't be substantial or profound differences in how to approach the creation of custom modules in Drupal 9 respect to Drupal 8 and with this new edition adapted to Drupal 9, everything is ready to review this ambitious book. There we go!  
+Perhaps of all the Drupal available APIs, the Migrate API is one of the areas of knowledge most hidden from the average Drupal user. It's even possible that as you read this post, you know for the first time that there is a whole set of Drupal modules both in core and contributed, and fully dedicated to the design and execution of migration processes within Drupal. You can move data from an old Drupal to the most recent version but also from others databases, files, systems, frameworks, CMS, DXPs... and all these options are aggregated around the Drupal Migrate API, a set of resources that requires much time of dedication, among other things, due to the disintegration of the available information, until now. The book that I will discuss today comes to bring order and unification in all this. Pay attention.  
 
 --------------------------------------------------------------------------------------
 **Picture from Unsplash, user [Will Paterson, @willpat](https://unsplash.com/@willpat)**
@@ -54,7 +54,7 @@ For a long time I was thinking about write or not a review of the Drupal 8 Modul
 
 ## 2- The Book
 
-
+It's difficult for me to evaluate this book as it deserves. So I guess maybe the first thing I want to say is that I think this is the first time I'm faced with such an integrated and compact body of knowledge/experience. 
 
 
 
@@ -68,15 +68,15 @@ For a long time I was thinking about write or not a review of the Drupal 8 Modul
 
 | Field         | Description   |
 | ------------- |:-------------:|
-| Title         | . |
-| Author      | .      |
-| Publisher | .      |
-| Date | .      |
-| Pages |       |
-| Overview | .      |
-| Keywords | .      |
-| Price | 30$      |
-| Links | ,      |
+| Title         | 31 Days of Drupal Migrations. |
+| Author      | Mauricio Dinarte.      |
+| Publisher | Leanpub.      |
+| Date | October, 2020.      |
+| Pages |   193   |
+| Overview | Complete guide to implement migrations and ETL processes in Drupal.      |
+| Keywords | Drupal, Migration, Migrate API, Plugins, Source, Process, Destination.      |
+| Price | 10$      |
+| Links | [Gumroad](https://gumroad.com/l/31-days-of-drupal-migrations),      |
 
 
 ## 5- Fast Review
