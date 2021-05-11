@@ -102,7 +102,7 @@ It's difficult for me to evaluate this book as it deserves. So I guess maybe the
 
 ## 6- Ratings
 
-![Table of Book Ratings for DDEV](../../images/post/davidjguru_drupal_8_9_books_31_days_of_drupal_migrations_rating_table.png)
+![Table of Book Ratings for 31 Days of Drupal Migrations](../../images/post/davidjguru_drupal_8_9_books_31_days_of_drupal_migrations_rating_table.png)
 
 
 ## 7- :wq!
