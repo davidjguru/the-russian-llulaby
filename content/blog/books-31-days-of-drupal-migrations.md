@@ -47,10 +47,9 @@ Perhaps of all the Drupal available APIs, the Migrate API is one of the areas of
 
 ## 1- Introduction
 
-
+Migration processes are a fairly frequent issue in project development: it is quite normal to build a new Drupal-based website for a client that already has its platform implemented in a different technology (not kidding, this hapens). As part of these processes, a client or customer may need to move their data to the new platform using a new data model as Drupal does with its tables and relations.  
  
-
-
+In these situations, several scenarios open up for these processes: the study of the origin of the data, the processing possibilities, the methodology to sanitize the information and how to store it in a stable way in our new environment. What I have just briefly described is what is involved in [an ETL process](https://en.wikipedia.org/wiki/Extract,_transform,_load): Extraction - Transformation and Load for the data migration, and this is the spirit of the book I am discussing today: the exhaustive study of the design and execution for ETL process in Drupal.  
 
 ## 2- The Book
 
@@ -66,6 +65,11 @@ It's difficult for me to evaluate this book as it deserves. So I guess maybe the
 ## 3- Recommendations
 
 Actually, I guess I could say - in a nutshell - that any work team implementing Drupal-based projects should have a copy of this book available. And I wouldn't be exaggerating, I swear. I think this huge, extensive and thorough work compiled by Mauricio Dinarte has too much importance and it's quite interesting too. This can't to go unnoticed.  
+
+On the other hand, being "Migrations" a topic that actually encompasses and relates to other Drupal APIs, it can also provide quite a lot of knowledge to people in a technical team who want to learn more about Drupal internals: Plugins, Services, Entities, Drush, Debugging...these are cross-cuttings topics in this book and they are also very important issues. Maybe you wanna learn more about  that.  
+
+
+
 
 ## 4- Book Information
 
