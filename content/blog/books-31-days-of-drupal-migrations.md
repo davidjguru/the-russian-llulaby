@@ -47,7 +47,7 @@ Perhaps of all the Drupal available APIs, the Migrate API is one of the areas of
 
 ## 1- Introduction
 
- 
+
  
 
 
@@ -65,7 +65,7 @@ It's difficult for me to evaluate this book as it deserves. So I guess maybe the
 
 ## 3- Recommendations
 
-
+Actually, I guess I could say - in a nutshell - that any work team implementing Drupal-based projects should have a copy of this book available. And I wouldn't be exaggerating, I swear. I think this huge, extensive and thorough work compiled by Mauricio Dinarte has too much importance and it's quite interesting too. This can't to go unnoticed.  
 
 ## 4- Book Information
 
@@ -87,17 +87,17 @@ It's difficult for me to evaluate this book as it deserves. So I guess maybe the
 | Question // Answer         | 
 | ------------- |
 | **1- Is this book progressive, Iterative and Incremental?**         |
-| .         |
+| Yes, it is. It's constructed in a very didactic and useful way.        |
 | **2- Does it offer specific solutions to particular problems or concrete issues?**         |
-| .         |
+| Yes, it offers solutions. The book contains many (many) practical examples and errors.         |
 | **3- Does it explain well the original problems or needs it aims to solve?**       |
-| .        |
+| Yes, the book is built from the needs that normally originate migration tasks.       |
 | **4- Is this book rich in examples?**         |
-| .          |
+| Yes, for each situation, case, resource, it offers a real and practical example, downloadable from a repository. .          |
 | **5- Is this book written in plain English, suitable for non-English speakers?**          |
-| .         |
+| Yes, this book is an easy read for non-English speakers, very pleasant.         |
 | **6- Is it up to date?**         |
-| .          |
+| Yes, seems to be aligned with the last big changes related to the Migrate API of Drupal, November 2020.          |
 
 
 ## 6- Ratings
