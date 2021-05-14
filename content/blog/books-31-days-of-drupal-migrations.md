@@ -53,6 +53,8 @@ In these situations, several scenarios open up for these processes: the study of
 
 For those of us who at some point have had to learn to migrate data to Drupal by the hard way, I'm sure it has been recurrent a) to search for information on Google at some point. and b) Reach Mauricio Dinarte's blog: [understanddrupal.com](https://understanddrupal.com/). For me, this website has been a very important reference (almost mandatory) to understand how to perform Drupal Migrations. In fact, it was one of the recommended authors that I considered fundamental to learn how to execute Drupal Migrations, when more than a year ago I started writing about this deep topic here [in The Russian Lullaby](https://www.therussianlullaby.com/blog/drupal-migrations-one-basic-resources/#6--authors-you-should-know), linking to his website and the platform of [Agaric.coop](https://agaric.coop/tags/migrate), with shared related content, too. So the author and his work is not alien to me, but what happens is that today I want to talk about a novelty discovered recently: the compilation of all the great work around this topic in his book about migration processes in Drupal: [31 days of Drupal Migrations](https://gumroad.com/l/31-days-of-drupal-migrations).  
 
+
+
 ## 2- The Book
 
 It's difficult for me to evaluate this book as it deserves. So I guess maybe the first thing I want to say is that I think this is the first time I'm faced with such an integrated and compact body of knowledge/experience. This ir very important, because in many cases Drupal documentation is not very extensive or not sufficiently updated. 
@@ -64,11 +66,18 @@ Maybe because of this is why initiatives like this from [Mauricio Dinarte, @dina
 
 As I said at the beginning of this section, it's difficult for me to describe how much this resource has helped me, but I would like write down some special points that you can learn from this book, some key points of interest, something like:  
 
-**Key Points**  
-1. Perhaps the first fundamental learning here: to know how a migration process works, what are the workflows and its possibilities.  
-2. Learn about how to migrate data in a lot of entities and resources: files, images, paragraphs, fields and subfields...All full of a) theory and concepts and b) examples, examples, and more examples.  
-3. Know the way to perform migrations from diverse sources and origins: XML files, CSV, JSON... executing processing ad-hoc for the values.  
-4. Get the most complete list of the most valuable contributed modules related with Migrations: Media Handler, Media Migration, Geofield, Migrate Devel...core modules, contrib modules, modules that includes plugins from Migrations...the set is long and pretty interesting. This book contains the most comprehensive and centralized list of all.  
+**Key Points:**  
+________________________
+
+
+* Perhaps the first fundamental learning here: to know how a migration process works, what are the workflows and its possibilities.  
+
+* Learn about how to migrate data in a lot of entities and resources: files, images, paragraphs, fields and subfields...All full of a) theory and concepts and b) examples, examples, and more examples.  
+
+* Know the way to perform migrations from diverse sources and origins: XML files, CSV, JSON... executing processing ad-hoc for the values.  
+
+* Get the most complete list of the most valuable contributed modules related with Migrations: Media Handler, Media Migration, Geofield, Migrate Devel...core modules, contrib modules, modules that includes plugins from Migrations...the set is long and pretty interesting. This book contains the most comprehensive and centralized list of all.  
+
 
 
 ## 3- Recommendations
@@ -78,6 +87,7 @@ Actually, I guess I could say - in a nutshell - that any work team implementing 
 On the other hand, being "Migrations" a topic that actually encompasses and relates to other Drupal APIs, it can also provide quite a lot of knowledge to people in a technical team who want to learn more about Drupal internals: Plugins, Services, Entities, Drush, Debugging...these are cross-cuttings topics in this book and they are also very important issues. Maybe you wanna learn more about  that.  
 
 For everyone who has to go through ETL processes in Drupal, this is a must-have resource: you can't get through the maze without using a good map of the territory and this chart is the best compilation yet of all the key issues when defining a migration process: Do you know under which criteria to decide how to define your migration? code or configuration? advantages and disadvantages?... These are just the initial questions. Along the way there are many more, and this is the best guide to deal with it. The fact that this e-book is also available for only $10 makes it even more obvious: there are no excuses. It's a must. And then, if you want you can be supporter of the Understand Drupal initiative, sponsoring the tutorials production: [understanddrupal.com/supporters](https://understanddrupal.com/supporters). Think about it.  
+
 
 
 ## 4- Book Information
@@ -93,6 +103,7 @@ For everyone who has to go through ETL processes in Drupal, this is a must-have 
 | Keywords | Drupal, Migration, Migrate API, Plugins, Source, Process, Destination.      |
 | Price | 10$      |
 | Links | [Gumroad](https://gumroad.com/l/31-days-of-drupal-migrations),      |
+
 
 
 ## 5- Fast Review
@@ -113,12 +124,15 @@ For everyone who has to go through ETL processes in Drupal, this is a must-have 
 | Yes, seems to be aligned with the last big changes related to the Migrate API of Drupal, November 2020.          |
 
 
+
 ## 6- Ratings
 
 ![Table of Book Ratings for 31 Days of Drupal Migrations](../../images/post/davidjguru_drupal_8_9_books_31_days_of_drupal_migrations_rating_table.png)
 
 
+
 ## 7- :wq!
+
 
 
 ##### Recommended song: Sonny Rollins - Alfie's Theme
