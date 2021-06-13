@@ -55,87 +55,54 @@ For those of us who at some point have had to learn to migrate data to Drupal by
 
 
 
-## 2- The Book
+## 2- Basic scaffolding for a node 
 
-It's difficult for me to evaluate this book as it deserves. So I guess maybe the first thing I want to say is that I think this is the first time I'm faced with such an integrated and compact body of knowledge/experience. This ir very important, because in many cases Drupal documentation is not very extensive or not sufficiently updated. 
-When it comes related to a complex or advanced topic, this becomes a real and deep problem:  It's necessary to consult outdated blogs, review contributed modules, review code and read deprecated documentation... in order to be able to go step by step building some ideas about how you can do this or that...  
+
 
 ![Cover of 31 Days of Drupal Migrations, by Mauricio Dinarte](../../images/post/davidjguru_drupal_8_9_books_31_days_of_drupal_migrations_one.png)
 
-Maybe because of this is why initiatives like this from [Mauricio Dinarte, @dinarcon](https://twitter.com/dinarcon) from the initiative [Understand Drupal](https://twitter.com/udrupalcom) are so important and generate a very high value (only surmountable if the same information becomes part of the official Drupal.org documentation, of course).  
-
-As I said at the beginning of this section, it's difficult for me to describe how much this resource has helped me, but I would like write down some special points that you can learn from this book, some key points of interest, something like:  
-
-**Key Points:**  
-________________________
-
-
-* Perhaps the first fundamental learning here: to know how a migration process works, what are the workflows and its possibilities.  
-
-* Learn about how to migrate data in a lot of entities and resources: files, images, paragraphs, fields and subfields...All full of a) theory and concepts and b) examples, examples, and more examples.  
-
-* Know the way to perform migrations from diverse sources and origins: XML files, CSV, JSON... executing processing ad-hoc for the values.  
-
-* Get the most complete list of the most valuable contributed modules related with Migrations: Media Handler, Media Migration, Geofield, Migrate Devel...core modules, contrib modules, modules that includes plugins from Migrations...the set is long and pretty interesting. This book contains the most comprehensive and centralized list of all.  
 
 
 
-## 3- Recommendations
+## 3- Vocabularies and taxonomy terms by code
 
-Actually, I guess I could say - in a nutshell - that any work team implementing Drupal-based projects should have a copy of this book available. And I wouldn't be exaggerating, I swear. I think this huge, extensive and thorough work compiled by Mauricio Dinarte has too much importance and it's quite interesting too. This can't to go unnoticed.  
+* [Drupal Techniques: Creating nodes by code](https://davidjguru.github.io/blog/drupal-snippets-creating-nodes-by-code)  
 
-On the other hand, being "Migrations" a topic that actually encompasses and relates to other Drupal APIs, it can also provide quite a lot of knowledge to people in a technical team who want to learn more about Drupal internals: Plugins, Services, Entities, Drush, Debugging...these are cross-cuttings topics in this book and they are also very important issues. Maybe you wanna learn more about  that.  
-
-For everyone who has to go through ETL processes in Drupal, this is a must-have resource: you can't get through the maze without using a good map of the territory and this chart is the best compilation yet of all the key issues when defining a migration process: Do you know under which criteria to decide how to define your migration? code or configuration? advantages and disadvantages?... These are just the initial questions. Along the way there are many more, and this is the best guide to deal with it. The fact that this e-book is also available for only $10 makes it even more obvious: there are no excuses. It's a must. And then, if you want you can be supporter of the Understand Drupal initiative, sponsoring the tutorials production: [understanddrupal.com/supporters](https://understanddrupal.com/supporters). Think about it.  
+## 4- Adding Paragraphs by code
 
 
 
-## 4- Book Information
-
-| Field         | Description   |
-| ------------- |:-------------:|
-| Title         | 31 Days of Drupal Migrations. |
-| Author      | Mauricio Dinarte.      |
-| Publisher | Leanpub.      |
-| Date | October, 2020.      |
-| Pages |   193   |
-| Overview | Complete guide to implement migrations and ETL processes in Drupal.      |
-| Keywords | Drupal, Migration, Migrate API, Plugins, Source, Process, Destination.      |
-| Price | 10$      |
-| Links | [Gumroad](https://gumroad.com/l/31-days-of-drupal-migrations),      |
+## 5- Media items by code
 
 
+* [Drupal 8 || 9 - How to create a media (remote video) entity node programmatically ](https://gitlab.com/-/snippets/2132938)  
 
-## 5- Fast Review
-
-| Question // Answer         | 
-| ------------- |
-| **1- Is this book progressive, Iterative and Incremental?**         |
-| Yes, it is. It's constructed in a very didactic and useful way.        |
-| **2- Does it offer specific solutions to particular problems or concrete issues?**         |
-| Yes, it offers solutions. The book contains many (many) practical examples and errors.         |
-| **3- Does it explain well the original problems or needs it aims to solve?**       |
-| Yes, the book is built from the needs that normally originate migration tasks.       |
-| **4- Is this book rich in examples?**         |
-| Yes, for each situation, case, resource, it offers a real and practical example, downloadable from a repository. .          |
-| **5- Is this book written in plain English, suitable for non-English speakers?**          |
-| Yes, this book is an easy read for non-English speakers, very pleasant.         |
-| **6- Is it up to date?**         |
-| Yes, seems to be aligned with the last big changes related to the Migrate API of Drupal, November 2020.          |
+## 6- Loading files in an image field
 
 
+* [Drupal 8 || 9 - Loading a set of files into an image field programmatically ](https://gitlab.com/-/snippets/2123460)  
 
-## 6- Ratings
+## 7- Patterns and aliases by code
+
+* [Patterns and aliases by code](https://davidjguru.github.io/blog/drupal-techniques-patterns-and-aliases-by-code)  
 
 ![Table of Book Ratings for 31 Days of Drupal Migrations](../../images/post/davidjguru_drupal_8_9_books_31_days_of_drupal_migrations_rating_table.png)
 
+## 8- Menu Links by code 
+
+* [Create Menu Link](https://gist.github.com/davidjguru/6288a528d22c2b24b274d84e1b96c965#file-create_menu_link-php)  
+
+## 9- Custom constraints and validations
 
 
-## 7- :wq!
+* [Entity Validation API overview](https://www.drupal.org/node/2015613)  
+* [Providing a custom validation constraint](https://www.drupal.org/docs/drupal-apis/entity-api/entity-validation-api/providing-a-custom-validation-constraint)  
+* [Entity validation in migrations](https://www.webomelette.com/entity-validation-migrations-drupal-88)
+
+## 10- :wq!
 
 
-
-##### Recommended song: Sonny Rollins - Alfie's Theme
+##### Recommended song: Troublemakers - Get Misunderstood
 
 {{< youtube ETvT2kmeml4 >}}
 
