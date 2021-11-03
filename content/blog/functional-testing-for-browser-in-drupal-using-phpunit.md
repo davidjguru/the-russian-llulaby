@@ -140,14 +140,19 @@ Now remember that you must ensure the write permissions in the destiny folder fo
 
 So the second guideline shared in this section will be: **tune up your environment well**. 
 
-When you have available all the libraries and dependencies along with the configuration of the phpunit.xml file, you can try to run the tests that bring many modules through a console execution instruction.  
+When you have available all the libraries and dependencies along with the configuration of the phpunit.xml file, you can try to run the tests that bring many modules through a console execution instruction. But first you'll need to login in the web container from DDEV:  
+
+```
+$ ddev ssh
+```
+
 The format of the instruction we will use will be related to the position for ourselves within the path /project/web/ and launch the call to phpunit in a format like this:  
 
 ```
-../vendor/bin/phpunit -c core modules/contrib/config_inspector 
+davidjguru@project-container:/var/www/html/web$ ../vendor/bin/phpunit -c core modules/contrib/config_inspector 
 ``` 
 
-Where the param ```-c``` points to the localization of the phpunit.xm file and it will run all the test located in the marked direction (in this example will be executed tests from the [Config Inspector Contrib Module](https://www.drupal.org/project/config_inspector)). 
+Where the param ```-c``` points to the localization of the phpunit.xm file and it will run all the test located in the marked direction (in this example it will be execute tests from the [Config Inspector Contrib Module](https://www.drupal.org/project/config_inspector)). 
 
 ![Executing test from the Config Inspector Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_launch_test.png)
 
