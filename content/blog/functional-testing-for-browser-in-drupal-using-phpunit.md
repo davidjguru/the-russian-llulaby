@@ -98,7 +98,18 @@ It all started when I switched environments and realized that I didn't have phpu
  **What's the problem?** 
 Drupal 8.x is not compatible with PHPUnit in that version (In fact there'are some issues proposing an update to PHPUnit 8 for Drupal 9, [like this](https://www.drupal.org/project/drupal/issues/3063887)), so it's better to uninstall it and request a slightly more limited version, which is not the last one, something around PHPUnit 7 for example. 
 
-For the rest of the dependencies, I recognize that I was playing to solve them just following the successive error messages trying to launch several tests again, like ```Class "Symfony\Bridge\PhpUnit\SymfonyTestsListener" does not exist``` and many others. In summary I have installed all the following resources in the approximate versions indicated: 
+For the rest of the dependencies, I recognize that I was playing to solve them just following the successive error messages trying to launch several tests again, like ```Class "Symfony\Bridge\PhpUnit\SymfonyTestsListener" does not exist``` and many others. 
+
+In Drupal 8, I've requested the next resources (update versions in Drupal 9 installations):  
+
+```
+$ composer require --dev phpunit/phpunit:^7 --with-all-dependencies
+$ composer require --dev symfony/phpunit-bridge
+$ composer require --dev behat/mink-goutte-driver
+$ composer require --dev behat/mink-selenium2-driver
+```
+
+In summary I have installed all the following resources in the approximate versions indicated: 
 
 ```toml
 composer remove phpunit/phpunit
@@ -525,12 +536,18 @@ This will be the final version of the class of Tests that will be committed to t
 
 ## 6- Running the test
 
-Well, and now with our test stored and the phpunit configuration initially resolved, it's time to run our test and observe the results. To do this, in my case I'm located in ```/project/web/``` and with phpunit.xml placed in ```/project/web/core/```, I launch the instruction:  
+Well, and now with our test stored and the phpunit configuration initially resolved, it's time to run our test and observe the results. First I'm connecting to the DDEV web container by doing ```$ ddev ssh``` and I'm going to execute test from inside the container. To do this, in my case I'm located in ```/project/web/``` but in the DDEV web container, the context will be ```/var/www/html/``` and with phpunit.xml placed in ```/project/web/core/```, that is, from ```/var/www/html/web/core```. I'll launch the instruction:  
 
 ```
-../vendor/bin/phpunit -c core modules/contrib/humanstxt
+davidjguru@ddevcontainer-web:/var/www/html$ ../vendor/bin/phpunit -c core modules/contrib/humanstxt
 ```
 
+Out of the DDEV web container, I can launch something like this:  
+
+```
+$ ddev exec ./vendor/bin/phpunit -c web/core /var/www/html/web/modules/contrib/humanstxt
+```
+Considering that we are executing from /var/www/html/ when we want DDEV launch something and that we have to reach your module.  
 Which throws all the test located inside the humanstxt contrib module...
 
 ![Executing test from the Humans.txt Contrib Module](../../images/post/davidjguru_functional_testing_for_drupal_based_in_phpunit_results.png)
