@@ -50,9 +50,9 @@ GraphQl is a query language for API, alternative to REST. Was developed by Faceb
 
 **What's the difference?**   
 - REST enable multiple endpoints that return fixed data structures.   
-- GraphQL server only exposes a single endpoint and responds dinamically with requested data.   
+- GraphQL server only exposes a single endpoint and responds dynamically with requested data.   
 
-So, basically GraphQL try to surpass REST avoiding overfecthing (downloading superfluous data) and underfetching (additional requests to fetch everything you need, n+1).    
+So, basically GraphQL try to surpass REST avoiding overfetching (downloading superfluous data) and underfetching (additional requests to fetch everything you need, n+1).    
 
 _GraphQL is a query language for APIs_ and you can use from the framework you select (not only React from Facebook). We're going to review some basic concepts in GraphQL.  
 
@@ -74,6 +74,10 @@ type Car {
 ```
 
 This type `Car` has three fields: model, year and colour and are respectively of type String and Int. The ! following the type means that this field is required.  
+
+### Schema
+
+Basically, a schema is a set of type and data descriptions describing the set of possible data you can query on the GraphQL service that will be used to compare incoming requests by validating and executing them if they are allowed by your system. Schemas delimit - very concretely - the limits of what is possible (and what is not) in your GraphQL server.  
 
 ### Queries 
 
@@ -161,6 +165,25 @@ After login, you can navigate to `/admin/config/graphql` and create a new server
 
 After creating the server click on dropdown button at right, click in "Explorer" option and this should bring you to [the GraphiQL explorer](https://github.com/graphql/graphiql/tree/main/packages/graphiql#readme), or you can go directly to `/admin/config/graphql/servers/manage/initial_example/explorer` and there you will see the visual explorer GraphiQL for visualizing queries within your Drupal installation. You can use some plugins for IDEs too, like [the graphiql-explorer for VSCode](https://marketplace.visualstudio.com/items?itemName=GabrielNordeborn.vscode-graphiql-explorer). 
 
+
+### Creating dummy content for testing in Drupal
+
+We can create on the fly new content in our Drupal installation with only three commands in our console:  
+
+```bash
+$ composer require drupal/devel
+$ drush en -y devel_generate
+$ drush genc --bundles=article 10
+```
+
+![Executing queries from GraphQL explorer in Drupal](../../images/post/davidjguru_drupal_8_9_custom_data_producers_for_graphql_in_drupal_2.png)
+
+## 9- Read More 
+
+* [Valuebound: GraphQL a Beginners Guide (2018)](https://www.valuebound.com/resources/blog/graphql-beginners-guide)  
+* [Specbee: GraphQL with Drupal 8: All you need to know (2019)](https://www.specbee.com/blogs/graphQL-with-drupal-8-what-is-graphql-Advantages-need-to-know-Guide)  
+* [OpenSense Labs: Why is GraphQL an Importante Player in Decoupled Drupal? (2020)](https://opensenselabs.com/blog/articles/graphql-important-player-decoupled-drupal)  
+* []()  
 ## 10 - :wq!
 
 ##### Recommended song: The Troublemakers - Get Misunderstood  
