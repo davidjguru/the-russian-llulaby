@@ -178,12 +178,28 @@ $ drush genc --bundles=article 10
 
 ![Executing queries from GraphQL explorer in Drupal](../../images/post/davidjguru_drupal_8_9_custom_data_producers_for_graphql_in_drupal_2.png)
 
+## 3- Preparing a basic setup for testing 
+
+### Creating basic content types 
+
+![Creating a new node of type Collection Page](../../images/post/davidjguru_drupal_8_9_custom_data_producers_for_graphql_in_drupal_3.png)
+
+And now I need to create a new content type called "News", with an entity reference field pointing to the former content type. Using this new field we can link a "New" node with a central "Collection Page" node:  
+
+![Creating new content type "News"](../../images/post/davidjguru_drupal_8_9_custom_data_producers_for_graphql_in_drupal_4.png)
+### Creating a lot of nodes
+
+```bash
+$ drush genc --bundles=collection_page 3
+$ drush genc --bundles=news 9
+```
+
 ## 9- Read More 
 
 * [Valuebound: GraphQL a Beginners Guide (2018)](https://www.valuebound.com/resources/blog/graphql-beginners-guide)  
 * [Specbee: GraphQL with Drupal 8: All you need to know (2019)](https://www.specbee.com/blogs/graphQL-with-drupal-8-what-is-graphql-Advantages-need-to-know-Guide)  
 * [OpenSense Labs: Why is GraphQL an Importante Player in Decoupled Drupal? (2020)](https://opensenselabs.com/blog/articles/graphql-important-player-decoupled-drupal)  
-* []()  
+* [mediacurrent: A Recipe for a Graphql Server in Drupal Using graphql-php (2020)](https://www.mediacurrent.com/blog/recipe-graphql-server-drupal-using-graphql-php)  
 ## 10 - :wq!
 
 ##### Recommended song: The Troublemakers - Get Misunderstood  
