@@ -32,16 +32,19 @@ In this guide you will learn basic concepts of JavaScript, the terminology used 
 
 **Index of sections**
 <!-- TOC -->
-[1-Introduction](#1--introduction)  
-[2- JavaScript and Drupal: basic concepts](#2--javascript-and-drupal-basic-concepts)  
-[3- How to include JavaScript code in Drupal](#3--how-to-include-javascript-code-in-drupal)  
-[10- :wq!](#10--wq)
-
+[Introduction](#introduction)  
+[Fast Rewind](#fast-rewind)  
+[1- Align file naming and resources](#1--align-file-naming-and-resources)  
+[2- Respect the order of parameters](#2--respect-the-order-of-parameters)  
+[3- Enable debugging mode](#3-enable-debugging-mode)  
+[4- Maintain your code clean and do refactoring](#4--maintain-your-code-clean-and-do-refactoring)  
+[5- GraphQL may not be your best option](#5--graphql-may-not-be-your-best-option)  
+[:wq!](#wq)  
 
 ---------------------------------------------------------------------------------
 
 
-## 1- Introduction
+## Introduction
 
 Some time ago (around December 2019, but it seems a century has passed ) I started writing what I thought would be a simple guide to integration between JavaScript and Drupal. A couple of months later, in February 2020, I had a tutorial of more than eleven thousand words written in Castillian (Spanish from Spain) that I published in my Medium profile.
 
@@ -62,17 +65,25 @@ __DISCLAIMER:__ This guide is actually a manual for the integration of JavaScrip
 
 **There we go!**
 
-## 2- JavaScript and Drupal: basic concepts
+## Fast Rewind 
+
+## 1- Align file naming and resources
+
+## 2- Respect the order of parameters
+
+## 3-Enable debugging mode  
+
+## 4- Maintain your code clean and do refactoring  
+
+## 5- GraphQL may not be your best option  
 
 
-## 9- Links and Reading resources
-
-## 10- :wq!
+## :wq!
 
 If you have managed to reach the end of this guide linearly, congratulations! Thanks for your patience and I really hope it has been useful to you.
 
 This guide has been published without -direct- profit, but my personal interest is that it spreads and helps my communication. If it has been useful to you, share it using the "share" of this site, putting a simple tweet. It will be important for me. Thank you.
 
-##### Recommended song
+##### Recommended song: The Troublemakers - Get Misunderstood
 
-{{< youtube e5Z56ZXvAy4 >}}
+{{< youtube vCMGyiDF2zI >}}
