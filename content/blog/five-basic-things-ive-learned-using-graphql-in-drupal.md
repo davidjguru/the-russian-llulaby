@@ -69,11 +69,25 @@ __DISCLAIMER:__ This guide is actually a manual for the integration of JavaScrip
 
 ## 1- Align file naming and resources
 
+![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
+
+
 ## 2- Respect the order of parameters
+
+
+![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
+
+
 
 ## 3-Enable debugging mode  
 
+![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
+
 ## 4- Maintain your code clean and do refactoring  
+
+
+![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
+
 
 ## 5- GraphQL may not be your best option  
 
