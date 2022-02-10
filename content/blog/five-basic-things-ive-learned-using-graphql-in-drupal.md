@@ -67,6 +67,49 @@ __DISCLAIMER:__ This guide is actually a manual for the integration of JavaScrip
 
 ## Fast Rewind 
 
+### Installing GraphQL in Drupal 
+
+In former versions of Drupal (Drupal 8 basically) you could execute:  
+```bash 
+$ composer require drupal/graphql
+```
+And everything goes well, but from Drupal 9 you will get (by now): 
+
+
+```bash
+$ composer require drupal/graphql
+
+Your requirements could not be resolved to an installable set of packages.
+
+  Problem 1
+    - Root composer.json requires drupal/graphql ^4.2 -> satisfiable by drupal/graphql[4.2.0].
+    - drupal/graphql 4.2.0 requires drupal/typed_data * -> found drupal/typed_data[dev-1.x, 1.0.0-alpha1, ..., 1.x-dev (alias of dev-1.x)] but it does not match your minimum-stability.
+```
+
+So first you have to install the required dependency in alpha versions and then GraphQL. I wrote some notes about this [here in my guide for Drupal upgrading, troubleshooting section](https://davidjguru.github.io/blog/drupal-techniques-how-to-upgrade-drupal#6--troubleshooting).   
+
+Just:  
+```bash
+$ composer require drupal/typed_data:@alpha
+[...]
+$ composer require drupal/graphql
+```
+And now everything goes well. When you finish, you have to enable the new module by drush:  
+
+```bash
+$ drush en -y graphql
+```
+For learning purposes, please enable the secondary modules (with available examples) too:  
+```bash
+$ drush en -y graphql graphql_composable graphql_examples
+```
+
+After login, you can navigate to `/admin/config/graphql` and create a new server. You can use the "Example schema" that comes with the `graphql_examples` module (as we can see in the former step the examples comes with the graphql module but needs to be enabled separately).   
+
+After creating the server click on dropdown button at right, click in "Explorer" option and this should bring you to [the GraphiQL explorer](https://github.com/graphql/graphiql/tree/main/packages/graphiql#readme), or you can go directly to `/admin/config/graphql/servers/manage/initial_example/explorer` and there you will see the visual explorer GraphiQL for visualizing queries within your Drupal installation. You can use some plugins for IDEs too, like [the graphiql-explorer for VSCode](https://marketplace.visualstudio.com/items?itemName=GabrielNordeborn.vscode-graphiql-explorer). 
+
+
+
 ## 1- Align file naming and resources
 
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
