@@ -21,7 +21,7 @@ tags:
 # post type
 type: "post"
 ---
-You've probably heard of "decoupled Drupal" or "headless", a way of working with Drupal that consists of separating the frontend from the backend, implementing communication between both parts as separate projects, distinct repositories, etc. Usually, this way of working necessarily involves "breaking the monolith" i.e. splitting into several parts of different technology, leaving Drupal only for the backend side of the project. 
+You've probably heard of "decoupled Drupal" or "headless", a way of working with Drupal that consists of separating the frontend from the backend, implementing communication between both parts as separate projects, distinct repositories, etc. Usually, this way of working necessarily involves "breaking the monolith" i.e. splitting into several parts of different technology, leaving Drupal only for the backend side of the project. In this context, you will use some kind of specification or API connection to make backend and frontend work well and understand each other. You can use REST, JSON:API or GraphQL as well. This article is oriented to this last opinion, the possibility of using GraphQL in Drupal, and is edited and published as the first post of a series about GraphQL. As an introduction, I would like to share some initial thoughts based on my observations. 
 
 --------------------------------------------------------------------------------------
 **Picture from Unsplash, user [Masjid Pogung Dalangan, @@masjidmpd](https://unsplash.com/@masjidmpd).**
