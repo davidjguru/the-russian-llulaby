@@ -97,7 +97,7 @@ After creating the server click on dropdown button at right, click in "Explorer"
 
 ## 1- Align file naming and resources
 
-![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
+![Align naming in files](../../images/post/davidjguru_drupal_8_9_graphql_introduction_1.png)
 
 
 ## 2- Respect the order of parameters
