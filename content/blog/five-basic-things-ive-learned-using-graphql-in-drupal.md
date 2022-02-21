@@ -38,6 +38,7 @@ You've probably heard of "decoupled Drupal" or "headless", a way of working with
 [3- Enable debugging mode](#3-enable-debugging-mode)  
 [4- Maintain your code clean and do refactoring](#4--maintain-your-code-clean-and-do-refactoring)  
 [5- GraphQL may not be your best option](#5--graphql-may-not-be-your-best-option)  
+[6- Read More](#6--read-more)  
 [:wq!](#wq)  
 
 ---------------------------------------------------------------------------------
@@ -119,6 +120,29 @@ After creating the server click on dropdown button at right, click in "Explorer"
 
 ## 5- GraphQL may not be your best option  
 
+1. **Documentation is scarce and may not be very up to date.** You have few resources available to learn. You can go to [www.drupal.org/docs/graphql](https://www.drupal.org/docs/contributed-modules/graphql) and then you will see that the information may be [very little](https://www.drupal.org/docs/8/modules/graphql/fetching-data), [outdated](https://www.drupal.org/docs/8/modules/graphql/query-maps) or [non-existent](https://www.drupal.org/docs/contributed-modules/graphql/graphql-twig). This is not very motivating and you will have to build a curated reading list on your own. Of course, the Amazee Labs content list related to GraphQL is fundamental. It is arguably the company that has written the most about the Drupal & GraphQL partnership. You have the links in the last section, [Read More](#6--read-more).  
+
+## 6- Read More
+
+
+* [Amazee Labs: GraphQL Introduction](https://www.amazeelabs.com/en/blog/graphql-introduction)  
+* [Amazee Labs: Drupal and GraphQL with React and Apollo](https://www.amazeelabs.com/en/blog/drupal-graphql-react-apollo)  
+* [Amazee Labs: Drupal and GraphQL - Batteries included](https://www.amazeelabs.com/en/blog/drupal-graphql-batteries-included)  
+* [Amazee Labs: Extending GraphQL Part 1 - Fields](https://www.amazeelabs.com/en/blog/extending-graphql-part1-fields)  
+* [Amazee Labs: Extending GraphQL Part 2 - Types and Interfaces](https://www.amazeelabs.com/en/blog/extending-graphql-part-2)  
+* [Amazee Labs: Extending GraphQL Part 3 - Mutations](https://www.amazeelabs.com/en/journal/extending-graphql-part-3-mutations)  
+* [Amazee Labs: GraphQL for Drupalers Part 1 - The Basics](https://www.amazeelabs.com/en/journal/graphql-drupalers-part-1-basics)  
+* [Amazee Labs: GraphQL for Drupalers Part 2 - The Queries](https://www.amazeelabs.com/en/journal/graphql-drupalers-part-2-queries)  
+* [Amazee Labs: GraphQL for Drupalers Part 3 - The Fields](https://www.amazeelabs.com/en/journal/graphql-drupalers-part-3-fields)  
+* [Amazee Labs: GraphQL for Drupalers Part 4 - Fetching the entities](https://www.amazeelabs.com/en/journal/graphql-drupalers-part-4-fetching-entities)  
+* [Amazee Labs: Don't push it - Using GraphQL in Twig](https://www.amazeelabs.com/en/blog/dont-push-it-using-graphql-twig)  
+  
+**Others**
+
+* [Valuebound: GraphQL a Beginners Guide (2018)](https://www.valuebound.com/resources/blog/graphql-beginners-guide)  
+* [Specbee: GraphQL with Drupal 8: All you need to know (2019)](https://www.specbee.com/blogs/graphQL-with-drupal-8-what-is-graphql-Advantages-need-to-know-Guide)  
+* [OpenSense Labs: Why is GraphQL an Importante Player in Decoupled Drupal? (2020)](https://opensenselabs.com/blog/articles/graphql-important-player-decoupled-drupal)  
+* [Mediacurrent: A Recipe for a Graphql Server in Drupal Using graphql-php (2020)](https://www.mediacurrent.com/blog/recipe-graphql-server-drupal-using-graphql-php)  
 
 ## :wq!
 
