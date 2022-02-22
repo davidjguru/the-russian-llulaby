@@ -21,7 +21,7 @@ tags:
 # post type
 type: "post"
 ---
-You've probably heard of "decoupled Drupal" or "headless", a way of working with Drupal that consists of separating the frontend from the backend, implementing communication between both parts as separate projects, distinct repositories, etc. Usually, this way of working necessarily involves "breaking the monolith" i.e. splitting into several parts of different technology, leaving Drupal only for the backend side of the project. In this context, you will use some kind of specification or API connection to make backend and frontend work well and understand each other. You can use REST, JSON:API or GraphQL as well. This article is oriented to this last opinion, the possibility of using GraphQL in Drupal, and is edited and published as the first post of a series about GraphQL. As an introduction, I would like to share some initial thoughts based on my observations. 
+You've probably heard of "decoupled Drupal" or "headless", a way of working with Drupal that consists of separating the frontend from the backend, implementing communication between both parts as separate projects, distinct repositories, etc. Usually, this way of working necessarily involves "breaking the monolith" i.e. splitting into several parts of different technology, leaving Drupal only for the backend side of the project. In this context, you will use some kind of specification or API connection to make backend and frontend work well and understand each other. You can use REST, JSON:API or GraphQL as well. This article is oriented to this last opinion, the possibility of using GraphQL in Drupal, and is edited and published as the first post of a series about GraphQL. As an introduction, I would like to share some initial thoughts based only on my observations. 
 
 --------------------------------------------------------------------------------------
 **Picture from Unsplash, user [Masjid Pogung Dalangan, @@masjidmpd](https://unsplash.com/@masjidmpd).**
@@ -71,6 +71,9 @@ Your requirements could not be resolved to an installable set of packages.
     - Root composer.json requires drupal/graphql ^4.2 -> satisfiable by drupal/graphql[4.2.0].
     - drupal/graphql 4.2.0 requires drupal/typed_data * -> found drupal/typed_data[dev-1.x, 1.0.0-alpha1, ..., 1.x-dev (alias of dev-1.x)] but it does not match your minimum-stability.
 ```
+In fact, I'm trying to install the last available version for [drupal/graphql, 4.3.0 (released on 15/02/2022)](https://www.drupal.org/project/graphql/releases/8.x-4.3) in Drupal 9.3.6 and I'm facing the same problems related with the stability of the drupal/typed_data version:  
+
+![Getting errors in drupal/typed_data](../../images/post/davidjguru_drupal_8_9_graphql_introduction_0.png)
 
 So first you have to install the required dependency in alpha versions and then GraphQL. I wrote some notes about this [here in my guide for Drupal upgrading, troubleshooting section](https://davidjguru.github.io/blog/drupal-techniques-how-to-upgrade-drupal#6--troubleshooting).   
 
@@ -93,6 +96,7 @@ $ drush en -y graphql graphql_composable graphql_examples
 After login, you can navigate to `/admin/config/graphql` and create a new server. You can use the "Example schema" that comes with the `graphql_examples` module (as we can see in the former step the examples comes with the graphql module but needs to be enabled separately).   
 
 After creating the server click on dropdown button at right, click in "Explorer" option and this should bring you to [the GraphiQL explorer](https://github.com/graphql/graphiql/tree/main/packages/graphiql#readme), or you can go directly to `/admin/config/graphql/servers/manage/initial_example/explorer` and there you will see the visual explorer GraphiQL for visualizing queries within your Drupal installation. You can use some plugins for IDEs too, like [the graphiql-explorer for VSCode](https://marketplace.visualstudio.com/items?itemName=GabrielNordeborn.vscode-graphiql-explorer). 
+
 
 
 
