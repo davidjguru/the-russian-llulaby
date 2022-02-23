@@ -108,8 +108,37 @@ You can use some plugins for IDEs too, like [the graphiql-explorer for VSCode](h
 
 ## 1- Align file naming and resources
 
+Well, the first small idea to share (small but very useful), is this: always keep the names of the internal resources of each module aligned. This will make your life much easier and will make you happy, for sure, reducing the time to search for errors without results.  
+At the beginning it will quite simple but the more your project grows, the more GraphQL custom modules it will contain with more files, with more resources and with different names. It will be easy to start a new GraphQL module by copying and pasting files from a previous module and there... you may forget to change names.  
+
+My advice: before the GraphQL dimension of your project grows, make naming patterns for custom resources. See the next screen caption:  
 ![Align naming in files](../../images/post/davidjguru_drupal_8_9_graphql_introduction_1.png)
 
+Ok, as you can see when you're working with GraphQL in Drupal you have to create new custom resources, new custom modules containing all the required files for extending your current Schema and defining new types, fields, queries... See the former image: think about your folder structure and get a naming pattern, something like:  
+
+```txt
+
+graphql_custom_name/
+  | | | 
+  | | |_ _ graphql/
+  | |           |
+  | |           |_ _ custom_name.base.graphqls
+  | |           |_ _ custom_name.extension.graphqls
+  | |
+  | |_ _ _ src/Plugin/GraphQL/
+  |                      |
+  |                      |_ _ DataProducer/
+  |                      |        \
+  |                      |         \_ _ CustomName.php
+  |                      |     
+  |                      |_ _ SchemaExtension/
+  |                              \
+  |                               \_ _ CustomNameSchemaExtension.php
+  |                            
+  |_ _ _ _ graphql_custom_name.info.yml
+```
+
+This can be important to delay chaos within the project. Especially if not only you work with GraphQL within the project. Go ahead and propose to your colleagues naming patterns that you can use comfortably. 
 
 ## 2- Respect the order of parameters
 
