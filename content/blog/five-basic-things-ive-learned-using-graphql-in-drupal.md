@@ -172,14 +172,85 @@ The third small tip has to do with a quick action that will undoubtedly offer yo
 
 ## 4- Maintain your code clean and do refactoring  
 
+In the middle of working on a decoupled Drupal project can be common to define needs as you go along, on the fly. For example, from the frontend, it may be necessary to show a new listing.  
 
-![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
+* Then frontend asks backend: I need a new list of items. 
+* Backend responds by creating a custom data producer (if none fits well).
+* Backend prepares a query extracting the required data:  
+
+```
+try {
+  $node_storage = $this->entityTypeManager->getStorage('node');
+  $type = $node_storage->getEntityType();
+
+  // Extracting and Counting main query.
+  $query = $node_storage->getQuery()
+    ->currentRevision()
+    ->accessCheck();
+
+  $query
+    ->condition('status', TRUE)
+    ->condition('langcode', $language)
+    ->condition('field_related_collection_page', $collection_id)
+    ->condition('type', ['type_one','type_two', 'type_three'], 'IN')
+    ->sort('created', 'DESC');
+
+  // Add cache info.
+  $metadata->addCacheTags($type->getListCacheTags());
+  $metadata->addCacheContexts($type->getListCacheContexts());
+
+  // Get the array of node ids and process the required info.
+  $node_ids = $query->execute();
+  $available_nodes = $node_storage->loadMultiple($node_ids);
+}
+catch (\Exception $e) {
+  return [];
+}
+```
+
+* Backend also will prepare the processing the data to return:  
+```
+// Processing the resulting array of total nodes.
+// First reduce the items cutting by offset and limit.
+// Second allows only nodes with moderation_state as published.
+$processed_array = array_slice($available_nodes, $offset, $limit, TRUE);
+$filtered_array = array_filter($processed_array, function ($node){
+  // @see https://www.drupal.org/project/drupal/issues/3025164
+  return ( $node->get('moderation_state')->value == 'published');
+}, TRUE);
+```
+
+And finally:  
+
+```
+// Prepare the array of page nodes(News, Local News, Blog Page, Press Page). 
+$pages = [];
+foreach ($filtered_array as $node) {
+    $id = $node->id();
+    $final_url = $node->toUrl()->toString(TRUE);
+    $url_string = $final_url->getGeneratedUrl();
+    $pages[] = [
+      'id' => $id,
+      'preamble' => $node->get('field_summary')->value,
+      'title' => $node->title->value,
+      'url' => $url_string,
+      'bundle' => $node->bundle(),
+    ];
+}
+
+return $pages;
+}
+```
+
+![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_5.png)
 
 
 ## 5- GraphQL may not be your best option  
 
 1. **Documentation is scarce and may not be very up to date.** You have few resources available to learn. You can go to [www.drupal.org/docs/graphql](https://www.drupal.org/docs/contributed-modules/graphql) and then you will see that the information may be [very little](https://www.drupal.org/docs/8/modules/graphql/fetching-data), [outdated](https://www.drupal.org/docs/8/modules/graphql/query-maps) or [non-existent](https://www.drupal.org/docs/contributed-modules/graphql/graphql-twig). This is not very motivating and you will have to build a curated reading list on your own. Of course, the Amazee Labs content list related to GraphQL is fundamental. It is arguably the company that has written the most about the Drupal & GraphQL partnership. You have the links in the last section, [Read More](#6--read-more).  
+
 2. **You will have to expose everything-everything to your frontend.** This usually includes providing all the navigation: menus, links, sections, paths, content: titles, bodies, taxonomy terms and other available fields. And all the structural and meta-information for SEO: Blocks, sections, layout regions information, metatags, descriptions, etc. This can increase the workload of a project exponentially. It may not be your option if you don't have the right knowledge, the right budget, the time required or if your team is small.  
+
 3. 
 
 ## 6- Read More
@@ -206,9 +277,10 @@ The third small tip has to do with a quick action that will undoubtedly offer yo
 
 ## :wq!
 
-If you have managed to reach the end of this guide linearly, congratulations! Thanks for your patience and I really hope it has been useful to you.
+If you have managed to reach the end of this article, Thank you very much! Thanks for your patience and I really hope it has been useful to you. I wish you good luck working with Drupal and GraphQL so you will learn a lot (I'm doing it now). I leave you with a final song, which you can find [in the Spotify playlist "The Russian Lullaby"](https://open.spotify.com/playlist/47hhvxX1IFhzN4QQ1g1mzx?si=6eae9c5660cc4be6).  
 
-This guide has been published without -direct- profit, but my personal interest is that it spreads and helps my communication. If it has been useful to you, share it using the "share" of this site, putting a simple tweet. It will be important for me. Thank you.
+See you next time!  
+
 
 ##### Recommended song: The Troublemakers - Get Misunderstood
 
