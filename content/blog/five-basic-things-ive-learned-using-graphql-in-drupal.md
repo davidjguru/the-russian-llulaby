@@ -101,7 +101,7 @@ After creating the server click on dropdown button at right, click in "Explorer"
 ![GraphiQL Visual Explorer for GraphQL in Drupal](../../images/post/davidjguru_drupal_8_9_graphql_introduction_05.png)
 
 
-You can use some plugins for IDEs too, like [the graphiql-explorer for VSCode](https://marketplace.visualstudio.com/items?itemName=GabrielNordeborn.vscode-graphiql-explorer). 
+You can use some plugins for IDEs too, like [the graphiql-explorer for VSCode](https://marketplace.visualstudio.com/items?itemName=GabrielNordeborn.vscode-graphiql-explorer). If you don't have much experience in the GraphQL - Drupal combination, you can review the source code of this contributed module and the folder structure with the resources, within your project' folder or [within its own gitlab repository](https://git.drupalcode.org/project/graphql/-/tree/8.x-4.x/examples).  
 
 
 
@@ -142,14 +142,33 @@ This can be important to delay chaos within the project. Especially if not only 
 
 ## 2- Respect the order of parameters
 
-
+Another basic aspect but one that can take up a lot of your time... please, just keep the order of the parameters in the same sense that you expect it in your DataProducer, ok? See the following image:  
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
 
+As you can see in the image above, first you've described a new extension for a Query type, in this example is for querying "News" in our Drupal installation. Then you're adding a new Schema Extension, adding FieldResolvers for the new query and you are using "query_news" as your custom DataProducer. In this declaration to register, you're sending the parameters in the order:  
 
+```txt
+collection_id => Identifier of the collection to query.
+                 Taken as an incoming argument from the query parameters.
+offset => Starting point for the query of items.
+          Taken as an incoming argument from the query parameters.
+limit => How many items do you want to get.
+         Taken as an incoming argument from the query parameters.
+language => The language code of the requested items.
+            Taken as an incoming argument from the query parameters.
+```
+
+All these parameters will later function as filters within our custom DataProducer. If I don't respect the order of the parameters in the resolve method definition itself in my custom DataProducer, then I will get strange results. In the bottom tab of the image above you can see the values when debugging with Xdebug: we were not obtaining the required items, and we were not getting the expected values since what should be the offset (zero value), here is working as a limit (zero items to return). This may cause you a little headache and make you debug more than necessary, just for a matter of order in the parameters passed to the custom data producer class.  
 
 ## 3-Enable debugging mode  
 
-![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
+The third small tip has to do with a quick action that will undoubtedly offer you great benefits.  
+
+![Enable debugging options in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_3.png)
+
+
+
+![Getting feedback from debugging in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_4.png)
 
 ## 4- Maintain your code clean and do refactoring  
 
@@ -160,6 +179,8 @@ This can be important to delay chaos within the project. Especially if not only 
 ## 5- GraphQL may not be your best option  
 
 1. **Documentation is scarce and may not be very up to date.** You have few resources available to learn. You can go to [www.drupal.org/docs/graphql](https://www.drupal.org/docs/contributed-modules/graphql) and then you will see that the information may be [very little](https://www.drupal.org/docs/8/modules/graphql/fetching-data), [outdated](https://www.drupal.org/docs/8/modules/graphql/query-maps) or [non-existent](https://www.drupal.org/docs/contributed-modules/graphql/graphql-twig). This is not very motivating and you will have to build a curated reading list on your own. Of course, the Amazee Labs content list related to GraphQL is fundamental. It is arguably the company that has written the most about the Drupal & GraphQL partnership. You have the links in the last section, [Read More](#6--read-more).  
+2. **You will have to expose everything-everything to your frontend.** This usually includes providing all the navigation: menus, links, sections, paths, content: titles, bodies, taxonomy terms and other available fields. And all the structural and meta-information for SEO: Blocks, sections, layout regions information, metatags, descriptions, etc. This can increase the workload of a project exponentially. It may not be your option if you don't have the right knowledge, the right budget, the time required or if your team is small.  
+3. 
 
 ## 6- Read More
 
