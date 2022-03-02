@@ -46,9 +46,9 @@ You've probably heard of "decoupled Drupal" or "headless", a way of working with
 
 ## Introduction
 
-I have been working on openly decoupled Drupal projects for some time now, 
+I have been working on openly decoupled Drupal projects for some time now, and I would like to share some experiences.
 I'm not a GraphQL advocate, I think there are already many people and many platforms that do it quite well, so I'm not interested in holy wars. In fact I wouldn't convince you to use GraphQL in your project, but there are situations where someone may be conditioned by circumstances to work with GraphQL.
-So I have taken as an excuse the intention of publishing five basic ideas about GraphQL in Drupal.  
+So I have taken as an excuse the intention of publishing five basic ideas about GraphQL in Drupal. As an introductory article, but taking advantage of some initial notes. 
 
 
 **There we go!**
