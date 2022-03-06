@@ -48,12 +48,13 @@ You've probably heard of "decoupled Drupal" or "headless", a way of working with
 
 I have been working on openly decoupled Drupal projects for some time now, and I would like to share some experiences.
 I'm not a GraphQL advocate, I think there are already many people and many platforms that do it quite well, so I'm not interested in holy wars. In fact I wouldn't convince you to use GraphQL in your project, but there are situations where someone may be conditioned by circumstances to work with GraphQL.
-So I have taken as an excuse the intention of publishing five basic ideas about GraphQL in Drupal. As an introductory article, but taking advantage of some initial notes. 
-
+So I have taken as an excuse the intention of publishing five basic ideas about GraphQL in Drupal. As an introductory article, but taking advantage of some initial notes.  
 
 **There we go!**
 
 ## Fast Rewind 
+
+
 
 ### Installing GraphQL in Drupal 
 
@@ -193,7 +194,7 @@ try {
   $query
     ->condition('status', TRUE)
     ->condition('langcode', $language)
-    ->condition('field_related_collection_page', $collection_id)
+    ->condition('field_related', $field_value)
     ->condition('type', ['type_one','type_two', 'type_three'], 'IN')
     ->sort('created', 'DESC');
 
@@ -210,19 +211,18 @@ catch (\Exception $e) {
 }
 ```
 
-* Backend also will prepare the processing the data to return:  
+* Then, backend will prepare the data filtering:  
 ```
 // Processing the resulting array of total nodes.
 // First reduce the items cutting by offset and limit.
 // Second allows only nodes with moderation_state as published.
-$processed_array = array_slice($available_nodes, $offset, $limit, TRUE);
-$filtered_array = array_filter($processed_array, function ($node){
+$filtered_array = array_filter($available_nodes, function ($node){
   // @see https://www.drupal.org/project/drupal/issues/3025164
   return ( $node->get('moderation_state')->value == 'published');
 }, TRUE);
 ```
 
-And finally:  
+And finally we'll prepare the array of values to return from our custom Data Producer:  
 
 ```
 // Prepare the array of page nodes(News, Local News, Blog Page, Press Page). 
@@ -243,8 +243,10 @@ foreach ($filtered_array as $node) {
 return $pages;
 }
 ```
+But then times goes by, the project progresses, other tickets are solved and the frontend colleagues start asking other things for the same query (or maybe yourself if you're working in full-stack mode). Anyway, it produces a request "Hey, I need to add to the query a value of items returned and the total number of available existing items in database, could you implement it, please?" and it's time to return to the code you left in that class.  
 
-You're adding new items by extending more and more values and sections in your returned array:  
+In your frantic life, 
+You're adding new items by extending more and more values and sections in your returned array of data:  
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_5.png)
 
 
