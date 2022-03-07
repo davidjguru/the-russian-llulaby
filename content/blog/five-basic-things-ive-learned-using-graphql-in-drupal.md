@@ -50,9 +50,15 @@ I have been working on openly decoupled Drupal projects for some time now, and I
 I'm not a GraphQL advocate, I think there are already many people and many platforms that do it quite well, so I'm not interested in holy wars. In fact I wouldn't convince you to use GraphQL in your project, but there are situations where someone may be conditioned by circumstances to work with GraphQL.
 So I have taken as an excuse the intention of publishing five basic ideas about GraphQL in Drupal. As an introductory article, but taking advantage of some initial notes.  
 
+@todo
+[SECONDPARAGRAPH]
+
 **There we go!**
 
 ## Fast Rewind 
+GraphQL is an open-source data query and manipulation language for APIs developed by Facebook in 2012 and publicly released in 2015. Now the GraphQL project is hosted by the Linux Foundation ([see the projects protected under the Linux Foundation umbrella here](https://www.linuxfoundation.org/projects/)).  
+
+![GraphQL related projects under Linux Foundation](../../images/post/davidjguru_drupal_8_9_graphql_introduction_6.png)
 
 
 
@@ -161,7 +167,7 @@ language => The language code of the requested items.
             Taken as an incoming argument from the query parameters.
 ```
 
-All these parameters will later function as filters within our custom DataProducer. If I don't respect the order of the parameters in the resolve method definition itself in my custom DataProducer, then I will get strange results. In the bottom tab of the image above you can see the values when debugging with Xdebug: we were not obtaining the required items, and we were not getting the expected values since what should be the offset (zero value), here is working as a limit (zero items to return). This may cause you a little headache and make you debug more than necessary, just for a matter of order in the parameters passed to the custom data producer class.  
+All these parameters will function as filters within our custom DataProducer. If I don't respect the order of the parameters in the resolve method definition itself in my custom DataProducer, then I will get strange results. In the bottom tab of the image above you can see the values when debugging with Xdebug: we were not obtaining the required items, and we were not getting the expected values since what should be the offset (zero value), here is working as a limit (zero items to return). This may cause you a little headache and make you debug more than necessary, just for a matter of order in the parameters passed to the custom data producer class.  
 
 ## 3-Enable debugging mode  
 
@@ -169,7 +175,8 @@ The third small tip has to do with a quick action that will undoubtedly offer yo
 
 ![Enable debugging options in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_3.png)
 
-
+@todo
+[INTERMEDIATEPARAGRAPH]
 
 ![Getting feedback from debugging in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_4.png)
 
@@ -186,7 +193,7 @@ try {
   $node_storage = $this->entityTypeManager->getStorage('node');
   $type = $node_storage->getEntityType();
 
-  // Extracting and Counting main query.
+  // Extracting main query.
   $query = $node_storage->getQuery()
     ->currentRevision()
     ->accessCheck();
@@ -245,10 +252,64 @@ return $pages;
 ```
 But then times goes by, the project progresses, other tickets are solved and the frontend colleagues start asking other things for the same query (or maybe yourself if you're working in full-stack mode). Anyway, it produces a request "Hey, I need to add to the query a value of items returned and the total number of available existing items in database, could you implement it, please?" and it's time to return to the code you left in that class.  
 
-In your frantic life, 
-You're adding new items by extending more and more values and sections in your returned array of data:  
+In your frantic life, the request for a calculation of available values will be translated as "I must run a count query." and you will add in a hurry, a new query in code:  
+```
+$query = $node_storage->getQuery()
+    ->currentRevision()
+    ->accessCheck();
+
+  $query
+    ->condition('status', TRUE)
+    ->condition('langcode', $language)
+    ->condition('field_related', $field_value)
+    ->condition('type', ['type_one','type_two', 'type_three'], 'IN')
+    ->sort('created', 'DESC');
+    
+$existing_items = $query->count()->execute();
+```
+Ok? Nopes, 'cause you already have a previous query and with some adjustments you can make, you will get the data you need for this new request. With a little refactoring your code can evolve better. If you don't try to think like that, your classes will grow out of control and in a short time they will start to become incomprehensible and out of logic. Instead of adding more logic, try to think in something like this, just after execute the first query:  
+
+```
+// Processing the resulting array of total nodes.
+// First reduce the items cutting by offset and limit.
+// Second allows only nodes with moderation_state as published.
+$processed_array = array_slice($available_nodes, $offset, $limit, TRUE);
+$filtered_array = array_filter($processed_array, function ($node){
+  // @see https://www.drupal.org/project/drupal/issues/3025164
+  return ( $node->get('moderation_state')->value == 'published');
+}, TRUE);
+
+// Load the values for available and returned items.
+$batch = [
+  'total' => count($available_nodes),
+  'items' => count($filtered_array),
+];
+```
+And then do the data processing from the returned set of nodes:  
+
+```
+// Prepare the array of page nodes(Type 1, Type 2, Type 3, Type 4). 
+$pages = [];
+foreach ($filtered_array as $node) {
+    $id = $node->id();
+    $final_url = $node->toUrl()->toString(TRUE);
+    $url_string = $final_url->getGeneratedUrl();
+    $pages[] = [
+      'id' => $id,
+      'preamble' => $node->get('field_summary')->value,
+      'title' => $node->title->value,
+      'url' => $url_string,
+      'bundle' => $node->bundle(),
+    ];
+}
+
+// Finally load the batch of nodes.
+$batch['pages'] = $pages;
+```
+Keep your code in good shape. Think about You're adding new data by extending more and more values and sections in your returned array of data:  
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_5.png)
 
+**So please, remember:** review and revise the code above. Don't add more code than you need. Use the calculations you have already done and if necessary, change and refactor. Avoid unnecessary growth of your DataProducer classes.
 
 ## 5- GraphQL may not be your best option  
 
@@ -257,9 +318,10 @@ You're adding new items by extending more and more values and sections in your r
 2. **You will have to expose everything-everything to your frontend.** This usually includes providing all the navigation: menus, links, sections, paths, content: titles, bodies, taxonomy terms and other available fields. And all the structural and meta-information for SEO: Blocks, sections, layout regions information, metatags, descriptions, etc. This can increase the workload of a project exponentially. It may not be your option if you don't have the right knowledge, the right budget, the time required or if your team is small.  
 
 3. 
+@todo
+[THIRDPARAGRAPH]
 
 ## 6- Read More
-
 
 * [Amazee Labs: GraphQL Introduction](https://www.amazeelabs.com/en/blog/graphql-introduction)  
 * [Amazee Labs: Drupal and GraphQL with React and Apollo](https://www.amazeelabs.com/en/blog/drupal-graphql-react-apollo)  
