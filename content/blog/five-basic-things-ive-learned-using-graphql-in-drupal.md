@@ -1,6 +1,6 @@
 ---
 title: "Five basic things I've learned using GraphQL in Drupal"
-date: 2021-02-14
+date: 2021-03-09
 draft: false
 
 # post thumb
@@ -24,7 +24,7 @@ type: "post"
 You've probably heard of "decoupled Drupal" or "headless", a way of working with Drupal that consists of separating the frontend from the backend, implementing communication between both parts as separate projects, distinct repositories, etc. Usually, this way of working necessarily involves "breaking the monolith" i.e. splitting into several parts of different technology, leaving Drupal only for the backend side of the project. In this context, you will use some kind of specification or API connection to make backend and frontend work well and understand each other. You can use REST, JSON:API or GraphQL as well. This article is oriented to this last opinion, the possibility of using GraphQL in Drupal, and is edited and published as the first post of a series about GraphQL. As an introduction, I would like to share some initial thoughts based only on my observations. 
 
 --------------------------------------------------------------------------------------
-**Picture from Unsplash, user [Masjid Pogung Dalangan, @@masjidmpd](https://unsplash.com/@masjidmpd).**
+**Picture from Unsplash, user [Masjid Pogung Dalangan, @masjidmpd](https://unsplash.com/@masjidmpd).**
 
 
 ---------------------------------------------------------------------------------
@@ -75,10 +75,10 @@ In former versions of Drupal (Drupal 8 basically) you could execute:
 ```bash 
 $ composer require drupal/graphql
 ```
-And everything goes well, but from Drupal 9 you will get (by now): 
+And everything goes well, but from Drupal 9 you will get (by now):  
 
 
-```bash
+```
 $ composer require drupal/graphql
 
 Your requirements could not be resolved to an installable set of packages.
@@ -94,14 +94,15 @@ In fact, I'm trying to install the last available version for [drupal/graphql, 4
 So first you have to install the required dependency in alpha versions and then GraphQL. I wrote some notes about this [here in my guide for Drupal upgrading, troubleshooting section](https://davidjguru.github.io/blog/drupal-techniques-how-to-upgrade-drupal#6--troubleshooting).   
 
 Just:  
-```bash
+
+```
 $ composer require drupal/typed_data:@alpha
 [...]
 $ composer require drupal/graphql
 ```
 And now everything goes well. When you finish, you have to enable the new module by drush:  
 
-```bash
+```
 $ drush en -y graphql
 ```
 For learning purposes, please enable the secondary modules (with available examples) too:  
@@ -132,7 +133,7 @@ My advice: before the GraphQL dimension of your project grows, make naming patte
 
 Ok, as you can see when you're working with GraphQL in Drupal you have to create new custom resources, new custom modules containing all the required files for extending your current Schema and defining new types, fields, queries... See the former image: think about your folder structure and get a naming pattern, something like:  
 
-```txt
+```
 
 graphql_custom_name/
   | | | 
@@ -163,7 +164,7 @@ Another basic aspect but one that can take up a lot of your time... please, just
 
 As you can see in the image above, first you've described a new extension for a Query type, in this example is for querying "News" in our Drupal installation. Then you're adding a new Schema Extension, adding FieldResolvers for the new query and you are using "query_news" as your custom DataProducer. In this declaration to register, you're sending the parameters in the order:  
 
-```txt
+```
 collection_id => Identifier of the collection to query.
                  Taken as an incoming argument from the query parameters.
 offset => Starting point for the query of items.
@@ -201,7 +202,7 @@ In the middle of working on a decoupled Drupal project can be common to define n
 * Backend responds by creating a custom data producer (if none fits well).
 * Backend prepares a query extracting the required data:  
 
-```
+```php
 try {
   $node_storage = $this->entityTypeManager->getStorage('node');
   $type = $node_storage->getEntityType();
@@ -328,11 +329,11 @@ Keep your code in good shape. Think about You're adding new data by extending mo
 
 Despite the enormous flexibility GraphQL offers and the optimisation involved in building your own schemas and queries, it is true that it is not all advantages and you can have important problems and limitations. Intuitively we can say that GraphQL is not a good option if your team is small or your budget is tight, but in addition, I have gathered three more points to be able to meditate better if it is our solution:  
 
-1. **Documentation is scarce and may not be very up to date.** You have few resources available to learn. You can go to [www.drupal.org/docs/graphql](https://www.drupal.org/docs/contributed-modules/graphql) and then you will see that the information may be [very little](https://www.drupal.org/docs/8/modules/graphql/fetching-data), [outdated](https://www.drupal.org/docs/8/modules/graphql/query-maps) or [non-existent](https://www.drupal.org/docs/contributed-modules/graphql/graphql-twig). This is not very motivating and you will have to build a curated reading list on your own. Of course, the Amazee Labs content list related to GraphQL is fundamental. It is arguably the company that has written the most about the Drupal & GraphQL partnership. You have the links in the last section, [Read More](#6--read-more).  
+*  __Documentation is scarce and may not be very up to date.__ You have few resources available to learn. You can go to [www.drupal.org/docs/graphql](https://www.drupal.org/docs/contributed-modules/graphql) and then you will see that the information may be [very little](https://www.drupal.org/docs/8/modules/graphql/fetching-data), [outdated](https://www.drupal.org/docs/8/modules/graphql/query-maps) or [non-existent](https://www.drupal.org/docs/contributed-modules/graphql/graphql-twig). This is not very motivating and you will have to build a curated reading list on your own. Of course, the Amazee Labs content list related to GraphQL is fundamental. It is arguably the company that has written the most about the Drupal & GraphQL partnership. You have the links in the last section, [Read More](#6--read-more).  
 
-2. **You will have to expose everything-everything to your frontend.** This usually includes providing all the navigation: menus, links, sections, paths, content: titles, bodies, taxonomy terms and other available fields. Do you use search subsystems? searching-indexes? elastic search? you'll have to expose and connect every resource. And all the structural and meta-information for SEO: Blocks, sections, layout regions information, metatags, descriptions, etc. This can increase the workload of a project exponentially. It may not be your option if you don't have the right knowledge, the right budget, the time required or if your team is small.  
+  * __You will have to expose everything-everything to your frontend.__ This usually includes providing all the navigation: menus, links, sections, paths, content: titles, bodies, taxonomy terms and other available fields. Do you use search subsystems? searching-indexes? elastic search? you'll have to expose and connect every resource. And all the structural and meta-information for SEO: Blocks, sections, layout regions information, metatags, descriptions, etc. This can increase the workload of a project exponentially. It may not be your option if you don't have the right knowledge, the right budget, the time required or if your team is small.  
 
-3. **You will have to operate from scratch** As with the implementation of other resources for external connections (REST, JSON API), GraphQL for Drupal also set by default an exposure of all existing resources in the Drupal installation. You could simply install the module and get all entities available via GraphQL. But this has changed between version 3 and version 4, and is no longer available... now users must manually describe schemas for every entity and resource that they need. [You can see the discussion here](https://github.com/drupal-graphql/graphql/issues/1021). The final fact is that you may need (even more) work - time to be able to build all the schemes you need.  
+* __*You will have to operate from scratch__ As with the implementation of other resources for external connections (REST, JSON API), GraphQL for Drupal also set by default an exposure of all existing resources in the Drupal installation. You could simply install the module and get all entities available via GraphQL. But this has changed between version 3 and version 4, and is no longer available... now users must manually describe schemas for every entity and resource that they need. [You can see the discussion here](https://github.com/drupal-graphql/graphql/issues/1021). The final fact is that you may need (even more) work - time to be able to build all the schemes you need.  
 
 
 ## 6- Read More
