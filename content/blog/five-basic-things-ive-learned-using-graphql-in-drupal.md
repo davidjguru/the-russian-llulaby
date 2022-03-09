@@ -72,7 +72,7 @@ GraphQL is an open-source data query and manipulation language for APIs develope
 ### Installing GraphQL in Drupal 
 
 In former versions of Drupal (Drupal 8 basically) you could execute:  
-```bash 
+```
 $ composer require drupal/graphql
 ```
 And everything goes well, but from Drupal 9 you will get (by now):  
@@ -106,7 +106,7 @@ And now everything goes well. When you finish, you have to enable the new module
 $ drush en -y graphql
 ```
 For learning purposes, please enable the secondary modules (with available examples) too:  
-```bash
+```
 $ drush en -y graphql graphql_composable graphql_examples
 ```
 
@@ -202,7 +202,7 @@ In the middle of working on a decoupled Drupal project can be common to define n
 * Backend responds by creating a custom data producer (if none fits well).
 * Backend prepares a query extracting the required data:  
 
-```php
+```
 try {
   $node_storage = $this->entityTypeManager->getStorage('node');
   $type = $node_storage->getEntityType();
