@@ -171,14 +171,20 @@ All these parameters will function as filters within our custom DataProducer. If
 
 ## 3-Enable debugging mode  
 
-The third small tip has to do with a quick action that will undoubtedly offer you great benefits.  
+Do you know the phrase "the future is where you will spend the rest of your life"? Well, in GraphQL's case, debugging mode will be the place for the rest of your life. You will have to define a lot of schemas, declare a lot of types, build a lot of queries and implement some custom  Data Producers...so the third small tip has to do with a quick action that will undoubtedly offer you great benefits.  
 
 ![Enable debugging options in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_3.png)
 
-@todo
-[INTERMEDIATEPARAGRAPH]
+Enabling debug mode for your GraphQL environment will be essential. This, coupled with enabling Xdebug for debugging from the PHP side, will make any implementation that gets stuck along the way much easier to deal with. Enable debug in order to get exception specific messages going to `/admin/config/graphql/servers/manage/` and edit the configuration of your schema server. You will be very happy.  
 
 ![Getting feedback from debugging in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_4.png)
+
+
+Read More about enabling Xdebug for Drupal:  
+
+* [Introduction to Xdebug for DDEV](https://www.therussianlullaby.com/blog/drupal-migrations-five-debugging-migrations-ii/#1--introduction-to-xdebug)  
+* [Drupal Techniques: Xdebug, DDEV and Postman](https://davidjguru.github.io/blog/drupal-techniques-xdebug-ddev-and-postman)  
+* [Configuration for Debugging Decoupled Drupal using Lando](https://gist.github.com/davidjguru/68323f7f42b5093686c9e0b09a08832c)  
 
 ## 4- Maintain your code clean and do refactoring  
 
