@@ -50,8 +50,8 @@ I have been working on openly decoupled Drupal projects for some time now, and I
 I'm not a GraphQL advocate, I think there are already many people and many platforms that do it quite well, so I'm not interested in holy wars. In fact I wouldn't convince you to use GraphQL in your project, but there are situations where someone may be conditioned by circumstances to work with GraphQL.
 So I have taken as an excuse the intention of publishing five basic ideas about GraphQL in Drupal. As an introductory article, but taking advantage of some initial notes.  
 
-@todo
-[SECONDPARAGRAPH]
+GraphQL was intended as a way to avoid overfetching in other approaches such as REST APIs: you describe exactly what resources you will expose and how you want to expose them. You then build specific queries that will scrupulously respect these descriptions and fetch the exact data that has been requested. In this article we will take a brief look at GraphQL by way of introduction: installation, features, aspects to take into account, possible limitations and an index of recommended reading.  
+
 
 **There we go!**
 
@@ -60,6 +60,13 @@ GraphQL is an open-source data query and manipulation language for APIs develope
 
 ![GraphQL related projects under Linux Foundation](../../images/post/davidjguru_drupal_8_9_graphql_introduction_6.png)
 
+**Common Terms**  
+* Schema: A Schema is a description of resources that will be exposed via GraphQL. 
+* Server: A server is the URL where a schema will be accessible.  
+* graphqls: The file extension for descriptive schema files in GraphQL.  
+* Resolvers: Are collections of functions that build a response for a GraphQL input query, acting like a GraphQL query handler.  
+* Data Producers: A data producer is function taking arguments and processing these inputs into some other data.  
+* GraphiQL Explorer: Visual tool for execute and review results of your query, your blackboard.  
 
 
 ### Installing GraphQL in Drupal 
