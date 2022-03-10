@@ -124,9 +124,9 @@ icon = "ti-pencil" # themify icon : https://themify.me/themify-icons
 link = "https://davidjguru.github.io/"
 
 [[params.social]]
-title = "gitlab"
+title = "github"
 icon = "ti-github" # themify icon : https://themify.me/themify-icons
-link = "https://gitlab.com/davidjguru"
+link = "https://github.com/davidjguru"
 
 [[params.social]]
 title = "linkedin"
