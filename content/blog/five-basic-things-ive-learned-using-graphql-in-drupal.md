@@ -126,9 +126,10 @@ You can use some plugins for IDEs too, like [the graphiql-explorer for VSCode](h
 ## 1- Align file naming and resources
 
 Well, the first small idea to share (small but very useful), is this: always keep the names of the internal resources of each module aligned. This will make your life much easier and will make you happy, for sure, reducing the time to search for errors without results.  
+
 At the beginning it will quite simple but the more your project grows, the more GraphQL custom modules it will contain with more files, with more resources and with different names. It will be easy to start a new GraphQL module by copying and pasting files from a previous module and there... you may forget to change names.  
 
-<h4>My advice:</h4>My advice:  
+<h4>My advice:</h4>  
 Before the GraphQL dimension of your project grows, make naming patterns for custom resources. See the next screen caption:  
 ![Align naming in files](../../images/post/davidjguru_drupal_8_9_graphql_introduction_1.png)
 
@@ -160,7 +161,10 @@ This can be important to delay chaos within the project. Especially if not only 
 
 ## 2- Respect the order of parameters
 
-Another basic aspect but one that can take up a lot of your time... please, just keep the order of the parameters in the same sense that you expect it in your DataProducer, ok? See the following image:  
+Another basic aspect but one that can take up a lot of your time... please...
+
+<h4>My advice:</h4>  
+Just keep the order of the parameters in the same sense that you expect it in your DataProducer, ok? See the following image:  
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
 
 As you can see in the image above, first you've described a new extension for a Query type, in this example is for querying "News" in our Drupal installation. Then you're adding a new Schema Extension, adding FieldResolvers for the new query and you are using "query_news" as your custom DataProducer. In this declaration to register, you're sending the parameters in the order:  
