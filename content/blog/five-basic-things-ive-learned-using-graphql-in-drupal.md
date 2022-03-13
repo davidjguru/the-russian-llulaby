@@ -128,7 +128,8 @@ You can use some plugins for IDEs too, like [the graphiql-explorer for VSCode](h
 Well, the first small idea to share (small but very useful), is this: always keep the names of the internal resources of each module aligned. This will make your life much easier and will make you happy, for sure, reducing the time to search for errors without results.  
 At the beginning it will quite simple but the more your project grows, the more GraphQL custom modules it will contain with more files, with more resources and with different names. It will be easy to start a new GraphQL module by copying and pasting files from a previous module and there... you may forget to change names.  
 
-**My advice:** before the GraphQL dimension of your project grows, make naming patterns for custom resources. See the next screen caption:  
+<h4>My advice:</h4>My advice:  
+Before the GraphQL dimension of your project grows, make naming patterns for custom resources. See the next screen caption:  
 ![Align naming in files](../../images/post/davidjguru_drupal_8_9_graphql_introduction_1.png)
 
 Ok, as you can see when you're working with GraphQL in Drupal you have to create new custom resources, new custom modules containing all the required files for extending your current Schema and defining new types, fields, queries... See the former image: think about your folder structure and get a naming pattern, something like:  
@@ -146,11 +147,11 @@ graphql_custom_name/
   |                      |
   |                      |_ _ DataProducer/
   |                      |        \
-  |                      |         \_ _ CustomName.php
+  |                      |          \_ _ CustomName.php
   |                      |     
   |                      |_ _ SchemaExtension/
   |                              \
-  |                               \_ _ CustomNameSchemaExtension.php
+  |                                \_ _ CustomNameSchemaExtension.php
   |                            
   |_ _ _ _ graphql_custom_name.info.yml
 ```
@@ -166,16 +167,20 @@ As you can see in the image above, first you've described a new extension for a 
 
 ```
 collection_id => Identifier of the collection to query.
-                 Taken as an incoming argument from the query parameters.
+Taken as an incoming argument from the query parameters.
+
 offset => Starting point for the query of items.
-          Taken as an incoming argument from the query parameters.
+Taken as an incoming argument from the query parameters.
+
 limit => How many items do you want to get.
-         Taken as an incoming argument from the query parameters.
+Taken as an incoming argument from the query parameters.
+
 language => The language code of the requested items.
-            Taken as an incoming argument from the query parameters.
+Taken as an incoming argument from the query parameters.
 ```
 
-All these parameters will function as filters within our custom DataProducer. If I don't respect the order of the parameters in the resolve method definition itself in my custom DataProducer, then I will get strange results. In the bottom tab of the image above you can see the values when debugging with Xdebug: we were not obtaining the required items, and we were not getting the expected values since what should be the offset (zero value), here is working as a limit (zero items to return). This may cause you a little headache and make you debug more than necessary, just for a matter of order in the parameters passed to the custom data producer class.  
+All these parameters will function as filters within our custom DataProducer. If I don't respect the order of the parameters in the resolve method definition itself in my custom DataProducer, then I will get strange results. In the bottom tab of the image above you can see the values when debugging with Xdebug: we were not obtaining the required items, and we were not getting the expected values since what should be the offset (zero value), here is working as a limit (zero items to return). 
+This may cause you a little headache and make you debug more than necessary, just for a matter of order in the parameters passed to the custom data producer class.  
 
 ## 3-Enable debugging mode  
 
@@ -198,7 +203,7 @@ Read More about enabling Xdebug for Drupal:
 
 In the middle of working on a decoupled Drupal project can be common to define needs as you go along, on the fly. For example, from the frontend, it may be necessary to show a new listing.  
 
-* Then frontend asks backend: I need a new list of items. 
+* Then frontend asks backend: I need a new list of items (News). 
 * Backend responds by creating a custom data producer (if none fits well).
 * Backend prepares a query extracting the required data:  
 
@@ -237,6 +242,7 @@ catch (\Exception $e) {
 // Processing the resulting array of total nodes.
 // First reduce the items cutting by offset and limit.
 // Second allows only nodes with moderation_state as published.
+
 $filtered_array = array_filter($available_nodes, function ($node){
   // @see https://www.drupal.org/project/drupal/issues/3025164
   return ( $node->get('moderation_state')->value == 'published');
@@ -246,8 +252,8 @@ $filtered_array = array_filter($available_nodes, function ($node){
 And finally we'll prepare the array of values to return from our custom Data Producer:  
 
 ```
-// Prepare the array of page nodes(News, Local News, Blog Page, Press Page). 
-$pages = [];
+// Prepare the array of page nodes (Type 1, Type 2, Type 3, Type 4).
+$news = [ ];
 foreach ($filtered_array as $node) {
     $id = $node->id();
     $final_url = $node->toUrl()->toString(TRUE);
@@ -261,7 +267,7 @@ foreach ($filtered_array as $node) {
     ];
 }
 
-return $pages;
+return $news;
 }
 ```
 But then times goes by, the project progresses, other tickets are solved and the frontend colleagues start asking other things for the same query (or maybe yourself if you're working in full-stack mode). Anyway, it produces a request "Hey, I need to add to the query a value of items returned and the total number of available existing items in database, could you implement it, please?" and it's time to return to the code you left in that class.  
@@ -287,6 +293,7 @@ Ok? Nopes, 'cause you already have a previous query and with some adjustments yo
 // Processing the resulting array of total nodes.
 // First reduce the items cutting by offset and limit.
 // Second allows only nodes with moderation_state as published.
+
 $processed_array = array_slice($available_nodes, $offset, $limit, TRUE);
 $filtered_array = array_filter($processed_array, function ($node){
   // @see https://www.drupal.org/project/drupal/issues/3025164
@@ -302,8 +309,8 @@ $batch = [
 And then do the data processing from the returned set of nodes:  
 
 ```
-// Prepare the array of page nodes(Type 1, Type 2, Type 3, Type 4). 
-$pages = [];
+// Prepare the array of page nodes (Type 1, Type 2, Type 3, Type 4). 
+$news = [];
 foreach ($filtered_array as $node) {
     $id = $node->id();
     $final_url = $node->toUrl()->toString(TRUE);
@@ -318,7 +325,7 @@ foreach ($filtered_array as $node) {
 }
 
 // Finally load the batch of nodes.
-$batch['pages'] = $pages;
+$batch['news'] = $news;
 ```
 Keep your code in good shape. Think about You're adding new data by extending more and more values and sections in your returned array of data:  
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_5.png)
