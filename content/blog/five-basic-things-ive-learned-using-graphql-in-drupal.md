@@ -129,8 +129,7 @@ Well, the first small idea to share (small but very useful), is this: always kee
 
 At the beginning it will quite simple but the more your project grows, the more GraphQL custom modules it will contain with more files, with more resources and with different names. It will be easy to start a new GraphQL module by copying and pasting files from a previous module and there... you may forget to change names.  
 
-<strong>My advice:</strong>  
-Before the GraphQL dimension of your project grows, make naming patterns for custom resources. See the next screen caption:  
+<strong>My advice:</strong> Before the GraphQL dimension of your project grows, make naming patterns for custom resources. See the next screen caption:  
 ![Align naming in files](../../images/post/davidjguru_drupal_8_9_graphql_introduction_1.png)
 
 Ok, as you can see when you're working with GraphQL in Drupal you have to create new custom resources, new custom modules containing all the required files for extending your current Schema and defining new types, fields, queries... See the former image: think about your folder structure and get a naming pattern, something like:  
@@ -163,8 +162,7 @@ This can be important to delay chaos within the project. Especially if not only 
 
 Another basic aspect but one that can take up a lot of your time... please...
 
-<strong>My advice:</strong>  
-Just keep the order of the parameters in the same sense that you expect it in your DataProducer, ok? See the following image:  
+<strong>My advice:</strong> Just keep the order of the parameters in the same sense that you expect it in your DataProducer, ok? See the following image:  
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
 
 As you can see in the image above, first you've described a new extension for a Query type, in this example is for querying "News" in our Drupal installation. Then you're adding a new Schema Extension, adding FieldResolvers for the new query and you are using "query_news" as your custom DataProducer. In this declaration to register, you're sending the parameters in the order:  
@@ -192,8 +190,7 @@ Do you know the phrase "the future is where you will spend the rest of your life
 
 ![Enable debugging options in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_3.png)
 
-</strong>My advice:</strong>  
-Enabling debug mode for your GraphQL environment will be essential.  
+</strong>My advice:</strong> Enabling debug mode for your GraphQL environment will be essential.  
 This, coupled with enabling Xdebug for debugging from the PHP side, will make any implementation that gets stuck along the way much easier to deal with. Enable debug in order to get exception specific messages going to `/admin/config/graphql/servers/manage/` and edit the configuration of your schema server. You will be very happy.  
 
 ![Getting feedback from debugging in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_4.png)
@@ -334,8 +331,7 @@ foreach ($filtered_array as $node) {
 $batch['news'] = $news;
 ```
 
-</strong>My advice:</strong>  
-Keep your code in good shape. Think about You're adding new data by extending more and more values and sections in your returned array of data:  
+</strong>My advice:</strong> Keep your code in good shape. Think about You're adding new data by extending more and more values and sections in your returned array of data:  
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_5.png)
 
 **So please, remember:** review and revise the code above. Don't add more code than you need. Use the calculations you have already done and if necessary, change and refactor. Avoid unnecessary growth of your DataProducer classes.
