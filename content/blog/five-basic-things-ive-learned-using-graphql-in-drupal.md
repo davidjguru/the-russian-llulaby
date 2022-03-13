@@ -129,7 +129,7 @@ Well, the first small idea to share (small but very useful), is this: always kee
 
 At the beginning it will quite simple but the more your project grows, the more GraphQL custom modules it will contain with more files, with more resources and with different names. It will be easy to start a new GraphQL module by copying and pasting files from a previous module and there... you may forget to change names.  
 
-<h4>My advice:</h4>  
+<strong>My advice:</strong>  
 Before the GraphQL dimension of your project grows, make naming patterns for custom resources. See the next screen caption:  
 ![Align naming in files](../../images/post/davidjguru_drupal_8_9_graphql_introduction_1.png)
 
@@ -163,7 +163,7 @@ This can be important to delay chaos within the project. Especially if not only 
 
 Another basic aspect but one that can take up a lot of your time... please...
 
-<h4>My advice:</h4>  
+<strong>My advice:</strong>  
 Just keep the order of the parameters in the same sense that you expect it in your DataProducer, ok? See the following image:  
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_2.png)
 
@@ -192,7 +192,9 @@ Do you know the phrase "the future is where you will spend the rest of your life
 
 ![Enable debugging options in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_3.png)
 
-Enabling debug mode for your GraphQL environment will be essential. This, coupled with enabling Xdebug for debugging from the PHP side, will make any implementation that gets stuck along the way much easier to deal with. Enable debug in order to get exception specific messages going to `/admin/config/graphql/servers/manage/` and edit the configuration of your schema server. You will be very happy.  
+</strong>My advice:</strong>  
+Enabling debug mode for your GraphQL environment will be essential.  
+This, coupled with enabling Xdebug for debugging from the PHP side, will make any implementation that gets stuck along the way much easier to deal with. Enable debug in order to get exception specific messages going to `/admin/config/graphql/servers/manage/` and edit the configuration of your schema server. You will be very happy.  
 
 ![Getting feedback from debugging in GraphiQL explorer](../../images/post/davidjguru_drupal_8_9_graphql_introduction_4.png)
 
@@ -331,6 +333,8 @@ foreach ($filtered_array as $node) {
 // Finally load the batch of nodes.
 $batch['news'] = $news;
 ```
+
+</strong>My advice:</strong>  
 Keep your code in good shape. Think about You're adding new data by extending more and more values and sections in your returned array of data:  
 ![GraphQL example of parameters in queries](../../images/post/davidjguru_drupal_8_9_graphql_introduction_5.png)
 
@@ -340,11 +344,14 @@ Keep your code in good shape. Think about You're adding new data by extending mo
 
 Despite the enormous flexibility GraphQL offers and the optimisation involved in building your own schemas and queries, it is true that it is not all advantages and you can have important problems and limitations. Intuitively we can say that GraphQL is not a good option if your team is small or your budget is tight, but in addition, I have gathered three more points to be able to meditate better if it is our solution:  
 
-*  __Documentation is scarce and may not be very up to date.__ You have few resources available to learn. You can go to [www.drupal.org/docs/graphql](https://www.drupal.org/docs/contributed-modules/graphql) and then you will see that the information may be [very little](https://www.drupal.org/docs/8/modules/graphql/fetching-data), [outdated](https://www.drupal.org/docs/8/modules/graphql/query-maps) or [non-existent](https://www.drupal.org/docs/contributed-modules/graphql/graphql-twig). This is not very motivating and you will have to build a curated reading list on your own. Of course, the Amazee Labs content list related to GraphQL is fundamental. It is arguably the company that has written the most about the Drupal & GraphQL partnership. You have the links in the last section, [Read More](#6--read-more).  
+* Documentation is scarce and may not be very up to date.  
+You have few resources available to learn. You can go to [www.drupal.org/docs/graphql](https://www.drupal.org/docs/contributed-modules/graphql) and then you will see that the information may be [very little](https://www.drupal.org/docs/8/modules/graphql/fetching-data), [outdated](https://www.drupal.org/docs/8/modules/graphql/query-maps) or [non-existent](https://www.drupal.org/docs/contributed-modules/graphql/graphql-twig). This is not very motivating and you will have to build a curated reading list on your own. Of course, the Amazee Labs content list related to GraphQL is fundamental. It is arguably the company that has written the most about the Drupal & GraphQL partnership. You have the links in the last section, [Read More](#6--read-more).  
 
-  * __You will have to expose everything-everything to your frontend.__ This usually includes providing all the navigation: menus, links, sections, paths, content: titles, bodies, taxonomy terms and other available fields. Do you use search subsystems? searching-indexes? elastic search? you'll have to expose and connect every resource. And all the structural and meta-information for SEO: Blocks, sections, layout regions information, metatags, descriptions, etc. This can increase the workload of a project exponentially. It may not be your option if you don't have the right knowledge, the right budget, the time required or if your team is small.  
+* You will have to expose everything-everything to your frontend.  
+This usually includes providing all the navigation: menus, links, sections, paths, content: titles, bodies, taxonomy terms and other available fields. Do you use search subsystems? searching-indexes? elastic search? you'll have to expose and connect every resource. And all the structural and meta-information for SEO: Blocks, sections, layout regions information, metatags, descriptions, etc. This can increase the workload of a project exponentially. It may not be your option if you don't have the right knowledge, the right budget, the time required or if your team is small.  
 
-* __*You will have to operate from scratch__ As with the implementation of other resources for external connections (REST, JSON API), GraphQL for Drupal also set by default an exposure of all existing resources in the Drupal installation. You could simply install the module and get all entities available via GraphQL. But this has changed between version 3 and version 4, and is no longer available... now users must manually describe schemas for every entity and resource that they need. [You can see the discussion here](https://github.com/drupal-graphql/graphql/issues/1021). The final fact is that you may need (even more) work - time to be able to build all the schemes you need.  
+* You will have to operate from scratch.  
+As with the implementation of other resources for external connections (REST, JSON API), GraphQL for Drupal also set by default an exposure of all existing resources in the Drupal installation. You could simply install the module and get all entities available via GraphQL. But this has changed between version 3 and version 4, and is no longer available... now users must manually describe schemas for every entity and resource that they need. [You can see the discussion here](https://github.com/drupal-graphql/graphql/issues/1021). The final fact is that you may need (even more) work - time to be able to build all the schemes you need.  
 
 
 ## 6- Read More
