@@ -66,16 +66,15 @@ This is even more critical when working with tools that already have a complex l
 
 Through the implementation of the steps recommended in this article, you will achieve the following goals:
 
-<ol>
-<li>You will build a ready-to-go work environment.</li>
-<li>You will deploy Drupal projects based on Docker containers in LDE.</li>
-<li>You will commit code that meets quality standards from your IDE to a remote repository.</li>
-</ol>
+* You will build a ready-to-go work environment.
+* You will deploy Drupal projects based on Docker containers in LDE.
+* You will commit code that meets quality standards from your IDE to a remote repository.
+
 Specifically, you will have correctly configured the following environments: 
 
-1. A lightweight local environment.
-1. A heavyweight local environment based on software virtualization (containers).
-1. An Integrated Development Environment (IDE) with all the necessary configurations to develop good quality code.
+* A lightweight local environment.
+* A heavyweight local environment based on software virtualization (containers).
+* An Integrated Development Environment (IDE) with all the necessary configurations to develop good quality code.
 
 
 ## Software requirements 
@@ -91,7 +90,7 @@ This will return the description of your current version:
 
 
 ![Getting Ubuntu versions from prompt](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_1.png)  
-*Getting Ubuntu versions from prompt using lsb_release command*
+
 
 As you can see in the image above: 
 
@@ -176,8 +175,8 @@ Now, you must perform some basic checks to confirm that everything is working we
 
    This will return a complete list of PHP and Zend modules installed on your systen, including basic resources as `gd` (image graphics library), `mbstring` (multibyte enconding) or `Zend OPcache` (objects cache). 
    
-   ![Getting a list of installed PHP modules](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_2.jpg)  *Getting a list of installed PHP modules*
-
+   ![Getting a list of installed PHP modules](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_2.jpg)  
+   
 2. Create a simple PHP file:  
    ```
    cat > phpinfo.php
@@ -194,7 +193,7 @@ Now, you must perform some basic checks to confirm that everything is working we
 
 4. Open the URL in your favourite browser and get data from your PHP local installation:  
    
-   ![Getting info from PHP installation](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_3.jpg)  *Getting info from PHP installation*  
+   ![Getting info from PHP installation](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_3.jpg)  
 
 5. Prepare an on-the-fly Drupal installation following the steps recommended in [the Quick Start documentation](https://www.drupal.org/docs/getting-started/installing-drupal/drupal-quick-start-command): 
    
@@ -223,7 +222,7 @@ Now, you must perform some basic checks to confirm that everything is working we
 
 7. Check out the new Drupal site automatically created and available in a tab of your preferred web browser:  
 
-   ![Enabling a Drupal site in your local environment](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_4.png)  *Enabling a Drupal site in your local environment*
+   ![Enabling a Drupal site in your local environment](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_4.png)  
    
 * For more information about the PHP built-in web server, read the [PHP documentation page](https://www.php.net/manual/en/features.commandline.webserver.php).
 
@@ -315,7 +314,7 @@ To test your local DDEV installation, follow these steps:
    ```
    
     ![Enabling a Drupal site in your local environment using DDEV](./../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_5.png)  
-    *Enabling a Drupal site in your local environment*
+    
 
 ## Set up an IDE for Drupal development
 
@@ -348,9 +347,7 @@ To have a fully functional environment, follow the steps below.
    ```
    
       ![Installing PHP Debug extension in VSCode](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_6.jpg)  
-      *Installing PHP Debug extension in VSCode*
 
-   
 3. Prepare a `launch.json` file per project's folder, including the lines for Xdebug connections: 
    ```
       {
