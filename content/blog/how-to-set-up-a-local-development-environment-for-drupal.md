@@ -1,6 +1,6 @@
 ---
 title: "How to set up a local development environment (LDE) for Drupal"
-date: 2024-01-17
+date: 2024-01-24
 draft: false
 
 # post thumb
@@ -21,7 +21,7 @@ tags:
 # post type
 type: "post"
 ---
-Are you interested in setting up a working environment for Drupal projects? New members in your development team? Well, the configuration of the correct development environment is a fundamental part of the process of working with Drupal, you are right. By reading this how-to guide, you will implement a complete and ready-to-go Drupal working environment prepared for versions 8, 9 and 10 of our favorite CMS/framework. Do you want to start?...  
+You are probably interested in setting up a workign environment for Drupal-based projects or maybe you have new members in your development team, so the configuration of the correct development environment is a fundamental part of the process of working with Drupal, you are right. By reading this how-to guide, you will implement a complete and ready-to-go Drupal working environment ready for versions 8, 9, and 10 of our favorite CMS/framework. Do you want to start?...  
 
 --------------------------------------------------------------------------------------
 **Picture from Unsplash, user [Mathyas Kurmann, @mathyaskurmann](https://unsplash.com/@mathyaskurmann).**
@@ -29,21 +29,26 @@ Are you interested in setting up a working environment for Drupal projects? New 
 
 ---------------------------------------------------------------------------------------
 
-This content has been constructed as a "how-to" guide, based on the [Diataxis approach](https://diataxis.fr/application/) for [How-to guides](https://diataxis.fr/how-to-guides/), described by [Daniele Procida](https://www.linkedin.com/in/danieleprocida). 
-
-
-# How to set up a local development environment (LDE) for Drupal 
+This content has been constructed as a "how-to" guide, based on the [Diátaxis approach](https://diataxis.fr/application/) for [How-to guides](https://diataxis.fr/how-to-guides/), described by [Daniele Procida](https://www.linkedin.com/in/danieleprocida). 
 
 
 **Index of sections**
 <!-- TOC -->
-[Introduction](#introduction)  
-[What you will accomplish](#what-you-will-accomplish)  
-[Software requirements](#software-requirements)  
-[Set up a lightweight local environment for PHP ](#set-up-a-lightweight-local-environment-for-php)  
-[Set up a heavyweight local environment based on software containers](#set-up-a-heavyweight-local-environment-based-on-software-containers)  
-[Set up a IDE for Drupal development](#set-up-a-ide-for-drupal-development)  
-[:wq!](#wq)  
+- [Introduction](#introduction)
+- [What you will accomplish](#what-you-will-accomplish)
+- [Software requirements](#software-requirements)
+- [Set up a lightweight local environment for PHP](#set-up-a-lightweight-local-environment-for-php)
+  - [Get start](#get-start)
+  - [Check your installation](#check-your-installation)
+  - [Check your installation](#check-your-installation-1)
+- [Set up an IDE for Drupal development](#set-up-an-ide-for-drupal-development)
+  - [Get start](#get-start-1)
+  - [Install VSCode](#install-vscode)
+  - [Install XDebug](#install-xdebug)
+  - [Install PHP Codesniffer (PHPCS)](#install-php-codesniffer-phpcs)
+- [:wq!](#wq)
+      - [Recommended song: Van Moustache - María La Portuguesa](#recommended-song-van-moustache---maría-la-portuguesa)
+
 
 ---------------------------------------------------------------------------------
 
@@ -61,10 +66,11 @@ This is even more critical when working with tools that already have a complex l
 
 Through the implementation of the steps recommended in this article, you will achieve the following goals:
 
-1. You will build a ready-to-go work environment.
-1. You will deploy Drupal projects based on Docker containers in LDE.
-1. You will commit code that meets quality standards from your IDE to a remote repository.
-
+<ol>
+<li>You will build a ready-to-go work environment.</li>
+<li>You will deploy Drupal projects based on Docker containers in LDE.</li>
+<li>You will commit code that meets quality standards from your IDE to a remote repository.</li>
+</ol>
 Specifically, you will have correctly configured the following environments: 
 
 1. A lightweight local environment.
@@ -78,7 +84,7 @@ Although there are no software requirements, there are operating system requirem
 
 To find out your current version of Linux / Ubuntu, access the terminal and run:
 
-```bash
+```
 lsb_release -d 
 ```
 This will return the description of your current version:  
@@ -90,8 +96,10 @@ This will return the description of your current version:
 
 As you can see in the image above: 
 
-1. `lsb_release -d`,  getting Ubuntu 20.04.6
-2. `lsb_release -d`,  getting Ubuntu 22.04.1
+<ol>
+<li>`lsb_release -d`,  getting Ubuntu 20.04.6</li>
+<li>`lsb_release -d`,  getting Ubuntu 22.04.1</li>
+</ol>
 
 ## Set up a lightweight local environment for PHP 
 
@@ -107,19 +115,19 @@ This implies a minimal installation on the host system. Specifically, you will i
 
 1. Update system dependencies:
 
-   ```bash
+   ```
    sudo apt update
    ```
-   ```bash
+   ```
    sudo apt upgrade
    ```
 
 2. Install the available package for PHP 8.1, but avoiding dependencies such as Apache and other unsolicited default packages:  
-   ```bash
+   ```
    sudo apt install --no-install-recommends php8.1
    ```
 3. Install some basic PHP extensions:  
-   ```bash
+   ```
    sudo apt-get install -y php8.1-cli php8.1-common php8.1-zip php8.1-gd php8.1-mbstring php8.1-curl php8.1-xml php8.1-bcmath
    ```
 
@@ -129,28 +137,28 @@ Now, it's time for the basic installation of PHP on an older LTS version of Ubun
 
 1. Update system dependencies:
 
-   ```bash
+   ```
    sudo apt update
    ```
-   ```bash
+   ```
    sudo apt upgrade
    ```
 
 2. You will use [the reference repository of Ondřej Surý for PHP versions](https://launchpad.net/~ondrej), so add a new **"Personal Package Archive"** (PPA) as a new available repository in your system: 
-   ```bash
+   ```
    sudo add-apt-repository ppa:ondrej/php
    ```
-   ```bash
+   ```
    sudo apt update
    ```
    And press ENTER when prompted.  
    
 3. Now install the required PHP versions: 
-   ```bash
+   ```
    sudo apt install php8.1
    ```
 4. Finally, install some basic PHP extensions: 
-   ```bash
+   ```
    sudo apt install -y php8.1-cli php8.1-common php8.1-zip php8.1-gd php8.1-mbstring php8.1-curl php8.1-xml php8.1-bcmath php8.1-sqlite3
    ```
 
@@ -164,7 +172,7 @@ Now, you must perform some basic checks to confirm that everything is working we
 
 1. Check your PHP modules installation: 
  
-   ```bash
+   ```
    php -m
    ```
 
@@ -175,7 +183,7 @@ Now, you must perform some basic checks to confirm that everything is working we
    |  *Getting a list of installed PHP modules*                                                                                                        |     
 
 2. Create a simple PHP file:  
-   ```bash
+   ```
    cat > phpinfo.php
    <?php
      phpinfo();
@@ -184,43 +192,43 @@ Now, you must perform some basic checks to confirm that everything is working we
     And exit from text editor typing CTRL+D in prompt.
    
 3. Execute the PHP file using the PHP built-in web server:
-    ```bash
+    ```
     php -S localhost:8000 phpinfo.php 
    ```
 
 4. Open the URL in your favourite browser and get data from your PHP local installation:  
    
-   | ![Getting info from PHP installation](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_3.jpg |
+   | ![Getting info from PHP installation](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_3.jpg) |
    | :-------------------------------------------------------------------------------------------------------------------------------------------------: |            
    |  *Getting info from PHP installation*                                                                                                        |   
 5. Prepare an on-the-fly Drupal installation following the steps recommended in [the Quick Start documentation](https://www.drupal.org/docs/getting-started/installing-drupal/drupal-quick-start-command): 
    
-   ```bash
+   ```
    curl -sSL https://www.drupal.org/download-latest/tar.gz | tar -xz --strip-components=1
    ```
    
    You may encounter permissions issues from the execution of `tar` command running the above recommended command. In that case, try running it: 
-   ```bash
+   ```
    wget -c https://www.drupal.org/download-latest/tar.gz -O - | sudo tar -xz
    ```
    But you will need to change owner and permissions for the new folder: 
-   ```bash
+   ```
    sudo chown -R $USER:$USER drupal-*
    ```
-   ```bash
+   ```
    sudo chmod -R 775 drupal-*
    ```
 6. Launch a Drupal installation:  
-   ```bash
+   ```
    cd drupal-*
    ```
-   ```bash
+   ```
    php -d memory_limit=256M ./core/scripts/drupal quick-start standard --site-name QuickInstall --host localhost --port 8080
    ```
 
 7. Check out the new Drupal site automatically created and available in a tab of your preferred web browser:  
 
-   | ![Enabling a Drupal site in your local environment](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_4.png |
+   | ![Enabling a Drupal site in your local environment](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_4.png) |
    | :-------------------------------------------------------------------------------------------------------------------------------------------------: |            
    |  *Enabling a Drupal site in your local environment*                                                                                                        |
 
@@ -250,34 +258,34 @@ We have already talked about DDEV in other articles, posts, tutorials and how-to
 To install Docker and DDEV in your local environment, follow the next steps:  
 
 1. Install Docker and its resources: 
-   ```bash
+   ```
    sudo apt update
    ```
-   ```bash
+   ```
    sudo apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
    ```
 2. Add DDEV's GPG key to your keyring: 
-   ```bash
+   ```
    curl -fsSL https://pkg.ddev.com/apt/gpg.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/ddev.gpg > /dev/null
    ```
 3. Add DDEV releases to your package repository: 
-   ```bash
+   ```
    echo "deb [signed-by=/etc/apt/trusted.gpg.d/ddev.gpg] https://pkg.ddev.com/apt/ * *" | sudo tee /etc/apt/sources.list.d/ddev.list
    ```
 4. Now update info and install DDEV: 
-   ```bash
+   ```
    sudo apt update
    ```
-   ```bash
+   ```
    sudo apt install -y ddev
    ```
 
 5. Confirm the installation of the software by checking version: 
-   ```bash
+   ```
    ddev -v
    ```
    You will get from prompt something like: 
-   ```bash
+   ```
    ddev version v1.22.1
    ```
 
@@ -288,37 +296,37 @@ To test your local DDEV installation, follow these steps:
 1. Create a new Drupal 10 site:  
    
    Prepare the main folder:
-   ```bash
+   ```
    mkdir drupal10-site && cd drupal10-site
    ```
 2. Enable the basic configuration for the site:
-   ```bash
+   ```
    ddev config --project-type=drupal10 --create-docroot --docroot=web
    ```
 3. Init the DDEV container ecosystem:
-   ```bash
+   ```
    ddev start
    ```
 4. Build the new site downloading basic resources and executing the installation:
-   ```bash
+   ```
    ddev composer create drupal/recommended-project && \
    ddev composer require drush/drush && \
    ddev drush site:install --account-name=admin --account-pass=admin -y
    ```
 5. Finally, launch the new Drupal site:  
-   ```bash
+   ```
    ddev drush uli | xargs xdg-open
    ```
 6. You can run a DDEV command to show the site: 
-   ```bash
+   ```
    ddev launch
    ```
    
-   | ![Enabling a Drupal site in your local environment using DDEV](./../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_5.png |
+   | ![Enabling a Drupal site in your local environment using DDEV](./../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_5.png) |
    | :-------------------------------------------------------------------------------------------------------------------------------------------------: |            
    |  *Enabling a Drupal site in your local environment*                                                                                                        |
 
-## Set up na IDE for Drupal development
+## Set up an IDE for Drupal development
 
 As a third step, you will install an integrated development environment (IDE). An IDE is a fundamental tool for software development, and in the case of Drupal, you will have to make some adaptations to work with its code. 
 
@@ -335,7 +343,7 @@ To have a fully functional environment, follow the steps below.
 
 1. Download VSCode for your OS (Ubuntu / Debian based) from [https://code.visualstudio.com/download](https://code.visualstudio.com/download).
 2. Move to your Downloads folder and install the `.deb` file: 
-   ```bash
+   ```
    cd ~/Downloads
    sudo apt install ./<file_name>.deb
    ```
@@ -348,7 +356,7 @@ To have a fully functional environment, follow the steps below.
    ext install xdebug.php-debug
    ```
    
-      | ![Installing PHP Debug extension in VSCode](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_6.jpg |
+      | ![Installing PHP Debug extension in VSCode](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_6.jpg) |
    | :-------------------------------------------------------------------------------------------------------------------------------------------------: |            
    |  *Installing PHP Debug extension in VSCode*                                                                                                        |
 
@@ -378,27 +386,27 @@ To have a fully functional environment, follow the steps below.
 PHP CodeSniffer (PHPCS) is a pair of scripts (`phpcs` and `phpcbf`) to detect violations and perform automatic repairs of coding standards. This integration requires some tasks:
 
 1. Install PHPCS as a resource in DDEV containers: 
-   ```bash
+   ```
    ddev composer require --dev drupal/coder dealerdirect/phpcodesniffer-composer-installer
    ```
 2. Verify PHPCS has been installed in your DDEV-based Drupal site: 
-   ```bash
+   ```
    ddev exec vendor/bin/phpcs -i
    ```
    Your should see something like: 
-   ```bash
+   ```
    The installed coding standards are MySource, PEAR, PSR1, PSR2, PSR12, Squiz, Zend, Drupal, DrupalPractice, VariableAnalysis and SlevomatCodingStandard
    ```
    This is the list of coding standards enabled for code sniffing.
 
 3. Enable version control in project root (if not already done) and create a new folder for scripting: 
-   ```bash
+   ```
    cd $PROJECT_ROOT
    git init
    mkdir -p scripts/git/pre-commit
    ```
 4. Create a new pair of scripts in the folder, `pre-commit` and `pre-commit-phpcs.php` with content: 
-   ```bash
+   ```
    #!/bin/sh
    # Run pre-commit check PHP script inside ddev when committing from host.
    if [ "$IS_DDEV_PROJECT" != true ]; then
@@ -410,7 +418,7 @@ PHP CodeSniffer (PHPCS) is a pair of scripts (`phpcs` and `phpcbf`) to detect vi
    
    and: 
    
-   ```bash
+   ```
    <?php
 
    /**
@@ -466,7 +474,7 @@ PHP CodeSniffer (PHPCS) is a pair of scripts (`phpcs` and `phpcbf`) to detect vi
    ```
    
 5. Connect PHPCS with git commits to perform code reviews before submitting to repository.
-   ```bash
+   ```
    chmod +x scripts/git/pre-commit
    cd .git/hooks && ln -s ../../scripts/git/pre-commit
    ```
@@ -474,7 +482,7 @@ PHP CodeSniffer (PHPCS) is a pair of scripts (`phpcs` and `phpcbf`) to detect vi
 
 6. Add new configuration rules for PHPCS:  
    Create a new PHPCS config file in root folder, the new `phpcs.xml.dist` will contain: 
-   ```xml
+   ```
     <?xml version="1.0" encoding="UTF-8"?>
     <ruleset name="drupal_website_development">
       <description>PHP CodeSniffer configuration for Drupal website development.</description>
