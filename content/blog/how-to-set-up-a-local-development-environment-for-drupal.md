@@ -110,7 +110,7 @@ This implies a minimal installation on the host system. Specifically, you will i
 
 **To install PHP CLI in Ubuntu 22.04.3, follow these steps:** 
 
-1. Update system dependencies:
+* Update system dependencies:
 
    ```
    sudo apt update
@@ -119,11 +119,11 @@ This implies a minimal installation on the host system. Specifically, you will i
    sudo apt upgrade
    ```
 
-2. Install the available package for PHP 8.1, but avoiding dependencies such as Apache and other unsolicited default packages:  
+* Install the available package for PHP 8.1, but avoiding dependencies such as Apache and other unsolicited default packages:  
    ```
    sudo apt install --no-install-recommends php8.1
    ```
-3. Install some basic PHP extensions:  
+* Install some basic PHP extensions:  
    ```
    sudo apt-get install -y php8.1-cli php8.1-common php8.1-zip php8.1-gd php8.1-mbstring php8.1-curl php8.1-xml php8.1-bcmath
    ```
@@ -132,7 +132,7 @@ Now, it's time for the basic installation of PHP on an older LTS version of Ubun
 
 **To install PHP CLI in Ubuntu 20.04.6, follow these steps:** 
 
-1. Update system dependencies:
+* Update system dependencies:
 
    ```
    sudo apt update
@@ -141,7 +141,7 @@ Now, it's time for the basic installation of PHP on an older LTS version of Ubun
    sudo apt upgrade
    ```
 
-2. You will use [the reference repository of Ondřej Surý for PHP versions](https://launchpad.net/~ondrej), so add a new **"Personal Package Archive"** (PPA) as a new available repository in your system: 
+* You will use [the reference repository of Ondřej Surý for PHP versions](https://launchpad.net/~ondrej), so add a new **"Personal Package Archive"** (PPA) as a new available repository in your system: 
    ```
    sudo add-apt-repository ppa:ondrej/php
    ```
@@ -150,11 +150,11 @@ Now, it's time for the basic installation of PHP on an older LTS version of Ubun
    ```
    And press ENTER when prompted.  
    
-3. Now install the required PHP versions: 
+* Now install the required PHP versions: 
    ```
    sudo apt install php8.1
    ```
-4. Finally, install some basic PHP extensions: 
+* Finally, install some basic PHP extensions: 
    ```
    sudo apt install -y php8.1-cli php8.1-common php8.1-zip php8.1-gd php8.1-mbstring php8.1-curl php8.1-xml php8.1-bcmath php8.1-sqlite3
    ```
@@ -163,11 +163,9 @@ The purpose of these lightweight installations of PHP resources in the local env
 
 ### Check your installation
 
-Now, you must perform some basic checks to confirm that everything is working well.
+Now, you must perform some basic checks to confirm that everything is working well. To test your local PHP installation, follow these steps:
 
-**To test your local PHP installation, follow these steps:**
-
-1. Check your PHP modules installation: 
+* Check your PHP modules installation: 
  
    ```
    php -m
@@ -177,7 +175,7 @@ Now, you must perform some basic checks to confirm that everything is working we
    
    ![Getting a list of installed PHP modules](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_2.jpg)  
    
-2. Create a simple PHP file:  
+* Create a simple PHP file:  
    ```
    cat > phpinfo.php
    <?php
@@ -186,16 +184,16 @@ Now, you must perform some basic checks to confirm that everything is working we
    ```
     And exit from text editor typing CTRL+D in prompt.
    
-3. Execute the PHP file using the PHP built-in web server:
+* Execute the PHP file using the PHP built-in web server:
     ```
     php -S localhost:8000 phpinfo.php 
    ```
 
-4. Open the URL in your favourite browser and get data from your PHP local installation:  
+* Open the URL in your favourite browser and get data from your PHP local installation:  
    
    ![Getting info from PHP installation](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_3.jpg)  
 
-5. Prepare an on-the-fly Drupal installation following the steps recommended in [the Quick Start documentation](https://www.drupal.org/docs/getting-started/installing-drupal/drupal-quick-start-command): 
+* Prepare an on-the-fly Drupal installation following the steps recommended in [the Quick Start documentation](https://www.drupal.org/docs/getting-started/installing-drupal/drupal-quick-start-command): 
    
    ```
    curl -sSL https://www.drupal.org/download-latest/tar.gz | tar -xz --strip-components=1
@@ -212,7 +210,7 @@ Now, you must perform some basic checks to confirm that everything is working we
    ```
    sudo chmod -R 775 drupal-*
    ```
-6. Launch a Drupal installation:  
+* Launch a Drupal installation:  
    ```
    cd drupal-*
    ```
@@ -220,11 +218,12 @@ Now, you must perform some basic checks to confirm that everything is working we
    php -d memory_limit=256M ./core/scripts/drupal quick-start standard --site-name QuickInstall --host localhost --port 8080
    ```
 
-7. Check out the new Drupal site automatically created and available in a tab of your preferred web browser:  
+* Check out the new Drupal site automatically created and available in a tab of your preferred web browser:  
 
    ![Enabling a Drupal site in your local environment](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_4.png)  
    
-* For more information about the PHP built-in web server, read the [PHP documentation page](https://www.php.net/manual/en/features.commandline.webserver.php).
+
+For more information about the PHP built-in web server, read the [PHP documentation page](https://www.php.net/manual/en/features.commandline.webserver.php).
 
 
 ## Set up a heavyweight local environment based on software containers
@@ -248,22 +247,22 @@ We have already talked about DDEV in other articles, posts, tutorials and how-to
 
 To install Docker and DDEV in your local environment, follow the next steps:  
 
-1. Install Docker and its resources: 
+* Install Docker and its resources: 
    ```
    sudo apt update
    ```
    ```
    sudo apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
    ```
-2. Add DDEV's GPG key to your keyring: 
+* Add DDEV's GPG key to your keyring: 
    ```
    curl -fsSL https://pkg.ddev.com/apt/gpg.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/ddev.gpg > /dev/null
    ```
-3. Add DDEV releases to your package repository: 
+* Add DDEV releases to your package repository: 
    ```
    echo "deb [signed-by=/etc/apt/trusted.gpg.d/ddev.gpg] https://pkg.ddev.com/apt/ * *" | sudo tee /etc/apt/sources.list.d/ddev.list
    ```
-4. Now update info and install DDEV: 
+* Now update info and install DDEV: 
    ```
    sudo apt update
    ```
@@ -271,7 +270,7 @@ To install Docker and DDEV in your local environment, follow the next steps:
    sudo apt install -y ddev
    ```
 
-5. Confirm the installation of the software by checking version: 
+* Confirm the installation of the software by checking version: 
    ```
    ddev -v
    ```
@@ -284,31 +283,31 @@ To install Docker and DDEV in your local environment, follow the next steps:
 
 To test your local DDEV installation, follow these steps:
 
-1. Create a new Drupal 10 site:  
+* Create a new Drupal 10 site:  
    
    Prepare the main folder:
    ```
    mkdir drupal10-site && cd drupal10-site
    ```
-2. Enable the basic configuration for the site:
+* Enable the basic configuration for the site:
    ```
    ddev config --project-type=drupal10 --create-docroot --docroot=web
    ```
-3. Init the DDEV container ecosystem:
+* Init the DDEV container ecosystem:
    ```
    ddev start
    ```
-4. Build the new site downloading basic resources and executing the installation:
+* Build the new site downloading basic resources and executing the installation:
    ```
    ddev composer create drupal/recommended-project && \
    ddev composer require drush/drush && \
    ddev drush site:install --account-name=admin --account-pass=admin -y
    ```
-5. Finally, launch the new Drupal site:  
+* Finally, launch the new Drupal site:  
    ```
    ddev drush uli | xargs xdg-open
    ```
-6. You can run a DDEV command to show the site: 
+* You can run a DDEV command to show the site: 
    ```
    ddev launch
    ```
@@ -331,8 +330,8 @@ To have a fully functional environment, follow the steps below.
 
 ### Install VSCode 
 
-1. Download VSCode for your OS (Ubuntu / Debian based) from [https://code.visualstudio.com/download](https://code.visualstudio.com/download).
-2. Move to your Downloads folder and install the `.deb` file: 
+* Download VSCode for your OS (Ubuntu / Debian based) from [https://code.visualstudio.com/download](https://code.visualstudio.com/download).
+* Move to your Downloads folder and install the `.deb` file: 
    ```
    cd ~/Downloads
    sudo apt install ./<file_name>.deb
@@ -340,15 +339,15 @@ To have a fully functional environment, follow the steps below.
 
 ### Install XDebug
 
-1. Open your VSCode installation and launch VSCode Quick Open (Ctrl+P).
-2. Install [the PHP Debug extension](https://marketplace.visualstudio.com/items?itemName=xdebug.php-debug) for VSCode typing the next command in the new box and press enter:
+* Open your VSCode installation and launch VSCode Quick Open (Ctrl+P).
+* Install [the PHP Debug extension](https://marketplace.visualstudio.com/items?itemName=xdebug.php-debug) for VSCode typing the next command in the new box and press enter:
    ```
    ext install xdebug.php-debug
    ```
    
       ![Installing PHP Debug extension in VSCode](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_6.jpg)  
 
-3. Prepare a `launch.json` file per project's folder, including the lines for Xdebug connections: 
+* Prepare a `launch.json` file per project's folder, including the lines for Xdebug connections: 
    ```
       {
       "version": "0.2.0",
@@ -366,17 +365,17 @@ To have a fully functional environment, follow the steps below.
       ]
    }
    ```
-4. Now you can enable the debug mode by clicking in option "Run and Debug", then put some breakpoints whitin the source code and try to run the site. You are ready for debugging. 
+* Now you can enable the debug mode by clicking in option "Run and Debug", then put some breakpoints whitin the source code and try to run the site. You are ready for debugging. 
 
 ### Install PHP Codesniffer (PHPCS)
 
 PHP CodeSniffer (PHPCS) is a pair of scripts (`phpcs` and `phpcbf`) to detect violations and perform automatic repairs of coding standards. This integration requires some tasks:
 
-1. Install PHPCS as a resource in DDEV containers: 
+* Install PHPCS as a resource in DDEV containers: 
    ```
    ddev composer require --dev drupal/coder dealerdirect/phpcodesniffer-composer-installer
    ```
-2. Verify PHPCS has been installed in your DDEV-based Drupal site: 
+* Verify PHPCS has been installed in your DDEV-based Drupal site: 
    ```
    ddev exec vendor/bin/phpcs -i
    ```
@@ -386,13 +385,13 @@ PHP CodeSniffer (PHPCS) is a pair of scripts (`phpcs` and `phpcbf`) to detect vi
    ```
    This is the list of coding standards enabled for code sniffing.
 
-3. Enable version control in project root (if not already done) and create a new folder for scripting: 
+* Enable version control in project root (if not already done) and create a new folder for scripting: 
    ```
    cd $PROJECT_ROOT
    git init
    mkdir -p scripts/git/pre-commit
    ```
-4. Create a new pair of scripts in the folder, `pre-commit` and `pre-commit-phpcs.php` with content: 
+* Create a new pair of scripts in the folder, `pre-commit` and `pre-commit-phpcs.php` with content: 
    ```
    #!/bin/sh
    # Run pre-commit check PHP script inside ddev when committing from host.
@@ -460,14 +459,14 @@ PHP CodeSniffer (PHPCS) is a pair of scripts (`phpcs` and `phpcbf`) to detect vi
    exit($exit_code);
    ```
    
-5. Connect PHPCS with git commits to perform code reviews before submitting to repository.
+* Connect PHPCS with git commits to perform code reviews before submitting to repository.
    ```
    chmod +x scripts/git/pre-commit
    cd .git/hooks && ln -s ../../scripts/git/pre-commit
    ```
    Now, every time you commit a new change, git will identify the newly modified files and if applicable (within the PHPCS configuration rules), it will perform a code review, giving you feedback. 
 
-6. Add new configuration rules for PHPCS:  
+* Add new configuration rules for PHPCS:  
    Create a new PHPCS config file in root folder, the new `phpcs.xml.dist` will contain: 
    ```
     <?xml version="1.0" encoding="UTF-8"?>
