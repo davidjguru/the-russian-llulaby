@@ -46,6 +46,7 @@ This content has been constructed as a "how-to" guide, based on the [Diátaxis a
   - [Install VSCode](#install-vscode)
   - [Install XDebug](#install-xdebug)
   - [Install PHP Codesniffer (PHPCS)](#install-php-codesniffer-phpcs)
+- [Tip: create Drupal 10 sites on the fly in your environment](#tip-create-drupal-10-sites-on-the-fly-in-your-environment)
 - [:wq!](#wq)
       - [Recommended song: Van Moustache - María La Portuguesa](#recommended-song-van-moustache---maría-la-portuguesa)
 
@@ -509,8 +510,83 @@ PHP CodeSniffer (PHPCS) is a pair of scripts (`phpcs` and `phpcbf`) to detect vi
 * Read more about recommended extensions for Drupal in VSCode: [www.drupal.org/recommended-extensions-for-drupal](https://www.drupal.org/docs/develop/development-tools/editors-and-ides/configuring-visual-studio-code#s-recommended-extensions-for-drupal).
 
 
+## Tip: Create Drupal 10 sites on the fly in your environment
+
+Create bash functions to launch Drupal 10 web sites on the fly from your terminal. Now you can reuse common steps to save repetitive tasks in your system, for example creating new Drupal 10 sites to test features. 
+
+To create Drupal 10 websites in an automated way, follow the steps below: 
+
+* Stop Apache in your environment, this will free port 80: 
+
+    ```
+    /etc/init.d/apache2 stop
+    ```
 
 
+* Create (if it does not exist) a `.bash_functions` file in your home directory: 
+    ```
+    vim  ~/.bash_functions
+    ```
+
+* Add a specific block with some bash commands, gathering all the related DDEV commands to create a new Drupal 10 site: 
+    ```
+    ## Creating Drupal projects by using DDEV. 
+    d10ddev () {
+      # If you don't provide a name the script will get one random for the site.
+      if [ -z "$1" ]
+      then
+          check=$(shuf -n1  /usr/share/dict/words)
+          shortened=${check::-2}
+          varkeyname=${shortened,,}
+      else
+          varkeyname=$1
+      fi
+      # Create main project folder.
+      mkdir $varkeyname && cd $varkeyname
+      # Prepare basic configuration.
+      ddev config --project-type=drupal10 --docroot=web --create-docroot
+      yes | ddev composer create "drupal/recommended-project:^10"
+      # Require some extra Drupal resources.
+      ddev composer require drush/drush drupal/admin_toolbar drupal/devel drupal/coffee
+      ddev composer update --lock
+      # Execute site install.
+      ddev exec drush si --site-name=$varkeyname --account-name=admin --account-pass=admin -y
+      # Enable modules and clean cache.
+      ddev drush en -y admin_toolbar admin_toolbar_tools admin_toolbar_search admin_toolbar_links_access_filter devel devel_generate coffee
+      ddev drush cr
+      # Start the new site and open it in browser.
+      ddev start && ddev launch
+    }
+    ```
+* Edit your main `.bashrc` file and make sure you have a block like this (if not, add the lines): 
+
+    ```
+    # Alias definitions.
+    # You may want to put all your additions into a separate file like
+    # ~/.bash_aliases, instead of adding them here directly.
+    # See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+    if [ -f ~/.bash_aliases ]; then
+        . ~/.bash_aliases
+    fi
+
+    if [ -f ~/.bash_functions ]; then
+        . ~/.bash_functions
+    fi
+    ```
+
+* Source the .bashrc file to make the changes take effect:
+
+  ```
+  source ~/.bashrc
+  ```
+
+* Now you can create new Drupal 10 sites on the fly, just run: 
+    ```
+    d10ddev
+    ```
+
+* Read more about [how to customize bashrc files](https://www.freecodecamp.org/news/bashrc-customization-guide/).
 ## :wq!
 
 That's it! congratulations, if you have followed all the steps in this how-to guide, then you have completed a local development environment for Drupal. I leave you with a final song, which you can find [in the Spotify playlist "The Russian Lullaby"](https://open.spotify.com/playlist/47hhvxX1IFhzN4QQ1g1mzx?si=6eae9c5660cc4be6).  
