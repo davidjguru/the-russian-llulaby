@@ -585,7 +585,21 @@ To create Drupal 10 websites in an automated way, follow the steps below:
     ```
     d10ddev
     ```
-
+    
+* To delete dummy Drupal sites, just add a new fuction in the `.bash_functions` file: 
+    ```
+    ## Destroy enabled Drupal site based in DDEV by name from project folder.
+    ddevdestroy () {
+    varkeyname=${PWD##*/}
+    ddev stop
+    yes |ddev delete -O
+    cd ..
+    rm -rf $varkeyname
+    }
+    ```
+   This will stop the containers network, destroy the DDEV containers and finally delete the source code from the project folder.
+   
+* Get some examples of bash scripting for day-to-day use in Drupal / DDEV based projects [here in Github](https://github.com/davidjguru/scripting_for_bash).
 * Read more about [how to customize bashrc files](https://www.freecodecamp.org/news/bashrc-customization-guide/).
 ## :wq!
 
