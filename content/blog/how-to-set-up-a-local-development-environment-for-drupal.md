@@ -366,6 +366,12 @@ To have a fully functional environment, follow the steps below.
       ]
    }
    ```
+
+* Enable XDebug in ddev, just run: 
+  ```
+  ddev xdebug on
+  ```
+
 * Now you can enable the debug mode by clicking in option "Run and Debug", then put some breakpoints whitin the source code and try to run the site. You are ready for debugging. 
 
 ### Install PHP Codesniffer (PHPCS)
