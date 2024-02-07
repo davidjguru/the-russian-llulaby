@@ -313,8 +313,7 @@ To test your local DDEV installation, follow these steps:
    ddev launch
    ```
    
-    ![Enabling a Drupal site in your local environment using DDEV](./../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_5.png)  
-    
+    ![Enabling a Drupal site in your local environment using DDEV](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_5.png)  
 
 ## Set up an IDE for Drupal development
 
@@ -347,6 +346,7 @@ To have a fully functional environment, follow the steps below.
    ```
    
       ![Installing PHP Debug extension in VSCode](../../images/post/davidjguru_drupal_how_to_set_up_a_local_development_environment_6.jpg)  
+
 
 * Prepare a `launch.json` file per project's folder, including the lines for Xdebug connections: 
    ```
